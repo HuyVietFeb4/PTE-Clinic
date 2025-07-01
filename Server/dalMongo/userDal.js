@@ -26,12 +26,20 @@ async function findUserByUsername(Username) {
     return await userModel.findOne({ username: Username });
 }
 
-async function findUserByEmail(email) {
+async function findUserByEmail(Email) {
     return await userModel.findOne({ email: Email });
 }
 
-async function findAdminsByEmail(Email) { // Only use for admin
-    return await userModel.find({ email: Email }).populate({
+async function findAdmins(adminEmail) { // Only use for admin
+    if (adminEmail === '') {
+        return await userModel.find().populate({
+            path: clinicAdministered,
+            populate: {
+                path: location
+            }
+        }); 
+    }
+    return await userModel.find({ email: adminEmail }).populate({
         path: clinicAdministered,
         populate: {
             path: location
@@ -39,17 +47,8 @@ async function findAdminsByEmail(Email) { // Only use for admin
     }); 
 }
 
-async function findAdminsByEmail(Email) { // Only use for admin
-    return await userModel.find({ email: Email }).populate({
-        path: clinicAdministered,
-        populate: {
-            path: location
-        }
-    }); 
-}
-
-async function findClientByEmail(email) {
-    return await userModel.findOne(email).populate([
+async function findClientByEmail(clientEmail) {
+    return await userModel.findOne({ email: clientEmail }).populate([
         {
         path: clinicAttended,
         populate: {
@@ -87,6 +86,37 @@ async function updateUserFailedLoginAttempByEmail(email, successLogin) {
         };
     }
 }
+
+async function updateUserFailedLoginAttempByObject(userObject, successLogin) {
+    const maxAttempts = 5;
+    try {
+        if (successLogin) {
+            userObject.failedLoginAttemps = 0;
+            await userObject.save();
+            return { success: true, message: "Update user login attempt successfully"};
+        } else {
+            const targetUser = await userModel.findOne({ Email: email });
+            const failedAttemps = targetUser.failedLoginAttemps;
+            if ( failedAttemps > 5 && Math.floor((Date.now() - targetUser.lastFailedLogin) / 86400000) > 7 ) {
+                userObject.lastFailedLogin = new Date();
+                userObject.failedLoginAttemps = 1;
+                await userObject.save();
+                return {success: true, message: `Login failed, you have ${maxAttempts-1} attempts left`};
+            }
+            else {
+                userObject.lastFailedLogin = new Date();
+                userObject.failedLoginAttemps = failedAttemps + 1;
+                await userObject.save();
+                return {success: true, message: `Login failed, you have ${maxAttempts - failedAttemps} attempts left`};
+            } 
+        }
+    } catch(error) {
+        return {
+            success: false,
+            message: `Error updating user: ${error.message || error.toString()}`
+        };
+    }
+}
 //delete
 
 module.exports = {
@@ -94,8 +124,9 @@ module.exports = {
 
     findUserByUsername: findUserByUsername, 
     findUserByEmail: findUserByEmail,
-    findAdminsByEmail: findAdminsByEmail,
+    findAdmins: findAdmins,
     findClientByEmail: findClientByEmail,
 
     updateUserFailedLoginAttempByEmail: updateUserFailedLoginAttempByEmail,
+    updateUserFailedLoginAttempByObject: updateUserFailedLoginAttempByObject
 };

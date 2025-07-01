@@ -1,12 +1,9 @@
 const userDal = require("../dalMongo/userDal");
 const crypto = require("crypto");
 
-async function login(email, password, role) {
+async function clientLogin(email, password) {
     const hashedPassword = crypto.createHash("sha256").update(password).digest("hex");
-    const user = await userRetrieveInfo.findUserByEmail(email);
-    if (user.role !== role) {
-        return {success: false, message: 'Conflict in role'};
-    }
+    const user = await userDal.findUserByEmail(email);
     if (user.failedLoginAttemps > 5) return {success: false, message: "User is locked. Please contact support."};
     if (!user) return { success: false, message: "User not found." };
     if (user.password !== hashedPassword) {
@@ -23,11 +20,38 @@ async function login(email, password, role) {
     return { success: true, message: "Login successfully"};
 }
 
+async function adminLogin(email, password, clinicName) {
+    const hashedPassword = crypto.createHash("sha256").update(password).digest("hex");
+    const adminList = await userDal.findUserByEmail(email);
+    for (adminAccount in adminList) {
+        if(adminAccount.clinicAdministered.clinicName === clinicName) {
+            let isLoginSuccess = undefined;
+            let returnObject = {};
+            if (hashedPassword === adminAccount.password) {
+                isLoginSuccess = true;
+                returnObject = { success: true, message: "Login successfully"};
+            }
+            else {
+                isLoginSuccess = false;
+                returnObject = { success: false, message: resUpdate.message};
+            }
+            const resUpdate = await userDal.updateUserFailedLoginAttempByObject(adminAccount, isLoginSuccess);
+            if(!resUpdate.success) {
+                return resUpdate;
+            }
+            else {
+                return returnObject;
+            }
+        }
+    }
+    return { success: false, message: "Login unsuccessfully"};
+}
+
 async function signup(email, username, password, role) {
     // Not yet sanitize
     const hashedPassword = crypto.createHash("sha256").update(password).digest("hex");
     if (role === 'client') {
-        const user = await userRetrieveInfo.findUserByEmail(email);
+        const user = await userDal.findUserByEmail(email);
         if(user) {
             return {success: false, message: "This email has already been registered. Try a new one"}
         }
@@ -40,13 +64,24 @@ async function signup(email, username, password, role) {
 }
 
 async function getClient(clientEmail) {
-    const user = await userRetrieveInfo.findUserByEmail(clientEmail);
-    if(!user) {
-        return {success: false, message: "No user found"}
+    const client = await userDal.findClientByEmail(clientEmail);
+    if(!client) {
+        return {success: false, message: "No client found"}
     }
-    return {success: true, message: "Retrieve user successfully", data: user}
+    return {success: true, message: "Retrieve client successfully", data: client}
+}
+
+async function getAdmin(adminEmail) {
+    const client = await userDal.findAdmins(adminEmail);
+    if(!client) {
+        return {success: false, message: "No client found"}
+    }
+    return {success: true, message: "Retrieve client successfully", data: client}
 }
 module.exports = {
-    login: login,
-    signup: signup
+    clientLogin: clientLogin,
+    adminLogin: adminLogin,
+    signup: signup,
+    getClient: getClient,
+    getAdmin: getAdmin
 };

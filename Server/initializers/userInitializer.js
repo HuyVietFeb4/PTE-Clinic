@@ -16,12 +16,20 @@ module.exports = class userInitializer extends Initializer {
             return await userActionLogic.signup(email, username, password, role);
         };
         
-        api.user.login = async function (email, username, role) { 
-            return await userActionLogic.login(email, username, role);
+        api.user.clientLogin = async function (email, username) { 
+            return await userActionLogic.clientLogin(email, username);
+        };
+
+        api.user.adminLogin = async function (email, username) { 
+            return await userActionLogic.adminLogin(email, username);
         };
 
         api.user.getClient = async function getClient(clientEmail) {
             return await userActionLogic.getClient(clientEmail);
+        }
+
+        api.user.getAdmin = async function getAdmin(adminEmail) {
+            return await userActionLogic.getAdmin(adminEmail);
         }
 	}
 }

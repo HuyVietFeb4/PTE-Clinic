@@ -1,11 +1,11 @@
 'use strict'
 const { api, Action } = require('actionhero');
 
-module.exports = class loginAction extends Action {
+module.exports = class clientLoginAction extends Action {
     constructor() {
         super();
-        this.name = 'login';
-        this.description = 'User login action';
+        this.name = 'clientLogin';
+        this.description = 'Client login action';
         this.inputs = {
             email: {
                 type: String,
@@ -16,18 +16,13 @@ module.exports = class loginAction extends Action {
                 type: String, 
                 required: true,
                 validator: this.passwordValidator
-            },
-            role: {
-                type: String, 
-                required: true,
-                validator: this.roleValidator
             }
         }
     }
 
     async executeFunction(data) {
         try {
-            const result = await api.user.login(data.params.email, data.params.password, data.paramas.role);
+            const result = await api.user.clientLogin(data.params.email, data.params.password);
             return { data: result };
         } catch (error) {
             return { err: error };
@@ -56,13 +51,6 @@ module.exports = class loginAction extends Action {
         const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,100}$/;
         if (!passwordRegex.test(Password)) {
             throw new Error('Password must have minimum eight characters, maximum 100 characters, at least one uppercase letter, one lowercase letter, one number and one special character (@$!%*?&)');
-        }
-    }
-
-    roleValidator(Role) {
-        let allowedRole = ['client', 'admin']
-        if (!allowedRole.includes(Role)) {
-            throw new Error('Invalid role');
         }
     }
 }
