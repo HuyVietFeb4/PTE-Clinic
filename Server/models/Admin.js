@@ -3,8 +3,7 @@ var Schema = mongoose.Schema;
 var userModel = require('./user').Model;
 
 var adminSchema  = new mongoose.Schema({ 
-    userID: { type: Schema.Types.ObjectId, ref: 'user' },
-    clinicAdministered: [{ type: Schema.Types.ObjectId, ref: 'clinic' }],
+    clinicAdministered: { type: Schema.Types.ObjectId, ref: 'clinic' },
 }, { collection : 'admin' });
 
 var adminModel = userModel.discriminator('admin', adminSchema);

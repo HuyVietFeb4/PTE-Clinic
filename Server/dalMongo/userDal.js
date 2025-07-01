@@ -1,4 +1,5 @@
 const { get } = require("mongoose");
+const { use } = require("react");
 
 const userModel = require("../models/user.js").Model;
 const clientModel = require('../models/client.js').Model;
@@ -21,12 +22,44 @@ async function signup(Email, Username, Password, Role) {
 }
 
 //read
-async function findUserByUsername(username) {
-    return await userModel.findOne({ Username: username });
+async function findUserByUsername(Username) {
+    return await userModel.findOne({ username: Username });
 }
 
 async function findUserByEmail(email) {
-    return await userModel.findOne({ Email: email });
+    return await userModel.findOne({ email: Email });
+}
+
+async function findAdminsByEmail(Email) { // Only use for admin
+    return await userModel.find({ email: Email }).populate({
+        path: clinicAdministered,
+        populate: {
+            path: location
+        }
+    }); 
+}
+
+async function findAdminsByEmail(Email) { // Only use for admin
+    return await userModel.find({ email: Email }).populate({
+        path: clinicAdministered,
+        populate: {
+            path: location
+        }
+    }); 
+}
+
+async function findClientByEmail(email) {
+    return await userModel.findOne(email).populate([
+        {
+        path: clinicAttended,
+        populate: {
+            path: location
+        }
+        },
+        {
+            path: location
+        }
+    ])
 }
 //update
 async function updateUserFailedLoginAttempByEmail(email, successLogin) {
@@ -58,7 +91,11 @@ async function updateUserFailedLoginAttempByEmail(email, successLogin) {
 
 module.exports = {
     signup: signup,
+
     findUserByUsername: findUserByUsername, 
     findUserByEmail: findUserByEmail,
+    findAdminsByEmail: findAdminsByEmail,
+    findClientByEmail: findClientByEmail,
+
     updateUserFailedLoginAttempByEmail: updateUserFailedLoginAttempByEmail,
 };
