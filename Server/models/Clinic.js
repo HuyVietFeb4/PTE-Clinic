@@ -1,14 +1,14 @@
 var mongoose = require("mongoose");
 var Schema = mongoose.Schema;
 
-var ClinicSchema  = new mongoose.Schema({ 
-    ClinicName: String,
-    Location: { type: Schema.Types.ObjectId, ref: 'Location' }
-}, { collection : 'Clinic' });
+var clinicSchema  = new mongoose.Schema({ 
+    clinicName: String,
+    location: { type: Schema.Types.ObjectId, ref: 'location' }
+}, { collection : 'clinic' });
 
-var ClinicModel = mongoose.model('Clinic', ClinicSchema);
+var clinicModel = mongoose.model('clinic', clinicSchema);
 
 module.exports = {
-    Model : ClinicModel,
-    Schema : ClinicSchema
+    Model: clinicModel,
+    Schema: clinicSchema
 }

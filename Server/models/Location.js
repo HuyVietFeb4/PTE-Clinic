@@ -1,21 +1,20 @@
 var mongoose = require("mongoose");
 var Schema = mongoose.Schema;
 
-var LocationSchema  = new mongoose.Schema({ 
-    // userPlaces: { type: Schema.Types.ObjectId, ref: 'user' },
-    LocationName: String,
-    Number: {type: String, default: ''},
-    Street: {type: String, default: ''},
-    Ward: {type: String, default: ''},
-    District: {type: String, default: ''},
-    City: {type: String, default: ''},
-    Country: {type: String, default: 'USA'}
-}, { collection: 'Location' });
+var locationSchema  = new mongoose.Schema({ 
+    locationName: String,
+    number: {type: String, default: ''},
+    street: {type: String, default: ''},
+    ward: {type: String, default: ''},
+    district: {type: String, default: ''},
+    city: {type: String, default: ''},
+    country: {type: String, default: 'USA'}
+}, { collection: 'location' });
 
-var LocationModel = mongoose.model('Location', LocationSchema);
+var locationModel = mongoose.model('location', locationSchema);
 
 
 module.exports = {
-    Model: LocationModel,
-    Schema: LocationSchema,
+    Model: locationModel,
+    Schema: locationSchema,
 }

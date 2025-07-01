@@ -1,14 +1,15 @@
 var mongoose = require("mongoose");
 var Schema = mongoose.Schema;
+var userModel = require('./user').Model;
 
-var AdminSchema  = new mongoose.Schema({ 
-    UserID: { type: Schema.Types.ObjectId, ref: 'User' },
-    ClinicAdministered: [{ type: Schema.Types.ObjectId, ref: 'Clinic' }],
-}, { collection : 'Admin' });
+var adminSchema  = new mongoose.Schema({ 
+    userID: { type: Schema.Types.ObjectId, ref: 'user' },
+    clinicAdministered: [{ type: Schema.Types.ObjectId, ref: 'clinic' }],
+}, { collection : 'admin' });
 
-var AdminModel = mongoose.model('Admin', AdminSchema);
+var adminModel = userModel.discriminator('admin', adminSchema);
 
 module.exports = {
-    Model : AdminModel,
-    Schema : AdminSchema
+    Model: adminModel,
+    Schema: adminSchema
 }

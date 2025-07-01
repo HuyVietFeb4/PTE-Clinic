@@ -1,15 +1,17 @@
 var mongoose = require("mongoose");
 var Schema = mongoose.Schema;
+var userModel = require('./user').Model
 
-var ClientSchema  = new mongoose.Schema({ 
-    ClinicAttended: [{ type: Schema.Types.ObjectId, ref: 'Clinic' }],
-    UserID: { type: Schema.Types.ObjectId, ref: 'User' },
-    Location: { type: Schema.Types.ObjectId, ref: 'Location' }
-}, { collection : 'Client' });
 
-var ClientModel = mongoose.model('Client', ClientSchema);
+var clientSchema  = new mongoose.Schema({ 
+    clinicAttended: [{ type: Schema.Types.ObjectId, ref: 'clinic' }],
+    userID: { type: Schema.Types.ObjectId, ref: 'user' },
+    location: { type: Schema.Types.ObjectId, ref: 'location' }
+}, { collection : 'client' });
+
+var clientModel = userModel.discriminator('client', clientSchema);
 
 module.exports = {
-    Model : ClientModel,
-    Schema : ClientSchema
+    Model: clientModel,
+    Schema: clientSchema
 }
