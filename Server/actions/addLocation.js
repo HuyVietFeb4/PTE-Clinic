@@ -27,6 +27,9 @@ module.exports = class addLocationAction extends Action {
             city: {
                 type: String, 
             },
+            state: {
+                type: String, 
+            },
             country: {
                 type: String, 
             },
@@ -35,7 +38,7 @@ module.exports = class addLocationAction extends Action {
 
     async executeFunction(data) {
         try {
-            const result = await api.location.addLocation(data.params.locationName, data.params.number, data.params.street, data.params.ward, data.params.district, data.params.city, data.params.country);
+            const result = await api.location.addLocation(data.params.locationName, data.params.number, data.params.street, data.params.ward, data.params.district, data.params.city, data.params.state, data.params.country);
             return { data: result };
         } catch (error) {
             return { err: error };

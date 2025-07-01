@@ -9,8 +9,8 @@ module.exports = class locationInitializer extends Initializer {
     async initialize() {
         api.location = {};
 
-        api.location.addLocation = async function (locationName, number, street, ward, district, city, country) { 
-            return await locationActionLogic.addLocation(locationName, number, street, ward, district, city, country);
+        api.location.addLocation = async function (locationName, number, street, ward, district, city, state, country) { 
+            return await locationActionLogic.addLocation(locationName, number, street, ward, district, city, state, country);
         };
 
     }

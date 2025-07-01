@@ -4,8 +4,8 @@ var userModel = require('./user').Model
 
 
 var clientSchema  = new mongoose.Schema({ 
-    clinicAttended: [{ type: Schema.Types.ObjectId, ref: 'clinic' }],
-    location: { type: Schema.Types.ObjectId, ref: 'location' }
+    clinicAttendedIDs: [{ type: Schema.Types.ObjectId, ref: 'clinic' }],
+    clientLocationID: { type: Schema.Types.ObjectId, ref: 'location' }
 }, { collection : 'client' });
 
 var clientModel = userModel.discriminator('client', clientSchema);

@@ -8,6 +8,7 @@ var locationSchema  = new mongoose.Schema({
     ward: {type: String, default: ''},
     district: {type: String, default: ''},
     city: {type: String, default: ''},
+    state: {type: String, default: ''},
     country: {type: String, default: 'USA'}
 }, { collection: 'location' });
 

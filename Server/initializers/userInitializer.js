@@ -31,5 +31,25 @@ module.exports = class userInitializer extends Initializer {
         api.user.getAdmin = async function getAdmin(adminEmail) {
             return await userActionLogic.getAdmin(adminEmail);
         }
+
+        api.user.getClients = async function(pathsToFind, valuesToFind, pathToSort, sortDirection, getLocation, getClinicAttend) {
+            // pathsToFind: a list, what path to find for the user
+            // valuesToFind: a list, values that system based on to find user
+            // pathsToFind and valuesToFind must be the same length
+            if (pathsToFind.length !== valuesToFind.length) {
+                throw new Error('pathsToFind and valuesToFind must be the same length');
+            }
+
+            // pathToSort: a list, name of the path that the system will base on and sort the result
+            // sortDirection: a list, value are 1 or -1
+            if (pathToSort.length !== sortDirection.length) {
+                throw new Error('pathToSort and sortDirection must be the same length');
+            }
+            if (!getLocation && !getClinicAttend) {
+                throw new Error('at least one of getLocation and getClinicAttend must be true');
+            }
+            // Return: a list of user with relevent product and location documents
+            return await userActionLogic.getClients(pathsToFind, valuesToFind, pathToSort, sortDirection, getLocation, getClinicAttend);
+        }
 	}
 }

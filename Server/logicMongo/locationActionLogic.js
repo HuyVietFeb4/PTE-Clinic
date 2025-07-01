@@ -5,7 +5,7 @@ async function addLocation(locationName, number, street, ward, district, city, c
     if(location) {
         return {success: false, message: "Location has already exists."};
     }
-    const result = await locationDal.addLocation(locationName, number, street, ward, district, city, country);
+    const result = await locationDal.addLocation(locationName, number, street, ward, district, city, state, country);
     if (!result.success) {
         throw new Error(result.message);
     }

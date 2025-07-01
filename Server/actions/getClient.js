@@ -5,7 +5,7 @@ module.exports = class getClientAction extends Action {
     constructor() {
         super();
         this.name = 'getClient';
-        this.description = 'Add client action';
+        this.description = 'Get client action';
         this.inputs = {
             email: {
                 type: String,

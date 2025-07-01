@@ -1,4 +1,4 @@
-const locationModel = require("../models/Location").Model;
+const locationModel = require("../models/location").Model;
 const clinicModel = require("../models/clinic").Model;
 
 const locationDal = require("./locationDal")
@@ -7,7 +7,7 @@ async function addClinic(ClinicName, locationName) {
     try {
         const newClinic = new clinicModel({ clinicName: ClinicName });
         const clinicLocation = locationDal.findLocationByName(locationName);
-        newClinic.location = clinicLocation._id;
+        newClinic.clientLocationID = clinicLocation._id;
         await newClinic.save();
         return { success: true, message: "Clinic added successfully" };
     } catch(error) {

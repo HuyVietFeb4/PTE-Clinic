@@ -78,10 +78,20 @@ async function getAdmin(adminEmail) {
     }
     return {success: true, message: "Retrieve client successfully", data: client}
 }
+
+
+async function getClients(pathsToFind, valuesToFind, pathToSort, sortDirection, getLocation, getClinicAttend) {
+    const result = await userDal.getClients(pathsToFind, valuesToFind, pathToSort, sortDirection, getLocation, getClinicAttend);
+    if (!result.success) {
+        throw new Error(result.message);
+    }
+    return result;
+}
 module.exports = {
     clientLogin: clientLogin,
     adminLogin: adminLogin,
     signup: signup,
     getClient: getClient,
-    getAdmin: getAdmin
+    getAdmin: getAdmin,
+    getClients: getClients
 };

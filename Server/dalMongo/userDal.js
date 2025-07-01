@@ -4,6 +4,8 @@ const { use } = require("react");
 const userModel = require("../models/user.js").Model;
 const clientModel = require('../models/client.js').Model;
 const adminModel = require('../models/admin.js').Model;
+const locationModel = require('../models/location.js').Model;
+const clinicModel = require('../models/clinic.js').Model;
 //create
 async function signup(Email, Username, Password, Role) {
     try {
@@ -33,16 +35,16 @@ async function findUserByEmail(Email) {
 async function findAdmins(adminEmail) { // Only use for admin
     if (adminEmail === '') {
         return await userModel.find().populate({
-            path: clinicAdministered,
+            path: clinicAdministeredID,
             populate: {
-                path: location
+                path: clinicLocationID
             }
         }); 
     }
     return await userModel.find({ email: adminEmail }).populate({
-        path: clinicAdministered,
+        path: clinicAdministeredID,
         populate: {
-            path: location
+            path: clinicLocationID
         }
     }); 
 }
@@ -50,15 +52,85 @@ async function findAdmins(adminEmail) { // Only use for admin
 async function findClientByEmail(clientEmail) {
     return await userModel.findOne({ email: clientEmail }).populate([
         {
-        path: clinicAttended,
+        path: clinicAttendedIDs,
         populate: {
-            path: location
+            path: clinicLocationID
         }
         },
         {
-            path: location
+            path: clientLocationID
         }
     ])
+}
+
+async function getClients(pathsToFind, valuesToFind, pathToSort, sortDirection, getLocation, getClinicAttend) {
+    let aggregateStage = [];
+    if (getLocation) {
+        aggregateStage.push(
+            {
+                $lookup: {
+                    from: 'location',
+                    localField: 'clientLocationID',
+                    foreignField: '_id',
+                    as: 'clientLocation',
+                }
+            }
+        );
+        // aggregateStage.push({ $unwind: '$clientLocation' }); maybe not needed
+    }
+    if (getClinicAttend) {
+        aggregateStage.push(
+            {
+                $lookup: {
+                    from: 'clinic',
+                    localField: 'clinicAttendedIDs',
+                    foreignField: '_id',
+                    as: 'clinicAttended',
+                }
+            }
+        );
+        aggregateStage.push({ $unwind: '$clinicAttended' });
+    }
+    if(pathsToFind.length > 0) {
+        let filterObject = {};
+        for (let i in pathsToFind) {
+            let fullPath;
+            if (userModel.schema.path(pathsToFind[i])) {
+                fullPath = pathsToFind[i];
+            } else if (locationModel.schema.path(pathsToFind[i])) {
+                fullPath = `clientLocation.${pathsToFind[i]}`;
+            } else if (clinicModel.schema.path(pathsToFind[i])) {
+                fullPath = `clinicAttended.${pathsToFind[i]}`;
+            } else {
+                return { success: false, message: `Error at userDal.js, no such path as ${pathsToFind[i]}` };
+            }
+            filterObject[fullPath] = valuesToFind[i];
+        }
+        aggregateStage.push({ $match: filterObject });
+    }
+    if(pathToSort.length > 0) {
+        let sortObject = {};
+        for (let i in pathToSort) {
+            let fullPath;
+            if (userModel.schema.path(pathToSort[i])) {
+                fullPath = pathToSort[i];
+            } else if (locationModel.schema.path(pathToSort[i])) {
+                fullPath = `clientLocation.${pathToSort[i]}`;
+            } else if (clinicModel.schema.path(pathToSort[i])) {
+                fullPath = `clinicAttended.${pathToSort[i]}`;
+            } else {
+                return { success: false, message: `Error at userDal.js, no such path as ${pathToSort[i]}` };
+            }
+            sortObject[fullPath] = sortDirection[i];
+        }
+        aggregateStage.push({ $sort: sortObject });
+    }
+    try {
+        const clients = await userModel.aggregate(aggregateStage);
+        return {success: true, message: 'Successfully retrieve client info', data: clients};
+    } catch(error) {
+        throw new Error(`Error at userDal.js, message: ${error.message}`);
+    }
 }
 //update
 async function updateUserFailedLoginAttempByEmail(email, successLogin) {
@@ -126,6 +198,7 @@ module.exports = {
     findUserByEmail: findUserByEmail,
     findAdmins: findAdmins,
     findClientByEmail: findClientByEmail,
+    getClients: getClients,
 
     updateUserFailedLoginAttempByEmail: updateUserFailedLoginAttempByEmail,
     updateUserFailedLoginAttempByObject: updateUserFailedLoginAttempByObject
