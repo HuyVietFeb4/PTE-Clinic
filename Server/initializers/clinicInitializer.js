@@ -32,5 +32,15 @@ module.exports = class clinicInitializer extends Initializer {
             // Return: a list of clients with relevent clinics attended and location documents
             return await userActionLogic.getClients(pathsToFind, valuesToFind, pathToSort, sortDirection, getLocation, getClientAttendees);
         }
+
+        api.clinic.updateClinic = async function(clinicName, pathToUpdate, valueToUpdate) {
+            if (pathToUpdate.length !== valueToUpdate.length) {
+                throw new Error('pathToUpdate and valueToUpdate must be the same length');
+            }
+            if (pathToUpdate.length === 0 || valueToUpdate.length === 0) {
+                throw new Error('Must have at least 1 path and value to update');
+            }
+            return await userActionLogic.updateClient(clinicName, pathToUpdate, valueToUpdate);
+        }
     }
 }

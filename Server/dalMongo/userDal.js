@@ -197,7 +197,7 @@ async function updateClient(clientEmail, pathToUpdate, valueToUpdate) { // maybe
     let client = await findClientByEmail(clientEmail);
     if (pathToUpdate.length > 0 && valueToUpdate.length > 0) {
         for (let i in pathToUpdate) { 
-            if(['clinicAttendedIDs', 'lastFailedLogin', 'failedLoginAttemps'].includes(pathToUpdate[i]) ) {
+            if(['clinicAttendedIDs', 'lastFailedLogin', 'failedLoginAttemps', 'email'].includes(pathToUpdate[i]) ) {
                 throw new Error(`Can not update this path ${pathToUpdate[i]} with this api call`);
             }
             else if (typeof(valueToUpdate[i]) === typeof(client[pathToUpdate[i]])) {

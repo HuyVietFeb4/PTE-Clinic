@@ -5,7 +5,7 @@ module.exports = class getAdminAction extends Action {
     constructor() {
         super();
         this.name = 'getAdmin';
-        this.description = 'Add admin action';
+        this.description = 'Get admin action';
         this.inputs = {
             email: {
                 type: String,

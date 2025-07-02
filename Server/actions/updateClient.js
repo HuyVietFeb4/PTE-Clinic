@@ -4,8 +4,8 @@ const { api, Action } = require('actionhero');
 module.exports = class updateClientAction extends Action {
     constructor() {
         super();
-        this.name = 'signup';
-        this.description = 'User signup action';
+        this.name = 'updateClient';
+        this.description = 'Update client info action';
         this.inputs = {
             clientEmail: {
                 type: String,

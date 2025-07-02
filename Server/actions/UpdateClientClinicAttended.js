@@ -4,10 +4,10 @@ const { api, Action } = require('actionhero');
 module.exports = class updateClientClinicAttended extends Action {
     constructor() {
         super();
-        this.name = 'signup';
-        this.description = 'User signup action';
+        this.name = 'updateClientClinicAttended';
+        this.description = 'Update clients\' clinic attend list action';
         this.inputs = {
-            clientEmail: {
+            clinicName: {
                 type: String,
                 require: true,
                 validator: this.emailValidator

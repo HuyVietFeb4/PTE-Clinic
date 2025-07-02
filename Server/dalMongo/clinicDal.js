@@ -20,6 +20,20 @@ async function findClinicByName(name) {
     return await clinicModel.findOne({ clinicName: name });
 }
 
+async function findClinicByNameWithFullInfo(name) {
+    return await clinicModel.findOne({ clinicName: name }).populate([
+        {
+            path: clinicLocationID
+        },
+        {
+            path: clientAttendedIDs,
+            populate: {
+                path: clientLocationID
+            }
+        }
+    ]);
+}
+
 async function getClinics(pathsToFind, valuesToFind, pathToSort, sortDirection, getLocation, getClientAttendees) {
     let aggregateStage = [];
     if (getLocation) {
@@ -90,8 +104,36 @@ async function getClinics(pathsToFind, valuesToFind, pathToSort, sortDirection, 
     }
 }
 
+async function updateClinic(clinicName, pathToUpdate, valueToUpdate) { // maybe limit to not use for update clinic attended
+    let clinic = await findClinicByNameWithFullInfo(clinicName);
+    if (pathToUpdate.length > 0 && valueToUpdate.length > 0) {
+        for (let i in pathToUpdate) { 
+            if(['clientAttendedIDs'].includes(pathToUpdate[i]) ) {
+                throw new Error(`Can not update this path ${pathToUpdate[i]} with this api call`);
+            }
+            else if (typeof(valueToUpdate[i]) === typeof(clinic[pathToUpdate[i]])) {
+                clinic[pathToUpdate[i]] = valueToUpdate[i];
+            }
+            else if (valueToUpdate[i].includes('{') && typeof(clinic[pathToUpdate[i]]) === 'object') {
+                clinic[pathToUpdate[i]] = JSON.parse(valueToUpdate[i]);
+            }
+            else {
+                throw new Error(`${pathToUpdate[i]} and ${valueToUpdate[i]} is not the same type`);
+            }   
+        }
+    }
+    else {
+        throw new Error("Invalid length");
+    }
+    await clinic.save();
+    return {success: true, message: 'Successfully update clinic'};
+}
 module.exports = {
     addClinic: addClinic,
+
     findClinicByName: findClinicByName, 
-    getClinics: getClinics
+    findClinicByNameWithFullInfo: findClinicByNameWithFullInfo,
+    getClinics: getClinics,
+
+    updateClinic: updateClinic
 }

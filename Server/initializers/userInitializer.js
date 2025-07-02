@@ -57,7 +57,7 @@ module.exports = class userInitializer extends Initializer {
                 throw new Error('pathToUpdate and valueToUpdate must be the same length');
             }
             if (pathToUpdate.length === 0 || valueToUpdate.length === 0) {
-                throw new Error('Must have path and value to update');
+                throw new Error('Must have at least 1 path and value to update');
             }
             return await userActionLogic.updateClient(clientEmail, pathToUpdate, valueToUpdate);
         }
