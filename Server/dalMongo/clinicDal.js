@@ -3,7 +3,7 @@ const clinicModel = require("../models/clinic").Model;
 const clientModel = require('../models/client').Model;
 
 const locationDal = require("./locationDal");
-const clientDal = require("./clientDal");
+const userDal = require("./userDal");
 // Create
 async function addClinic(ClinicName, locationName) {
     try {
@@ -154,7 +154,7 @@ async function updateClinicClientAttendee(clinicName, clientEmailToAdd, clientEm
                 clinic.clientAttendedIDs.splice(index, 1); 
             }
             else {
-                throw new Error(`This client does not in clinic attendees list to be removed: ${client.email}`);
+                throw new Error(`This client does not in clinic\'s attendees list to be removed: ${client.email}`);
             }
         }
     }
