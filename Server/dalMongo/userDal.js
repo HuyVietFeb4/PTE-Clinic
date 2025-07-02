@@ -224,7 +224,7 @@ async function updateClientClinicAttended(clientEmail, clinicNameToAdd, clinicNa
         let clinic = await clinicDal.findClinicByName(clinicNameToAdd[i]);
         if(!clinic) {
             throw new Error(`There is no such clinic with the name: ${clinicNameToAdd[i]}`);
-        } else if(client.clinicAttendedIDs.includes(clinicNameToAdd[i])) {
+        } else if(client.clinicAttendedIDs.includes(clinic._id)) {
             throw new Error(`This clinic has already been added: ${clinic.clinicName}`);
         }
         else {
@@ -235,8 +235,6 @@ async function updateClientClinicAttended(clientEmail, clinicNameToAdd, clinicNa
         let clinic = await clinicDal.findClinicByName(clinicNameToAdd[i]);
         if(!clinic) {
             throw new Error(`There is no such clinic with the name: ${clinicNameToAdd[i]}`);
-        } else if(!client.clinicAttendedIDs.includes(clinicNameToAdd[i])) {
-            
         }
         else {
             const index = client.clinicAttendedIDs.indexOf(clinic._id);

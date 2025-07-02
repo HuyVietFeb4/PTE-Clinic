@@ -5,9 +5,9 @@ module.exports = class updateClientClinicAttended extends Action {
     constructor() {
         super();
         this.name = 'updateClientClinicAttended';
-        this.description = 'Update clients\' clinic attend list action';
+        this.description = 'Update clients\'s clinic attend list action';
         this.inputs = {
-            clinicName: {
+            clientEmail: {
                 type: String,
                 require: true,
                 validator: this.emailValidator
@@ -49,7 +49,7 @@ module.exports = class updateClientClinicAttended extends Action {
         const stringRegex = /^[_a-zA-Z0-9]+( [_a-zA-Z0-9]+)*$/;
         for (let string of stringList) {
             if(!stringRegex.test(string)) {
-                throw new Error(`Invalid path: ${string}`)
+                throw new Error(`Invalid name: ${string}`)
             }
         }
     }

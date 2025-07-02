@@ -30,7 +30,7 @@ module.exports = class clinicInitializer extends Initializer {
                 throw new Error('at least one of getLocation and getClientAttendees must be true');
             }
             // Return: a list of clients with relevent clinics attended and location documents
-            return await userActionLogic.getClients(pathsToFind, valuesToFind, pathToSort, sortDirection, getLocation, getClientAttendees);
+            return await clinicActionLogic.getClients(pathsToFind, valuesToFind, pathToSort, sortDirection, getLocation, getClientAttendees);
         }
 
         api.clinic.updateClinic = async function(clinicName, pathToUpdate, valueToUpdate) {
@@ -40,7 +40,14 @@ module.exports = class clinicInitializer extends Initializer {
             if (pathToUpdate.length === 0 || valueToUpdate.length === 0) {
                 throw new Error('Must have at least 1 path and value to update');
             }
-            return await userActionLogic.updateClient(clinicName, pathToUpdate, valueToUpdate);
+            return await clinicActionLogic.updateClinic(clinicName, pathToUpdate, valueToUpdate);
+        }
+
+        api.clinic.updateClinicClientAttendee = async function(clinicName, clientEmailToAdd, clientEmailToRemove) {
+            if (clientEmailToAdd.length === 0 && clientEmailToRemove.length === 0) {
+                throw new Error('At least 1 of the 2 clientEmailToAdd and clientEmailToRemove have values');
+            }
+            return await clinicActionLogic.updateClinicClientAttendee(clinicName, clientEmailToAdd, clientEmailToRemove);
         }
     }
 }

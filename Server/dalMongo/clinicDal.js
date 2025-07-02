@@ -2,7 +2,8 @@ const locationModel = require("../models/location").Model;
 const clinicModel = require("../models/clinic").Model;
 const clientModel = require('../models/client').Model;
 
-const locationDal = require("./locationDal")
+const locationDal = require("./locationDal");
+const clientDal = require("./clientDal");
 // Create
 async function addClinic(ClinicName, locationName) {
     try {
@@ -100,7 +101,7 @@ async function getClinics(pathsToFind, valuesToFind, pathToSort, sortDirection, 
         const clinics = await userModel.aggregate(aggregateStage);
         return {success: true, message: 'Successfully retrieve client info', data: clinics};
     } catch(error) {
-        throw new Error(`Error at userDal.js, message: ${error.message}`);
+        throw new Error(`Error at clinicDal.js, message: ${error.message}`);
     }
 }
 
@@ -128,6 +129,38 @@ async function updateClinic(clinicName, pathToUpdate, valueToUpdate) { // maybe 
     await clinic.save();
     return {success: true, message: 'Successfully update clinic'};
 }
+
+async function updateClinicClientAttendee(clinicName, clientEmailToAdd, clientEmailToRemove) {
+    let clinic = await findClinicByName(clinicName);
+    for (let i in clientEmailToAdd) {
+        let client = await userDal.findUserByEmail(clientEmailToAdd[i]);
+        if(!client) {
+            throw new Error(`There is no such client with the email: ${clientEmailToAdd[i]}`);
+        } else if(clinic.clientAttendedIDs.includes(client._id)) {
+            throw new Error(`This client has already been added: ${client.email}`);
+        }
+        else {
+            clinic.clientAttendedIDs.push(client._id);
+        }
+    }
+    for (let i in clientEmailToRemove) {
+        let client = await userDal.findUserByEmail(clientEmailToRemove[i]);
+        if(!client) {
+            throw new Error(`There is no such clinic with the email: ${clientEmailToRemove[i]}`);
+        }
+        else {
+            const index = clinic.clientAttendedIDs.indexOf(client._id);
+            if (index > -1) {
+                clinic.clientAttendedIDs.splice(index, 1); 
+            }
+            else {
+                throw new Error(`This client does not in clinic attendees list to be removed: ${client.email}`);
+            }
+        }
+    }
+    await client.save();
+    return {success: true, message: 'Successfully update clinic\'s client attendedees list '};
+}
 module.exports = {
     addClinic: addClinic,
 
@@ -135,5 +168,6 @@ module.exports = {
     findClinicByNameWithFullInfo: findClinicByNameWithFullInfo,
     getClinics: getClinics,
 
-    updateClinic: updateClinic
+    updateClinic: updateClinic,
+    updateClinicClientAttendee: updateClinicClientAttendee
 }

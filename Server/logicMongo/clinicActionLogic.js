@@ -33,8 +33,23 @@ async function updateClinic(clinicName, pathToUpdate, valueToUpdate) {
     return result;
 }
 
+async function updateClinicClientAttendee(clinicName, clientEmailToAdd, clientEmailToRemove) {
+    const clinic = await clinicDal.findClinicByName(clinicName);
+    if(!clinic) {
+        return {success: false, message: "Can not find the clinic"};
+    }
+    const result = await clinicDal.updateClinicClientAttendee(clinicName, clientEmailToAdd, clientEmailToRemove);
+    if (!result.success) {
+        throw new Error(result.message);
+    }
+    return result;
+}
+
 module.exports = {
     addClinic: addClinic,
+
     getClinics: getClinics,
-    updateClinic: updateClinic
+
+    updateClinic: updateClinic,
+    updateClinicClientAttendee: updateClinicClientAttendee
 };
