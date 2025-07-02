@@ -24,17 +24,23 @@ module.exports = class userInitializer extends Initializer {
             return await userActionLogic.adminLogin(email, username);
         };
 
-        api.user.getClient = async function getClient(clientEmail) {
+        api.user.getClient = async function (clientEmail) {
             return await userActionLogic.getClient(clientEmail);
         }
 
-        api.user.getAdmin = async function getAdmin(adminEmail) {
+        api.user.getAdmin = async function (adminEmail) {
             return await userActionLogic.getAdmin(adminEmail);
         }
 
+        api.user.updateClient = async function (clientEmail, pathToUpdate, valueToUpdate) {
+            if (pathToUpdate.length !== valueToUpdate.length) {
+                throw new Error('pathToUpdate and valueToUpdate must be the same length');
+            }
+            return await userActionLogic.updateClient(clientEmail, pathToUpdate, valueToUpdate);
+        }
         api.user.getClients = async function(pathsToFind, valuesToFind, pathToSort, sortDirection, getLocation, getClinicAttend) {
-            // pathsToFind: a list, what path to find for the user
-            // valuesToFind: a list, values that system based on to find user
+            // pathsToFind: a list, what path to find for the client
+            // valuesToFind: a list, values that system based on to find client
             // pathsToFind and valuesToFind must be the same length
             if (pathsToFind.length !== valuesToFind.length) {
                 throw new Error('pathsToFind and valuesToFind must be the same length');
@@ -48,7 +54,7 @@ module.exports = class userInitializer extends Initializer {
             if (!getLocation && !getClinicAttend) {
                 throw new Error('at least one of getLocation and getClinicAttend must be true');
             }
-            // Return: a list of user with relevent product and location documents
+            // Return: a list of clients with relevent clinics attended and location documents
             return await userActionLogic.getClients(pathsToFind, valuesToFind, pathToSort, sortDirection, getLocation, getClinicAttend);
         }
 	}

@@ -1,11 +1,11 @@
 'use strict'
 const { api, Action, action } = require('actionhero');
 
-module.exports = class getClientsAction extends Action {
+module.exports = class getClinicsAction extends Action {
     constructor() {
         super();
-        this.name = 'getClients';
-        this.description = 'Get clients with filter and sort option action';
+        this.name = 'getClinics';
+        this.description = 'Get clinics with filter and sort option action';
         this.inputs = {
             pathsToFind: {
                 type: [String],
@@ -31,7 +31,7 @@ module.exports = class getClientsAction extends Action {
                 type: Boolean,
                 default: true
             },
-            getClinicAttend: {
+            getClientAttendees: {
                 type: Boolean,
                 default: true
             }
@@ -40,7 +40,7 @@ module.exports = class getClientsAction extends Action {
 
     async executeFunction(data) {
         try {
-            const result = await api.user.getClients(data.params.pathsToFind, data.params.valuesToFind, data.params.pathToSort, data.params.sortDirection, data.params.getLocation, data.params.getClinicAttend)
+            const result = await api.clinic.getClinics(data.params.pathsToFind, data.params.valuesToFind, data.params.pathToSort, data.params.sortDirection, data.params.getLocation, data.params.getClientAttendees)
             return { data: result };
         } catch (error) {
             return { err: error };
@@ -55,7 +55,7 @@ module.exports = class getClientsAction extends Action {
         else {
             data.response.success = dataRes.data.success;
             data.response.message = dataRes.data.message;
-            data.response.clients = dataRes.data.data;
+            data.response.clinics = dataRes.data.data;
         }
     }
 

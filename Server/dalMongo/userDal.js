@@ -189,6 +189,34 @@ async function updateUserFailedLoginAttempByObject(userObject, successLogin) {
         };
     }
 }
+
+async function updateClient(clientEmail, pathToUpdate, valueToUpdate) { // maybe limit to not use for update clinic attended
+    let client = await findClientByEmail(clientEmail);
+    if (pathToUpdate.length > 0 && valueToUpdate.length > 0) {
+        for (let i in pathToUpdate) { 
+            if ((typeof(valueToUpdate[i]) !== typeof(client[pathToUpdate[i]])) || (!(valueToUpdate[i].includes('{') && typeof(client[pathToUpdate[i]]) ===  'object'))) {
+                throw new Error(`${pathToUpdate[i]} and ${valueToUpdate[i]} is not the same type`);
+            }
+            if(['clinicAttendedIDs', 'lastFailedLogin', 'failedLoginAttemps'].includes(pathToUpdate[i]) ) {
+                throw new Error(`Can not update this path ${pathToUpdate[i]} with this api call`);
+            }
+        }
+
+        for (let i in pathToUpdate) { 
+            if (typeof(valueToUpdate[i]) === typeof(client[pathToUpdate[i]])) {
+                client[pathToUpdate[i]] = valueToUpdate[i];
+            }
+            else if (valueToUpdate[i].includes('{') && typeof(client[pathToUpdate[i]]) === 'object') {
+                client[pathToUpdate[i]] = JSON.parse(valueToUpdate[i]);
+            }
+        }
+    }
+    else {
+        throw new Error("Invalid length");
+    }
+    await client.save();
+    return {success: true, message: 'Successfully update client'};
+}
 //delete
 
 module.exports = {
@@ -201,5 +229,6 @@ module.exports = {
     getClients: getClients,
 
     updateUserFailedLoginAttempByEmail: updateUserFailedLoginAttempByEmail,
-    updateUserFailedLoginAttempByObject: updateUserFailedLoginAttempByObject
+    updateUserFailedLoginAttempByObject: updateUserFailedLoginAttempByObject,
+    updateClient: updateClient
 };

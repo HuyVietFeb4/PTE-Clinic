@@ -13,6 +13,14 @@ async function addClinic(clinicName, locationName) {
     return { success: true, message: "Add clinic successfully" };
 }
 
+async function getClinics(pathsToFind, valuesToFind, pathToSort, sortDirection, getLocation, getClientAttendees) {
+    const result = await clinicDal.getClinics(pathsToFind, valuesToFind, pathToSort, sortDirection, getLocation, getClientAttendees);
+    if (!result.success) {
+        throw new Error(result.message);
+    }
+    return result;
+}
 module.exports = {
-    addClinic: addClinic
+    addClinic: addClinic,
+    getClinics: getClinics
 };
