@@ -89,11 +89,23 @@ async function getClients(pathsToFind, valuesToFind, pathToSort, sortDirection, 
 }
 
 async function updateClient(clientEmail, pathToUpdate, valueToUpdate) {
-    const user = await userDal.findUserByEmail(clientEmail);
-    if(!user) {
+    const client = await userDal.findUserByEmail(clientEmail);
+    if(!client) {
         return {success: false, message: "Can not find the account"};
     }
     const result = await userDal.updateClient(clientEmail, pathToUpdate, valueToUpdate);
+    if (!result.success) {
+        throw new Error(result.message);
+    }
+    return result;
+}
+
+async function updateClientClinicAttended(clientEmail, clinicNameToAdd, clinicNameToRemove) {
+    const client = await userDal.findUserByEmail(clientEmail);
+    if(!client) {
+        return {success: false, message: "Can not find the account"};
+    }
+    const result = await userDal.updateClientClinicAttended(clientEmail, clinicNameToAdd, clinicNameToRemove);
     if (!result.success) {
         throw new Error(result.message);
     }
@@ -108,5 +120,6 @@ module.exports = {
     getAdmin: getAdmin,
     getClients: getClients,
 
-    updateClient: updateClient
+    updateClient: updateClient,
+    updateClientClinicAttended: updateClientClinicAttended
 };

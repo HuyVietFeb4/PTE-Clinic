@@ -6,6 +6,9 @@ const clientModel = require('../models/client.js').Model;
 const adminModel = require('../models/admin.js').Model;
 const locationModel = require('../models/location.js').Model;
 const clinicModel = require('../models/clinic.js').Model;
+
+const clinicDal = require('./clinicDal.js');
+const clinic = require("../models/clinic.js");
 //create
 async function signup(Email, Username, Password, Role) {
     try {
@@ -194,21 +197,18 @@ async function updateClient(clientEmail, pathToUpdate, valueToUpdate) { // maybe
     let client = await findClientByEmail(clientEmail);
     if (pathToUpdate.length > 0 && valueToUpdate.length > 0) {
         for (let i in pathToUpdate) { 
-            if ((typeof(valueToUpdate[i]) !== typeof(client[pathToUpdate[i]])) || (!(valueToUpdate[i].includes('{') && typeof(client[pathToUpdate[i]]) ===  'object'))) {
-                throw new Error(`${pathToUpdate[i]} and ${valueToUpdate[i]} is not the same type`);
-            }
             if(['clinicAttendedIDs', 'lastFailedLogin', 'failedLoginAttemps'].includes(pathToUpdate[i]) ) {
                 throw new Error(`Can not update this path ${pathToUpdate[i]} with this api call`);
             }
-        }
-
-        for (let i in pathToUpdate) { 
-            if (typeof(valueToUpdate[i]) === typeof(client[pathToUpdate[i]])) {
+            else if (typeof(valueToUpdate[i]) === typeof(client[pathToUpdate[i]])) {
                 client[pathToUpdate[i]] = valueToUpdate[i];
             }
             else if (valueToUpdate[i].includes('{') && typeof(client[pathToUpdate[i]]) === 'object') {
                 client[pathToUpdate[i]] = JSON.parse(valueToUpdate[i]);
             }
+            else {
+                throw new Error(`${pathToUpdate[i]} and ${valueToUpdate[i]} is not the same type`);
+            }   
         }
     }
     else {
@@ -216,6 +216,40 @@ async function updateClient(clientEmail, pathToUpdate, valueToUpdate) { // maybe
     }
     await client.save();
     return {success: true, message: 'Successfully update client'};
+}
+
+async function updateClientClinicAttended(clientEmail, clinicNameToAdd, clinicNameToRemove) {
+    let client = await findUserByEmail(clientEmail);
+    for (let i in clinicNameToAdd) {
+        let clinic = await clinicDal.findClinicByName(clinicNameToAdd[i]);
+        if(!clinic) {
+            throw new Error(`There is no such clinic with the name: ${clinicNameToAdd[i]}`);
+        } else if(client.clinicAttendedIDs.includes(clinicNameToAdd[i])) {
+            throw new Error(`This clinic has already been added: ${clinic.clinicName}`);
+        }
+        else {
+            client.clinicAttendedIDs.push(clinic._id);
+        }
+    }
+    for (let i in clinicNameToRemove) {
+        let clinic = await clinicDal.findClinicByName(clinicNameToAdd[i]);
+        if(!clinic) {
+            throw new Error(`There is no such clinic with the name: ${clinicNameToAdd[i]}`);
+        } else if(!client.clinicAttendedIDs.includes(clinicNameToAdd[i])) {
+            
+        }
+        else {
+            const index = client.clinicAttendedIDs.indexOf(clinic._id);
+            if (index > -1) {
+                client.clinicAttendedIDs.splice(index, 1); 
+            }
+            else {
+                throw new Error(`This clinic does not in client attended list to be removed: ${clinic.clinicName}`);
+            }
+        }
+    }
+    await client.save();
+    return {success: true, message: 'Successfully update client\'s clinic attended list '};
 }
 //delete
 
@@ -230,5 +264,6 @@ module.exports = {
 
     updateUserFailedLoginAttempByEmail: updateUserFailedLoginAttempByEmail,
     updateUserFailedLoginAttempByObject: updateUserFailedLoginAttempByObject,
-    updateClient: updateClient
+    updateClient: updateClient,
+    updateClientClinicAttended: updateClientClinicAttended
 };

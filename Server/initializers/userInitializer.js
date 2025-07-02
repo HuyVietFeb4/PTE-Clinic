@@ -32,12 +32,6 @@ module.exports = class userInitializer extends Initializer {
             return await userActionLogic.getAdmin(adminEmail);
         }
 
-        api.user.updateClient = async function (clientEmail, pathToUpdate, valueToUpdate) {
-            if (pathToUpdate.length !== valueToUpdate.length) {
-                throw new Error('pathToUpdate and valueToUpdate must be the same length');
-            }
-            return await userActionLogic.updateClient(clientEmail, pathToUpdate, valueToUpdate);
-        }
         api.user.getClients = async function(pathsToFind, valuesToFind, pathToSort, sortDirection, getLocation, getClinicAttend) {
             // pathsToFind: a list, what path to find for the client
             // valuesToFind: a list, values that system based on to find client
@@ -56,6 +50,23 @@ module.exports = class userInitializer extends Initializer {
             }
             // Return: a list of clients with relevent clinics attended and location documents
             return await userActionLogic.getClients(pathsToFind, valuesToFind, pathToSort, sortDirection, getLocation, getClinicAttend);
+        }
+
+        api.user.updateClient = async function (clientEmail, pathToUpdate, valueToUpdate) {
+            if (pathToUpdate.length !== valueToUpdate.length) {
+                throw new Error('pathToUpdate and valueToUpdate must be the same length');
+            }
+            if (pathToUpdate.length === 0 || valueToUpdate.length === 0) {
+                throw new Error('Must have path and value to update');
+            }
+            return await userActionLogic.updateClient(clientEmail, pathToUpdate, valueToUpdate);
+        }
+
+        api.user.updateClientClinicAttended = async function (clientEmail, clinicNameToAdd, clinicNameToRemove) {
+            if (clinicNameToAdd.length === 0 && clinicNameToRemove.length === 0) {
+                throw new Error('At least 1 of the 2 clinicNameToAdd and clinicNameToRemove have values');
+            }
+            return await userActionLogic.updateClientClinicAttended(clientEmail, clinicNameToAdd, clinicNameToRemove);
         }
 	}
 }
