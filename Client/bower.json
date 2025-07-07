@@ -18,7 +18,7 @@
     "angular-mocks": "*"
   },
   "appPath": "app",
-  "moduleName": "angularJsApp",
+  "moduleName": "clinicApp",
   "overrides": {
     "bootstrap": {
       "main": [

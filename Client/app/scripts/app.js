@@ -2,14 +2,14 @@
 
 /**
  * @ngdoc overview
- * @name angularJsApp
+ * @name clinicApp
  * @description
- * # angularJsApp
+ * # clinicApp
  *
  * Main module of the application.
  */
 angular
-  .module('angularJsApp', [
+  .module('clinicApp', [
     'ngAnimate',
     'ngAria',
     'ngCookies',
@@ -17,21 +17,15 @@ angular
     'ngResource',
     'ngRoute',
     'ngSanitize',
-    'ngTouch'
+    'ngTouch',
+    'login',
   ])
   .config(function ($routeProvider) {
     $routeProvider
-      .when('/', {
-        templateUrl: 'views/main.html',
-        controller: 'MainCtrl',
-        controllerAs: 'main'
-      })
-      .when('/about', {
-        templateUrl: 'views/about.html',
-        controller: 'AboutCtrl',
-        controllerAs: 'about'
+      .when('/login', {
+        template: '<login></login>'
       })
       .otherwise({
-        redirectTo: '/'
+        redirectTo: '/login'
       });
   });

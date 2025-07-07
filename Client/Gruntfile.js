@@ -1,6 +1,8 @@
 // Generated on 2025-06-02 using generator-angular 0.16.0
 'use strict';
 
+const { template } = require('grunt');
+
 // # Globbing
 // for performance reasons we're only matching one level down:
 // 'test/spec/{,*/}*.js'
@@ -10,6 +12,8 @@
 module.exports = function (grunt) {
 
   // Time how long tasks take. Can help when optimizing build times
+  grunt.loadNpmTasks('grunt-include-source');
+  grunt.loadNpmTasks('grunt-injector');
   require('time-grunt')(grunt);
 
   // Automatically load required Grunt tasks
@@ -27,10 +31,26 @@ module.exports = function (grunt) {
 
   // Define the configuration for all the tasks
   grunt.initConfig({
-
+    
     // Project settings
     yeoman: appConfig,
 
+    // automatically inject js file into index
+    injector: {
+      options: {
+        addRootSlash: false,
+        ignorePath: 'app'
+      },
+      local_dependencies: {
+        files: {
+          'app/index.html': [
+            'app/scripts/**/app.js',
+            'app/scripts/**/*.module.js',
+            'app/scripts/**/*.js',
+          ],
+        }
+      }
+    },
     // Watches files for changes and runs tasks based on the changed files
     watch: {
       bower: {
@@ -39,7 +59,7 @@ module.exports = function (grunt) {
       },
       js: {
         files: ['<%= yeoman.app %>/scripts/{,*/}*.js'],
-        tasks: ['newer:jshint:all', 'newer:jscs:all'],
+        tasks: ['newer:jshint:all', 'newer:jscs:all', 'injector'],
         options: {
           livereload: '<%= connect.options.livereload %>'
         }
@@ -293,7 +313,13 @@ module.exports = function (grunt) {
     //   }
     // },
     // concat: {
-    //   dist: {}
+    //   dist: {
+    //     src: [
+    //       'app/features/**/*.module.js',   // Load modules first
+    //       'app/features/**/*.js'           // Then all other JS files
+    //     ],
+    //     dest: 'dist/app.bundle.js'
+    //   }
     // },
 
     imagemin: {
@@ -338,7 +364,7 @@ module.exports = function (grunt) {
     ngtemplates: {
       dist: {
         options: {
-          module: 'angularJsApp',
+          module: 'clinicApp',
           htmlmin: '<%= htmlmin.dist.options %>',
           usemin: 'scripts/scripts.js'
         },
@@ -435,6 +461,7 @@ module.exports = function (grunt) {
     grunt.task.run([
       'clean:server',
       'wiredep',
+      'injector',
       'concurrent:server',
       'postcss:server',
       'connect:livereload',
