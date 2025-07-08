@@ -18,6 +18,7 @@ angular
     'ngRoute',
     'ngSanitize',
     'ngTouch',
+    'apiService',
     'login',
     'signup',
     'footerApp'

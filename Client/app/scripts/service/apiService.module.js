@@ -276,136 +276,136 @@
 
 
 'use strict';
-angular.module('apiService', [])
-    .service('api', function($http) { 
-        this.signup = function(params) {
-            return $http({
-                method: 'POST',
-                url: 'http://172.26.16.1:8888/api/signup',
-                data: params,
-                headers: {
-                    'authorization': 'secrettoken123',
-                }
-            });
-        }
-        this.clientLogin = function(params) {
-            return $http({
-                method: 'POST',
-                url: 'http://172.26.16.1:8888/api/clientLogin',
-                data: params,
-                headers: {
-                    'authorization': 'secrettoken123',
-                }
-            });
-        }
-        this.adminLogin = function(params) {
-            return $http({
-                method: 'POST',
-                url: 'http://172.26.16.1:8888/api/adminLogin',
-                data: params,
-                headers: {
-                    'authorization': 'secrettoken123',
-                }
-            });
-        }
-        this.addClinic = function(params) {
-            return $http({
-                method: 'POST',
-                url: 'http://172.26.16.1:8888/api/addClinic',
-                data: params,
-                headers: {
-                    'authorization': 'secrettoken123',
-                }
-            });
-        }
-        this.addLocation = function(params) {
-            return $http({
-                method: 'POST',
-                url: 'http://172.26.16.1:8888/api/addLocation',
-                data: params,
-                headers: {
-                    'authorization': 'secrettoken123',
-                }
-            });
-        }
-        this.getAdmin = function(params) {
-            return $http({
-                method: 'POST',
-                url: 'http://172.26.16.1:8888/api/getAdmin',
-                data: params,
-                headers: {
-                    'authorization': 'secrettoken123',
-                }
-            });
-        }
-        this.getClient = function(params) {
-            return $http({
-                method: 'POST',
-                url: 'http://172.26.16.1:8888/api/getClient',
-                data: params,
-                headers: {
-                    'authorization': 'secrettoken123',
-                }
-            });
-        }
-        this.getClients = function(params) {
-            return $http({
-                method: 'POST',
-                url: 'http://172.26.16.1:8888/api/getClients',
-                data: params,
-                headers: {
-                    'authorization': 'secrettoken123',
-                }
-            });
-        }
-        this.getClinics = function(params) {
-            return $http({
-                method: 'POST',
-                url: 'http://172.26.16.1:8888/api/getClinics',
-                data: params,
-                headers: {
-                    'authorization': 'secrettoken123',
-                }
-            });
-        }
-        this.updateClient = function(params) {
-            return $http({
-                method: 'POST',
-                url: 'http://172.26.16.1:8888/api/updateClient',
-                data: params,
-                headers: {
-                    'authorization': 'secrettoken123',
-                }
-            });
-        }
-        this.updateClientClinicAttended = function(params) {
-            return $http({
-                method: 'POST',
-                url: 'http://172.26.16.1:8888/api/updateClientClinicAttended',
-                data: params,
-                headers: {
-                    'authorization': 'secrettoken123',
-                }
-            });
-        }
-        this.updateClinic = function(params) {
-            return $http({
-                method: 'POST',
-                url: 'http://172.26.16.1:8888/api/updateClinic',
-                data: params,
-                headers: {
-                    'authorization': 'secrettoken123',
-                }
-            });
-        }
-        this.updateClinicClientAttendee = function(params) {
-            return $http({
-                method: 'POST',
-                url: 'http://172.26.16.1:8888/api/updateClinicClientAttendee',
-                data: params,
-                headers: {
-                    'authorization': 'secrettoken123',
-                }
-            });
-        }
-    });
+angular.module('apiService', []);
+    // .service('api', function($http) { 
+    //     this.signup = function(params) {
+    //         return $http({
+    //             method: 'POST',
+    //             url: 'http://172.26.16.1:8888/api/signup',
+    //             data: params,
+    //             headers: {
+    //                 'authorization': 'secrettoken123',
+    //             }
+    //         });
+    //     }
+    //     this.clientLogin = function(params) {
+    //         return $http({
+    //             method: 'POST',
+    //             url: 'http://172.26.16.1:8888/api/clientLogin',
+    //             data: params,
+    //             headers: {
+    //                 'authorization': 'secrettoken123',
+    //             }
+    //         });
+    //     }
+    //     this.adminLogin = function(params) {
+    //         return $http({
+    //             method: 'POST',
+    //             url: 'http://172.26.16.1:8888/api/adminLogin',
+    //             data: params,
+    //             headers: {
+    //                 'authorization': 'secrettoken123',
+    //             }
+    //         });
+    //     }
+    //     this.addClinic = function(params) {
+    //         return $http({
+    //             method: 'POST',
+    //             url: 'http://172.26.16.1:8888/api/addClinic',
+    //             data: params,
+    //             headers: {
+    //                 'authorization': 'secrettoken123',
+    //             }
+    //         });
+    //     }
+    //     this.addLocation = function(params) {
+    //         return $http({
+    //             method: 'POST',
+    //             url: 'http://172.26.16.1:8888/api/addLocation',
+    //             data: params,
+    //             headers: {
+    //                 'authorization': 'secrettoken123',
+    //             }
+    //         });
+    //     }
+    //     this.getAdmin = function(params) {
+    //         return $http({
+    //             method: 'POST',
+    //             url: 'http://172.26.16.1:8888/api/getAdmin',
+    //             data: params,
+    //             headers: {
+    //                 'authorization': 'secrettoken123',
+    //             }
+    //         });
+    //     }
+    //     this.getClient = function(params) {
+    //         return $http({
+    //             method: 'POST',
+    //             url: 'http://172.26.16.1:8888/api/getClient',
+    //             data: params,
+    //             headers: {
+    //                 'authorization': 'secrettoken123',
+    //             }
+    //         });
+    //     }
+    //     this.getClients = function(params) {
+    //         return $http({
+    //             method: 'POST',
+    //             url: 'http://172.26.16.1:8888/api/getClients',
+    //             data: params,
+    //             headers: {
+    //                 'authorization': 'secrettoken123',
+    //             }
+    //         });
+    //     }
+    //     this.getClinics = function(params) {
+    //         return $http({
+    //             method: 'POST',
+    //             url: 'http://172.26.16.1:8888/api/getClinics',
+    //             data: params,
+    //             headers: {
+    //                 'authorization': 'secrettoken123',
+    //             }
+    //         });
+    //     }
+    //     this.updateClient = function(params) {
+    //         return $http({
+    //             method: 'POST',
+    //             url: 'http://172.26.16.1:8888/api/updateClient',
+    //             data: params,
+    //             headers: {
+    //                 'authorization': 'secrettoken123',
+    //             }
+    //         });
+    //     }
+    //     this.updateClientClinicAttended = function(params) {
+    //         return $http({
+    //             method: 'POST',
+    //             url: 'http://172.26.16.1:8888/api/updateClientClinicAttended',
+    //             data: params,
+    //             headers: {
+    //                 'authorization': 'secrettoken123',
+    //             }
+    //         });
+    //     }
+    //     this.updateClinic = function(params) {
+    //         return $http({
+    //             method: 'POST',
+    //             url: 'http://172.26.16.1:8888/api/updateClinic',
+    //             data: params,
+    //             headers: {
+    //                 'authorization': 'secrettoken123',
+    //             }
+    //         });
+    //     }
+    //     this.updateClinicClientAttendee = function(params) {
+    //         return $http({
+    //             method: 'POST',
+    //             url: 'http://172.26.16.1:8888/api/updateClinicClientAttendee',
+    //             data: params,
+    //             headers: {
+    //                 'authorization': 'secrettoken123',
+    //             }
+    //         });
+    //     }
+    // });

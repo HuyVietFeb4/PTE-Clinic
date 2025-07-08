@@ -7,7 +7,8 @@
  * Signup module of the application.
  */
 angular.module('signup', [
-    'ngRoute'
+    'ngRoute',
+    'apiService'
 ]).config(function ($routeProvider) {
     $routeProvider
       .when('/signup', {

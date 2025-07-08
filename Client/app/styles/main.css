@@ -1,6 +1,8 @@
 footer-app {
-  position: fixed;
-  left: 0;
-  bottom: 0;
-  width: 100%;
+  clear: both;
+  position: relative;
+  margin-top: -200px;
+}
+.mainView {
+  margin-bottom: 40px;
 }

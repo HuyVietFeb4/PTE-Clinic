@@ -1,4 +1,4 @@
 'use strict';
-angular.module('login').service('api', function($http) { 
+angular.module('apiService').service('api', function($http) { 
     
 })

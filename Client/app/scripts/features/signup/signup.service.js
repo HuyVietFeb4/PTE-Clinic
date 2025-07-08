@@ -1,5 +1,5 @@
 'use strict';
-angular.module('signup').service('api', function($http) { 
+angular.module('apiService').service('api', function($http) { 
     this.signupAction = function(params) {
         return $http({
             method: 'POST',

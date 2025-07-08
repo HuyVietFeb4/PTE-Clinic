@@ -5,13 +5,13 @@ angular.module('login').component('clientLogin', {
 });
 
 angular.module('login').component('chooseClinic', {
-    templateUrl: './chooseClinic.html',
+    templateUrl: 'scripts/features/login/chooseClinic.html',
     controller: 'chooseClinicController',
     controllerAs: 'chooseClinicCtrl'
 });
 
 angular.module('login').component('adminLogin', {
-    templateUrl: './adminLogin.html',
+    templateUrl: 'scripts/features/login/adminLogin.html',
     controller: 'adminLoginController',
     controllerAs: 'adminLoginCtrl'
 });
