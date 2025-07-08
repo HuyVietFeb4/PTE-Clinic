@@ -1,17 +1,17 @@
 angular.module('login').component('clientLogin', {
     templateUrl: 'scripts/features/login/clientLogin.html',
     controller: 'clientLoginController',
-    controllerAs: 'clientLogin'
+    controllerAs: 'clientLoginCtrl'
 });
 
 angular.module('login').component('chooseClinic', {
     templateUrl: './chooseClinic.html',
     controller: 'chooseClinicController',
-    controllerAs: 'chooseClinic'
+    controllerAs: 'chooseClinicCtrl'
 });
 
 angular.module('login').component('adminLogin', {
     templateUrl: './adminLogin.html',
     controller: 'adminLoginController',
-    controllerAs: 'adminLogin'
+    controllerAs: 'adminLoginCtrl'
 });

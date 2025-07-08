@@ -21,43 +21,12 @@
     <![endif]-->
 
     <!-- Add your site or application content here -->
-    <div class="header">
-      <div class="navbar navbar-default" role="navigation">
-        <div class="container">
-          <div class="navbar-header">
+    
 
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#js-navbar-collapse">
-              <span class="sr-only">Toggle navigation</span>
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-            </button>
-
-            <a class="navbar-brand" href="#/">angularJs</a>
-          </div>
-
-          <div class="collapse navbar-collapse" id="js-navbar-collapse">
-
-            <ul class="nav navbar-nav">
-              <li class="active"><a href="#/">Home</a></li>
-              <li><a ng-href="#/about">About</a></li>
-              <li><a ng-href="#/">Contact</a></li>
-            </ul>
-          </div>
-        </div>
-      </div>
+    <div ng-view="">
     </div>
 
-    <div class="container">
-    <div ng-view=""></div>
-    </div>
-
-    <div class="footer">
-      <div class="container">
-        <p><span class="glyphicon glyphicon-heart"></span> from the Yeoman team</p>
-      </div>
-    </div>
-
+    <footer-app></footer-app>
 
     <!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
      <!-- <script>
@@ -90,9 +59,20 @@
         <!-- injector:js -->
         <script src="scripts/app.js"></script>
         <script src="scripts/features/login/login.module.js"></script>
+        <script src="scripts/features/signup/signup.module.js"></script>
+        <script src="scripts/layouts/footer/footer.module.js"></script>
+        <script src="scripts/layouts/header/header.module.js"></script>
+        <script src="scripts/layouts/sidebar/sidebar.module.js"></script>
         <script src="scripts/features/login/login.component.js"></script>
         <script src="scripts/features/login/login.controller.js"></script>
         <script src="scripts/features/login/login.service.js"></script>
+        <script src="scripts/features/signup/signup.component.js"></script>
+        <script src="scripts/features/signup/signup.controller.js"></script>
+        <script src="scripts/features/signup/signup.service.js"></script>
+        <script src="scripts/layouts/footer/footer.component.js"></script>
+        <script src="scripts/layouts/header/header.component.js"></script>
+        <script src="scripts/layouts/header/header.controller.js"></script>
+        <script src="scripts/layouts/sidebar/sidebar.component.js"></script>
         <script src="scripts/service/apiService.js"></script>
         <!-- endinjector -->
         <!-- endbuild -->

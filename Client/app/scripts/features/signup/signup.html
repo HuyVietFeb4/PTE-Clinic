@@ -1,0 +1,31 @@
+<form class="signupform container-fluid border mt-5 mb-3 d-flex flex-column align-items-center justify-content-center w-50" method="Post" ng-submit="signupCtrl.signup()">
+  <h1>Sign Up here!</h1>
+  <div class="mb-3 w-75">
+    <label for="usernameSignup" class="form-label">Username:</label>
+    <input type="text" name="usernameSignup" id="usernameSignup" ng-required="true" ng-model="signupCtrl.usernameSignup" class="form-control">
+  </div>
+  
+  <div class="mb-3 w-75">
+    <label for="emailSignup" class="form-label">Email:</label>
+    <input type="email" name="emailSignup" id="emailSignup" ng-required="true" ng-model="signupCtrl.emailSignup" class="form-control">
+  </div>
+  
+  <div class="mb-3 w-75">
+    <label for="passwordSignup" class="form-label">Password:</label>
+    <input type="password" name="passwordSignup" id="passwordSignup" ng-required="true" ng-model="signupCtrl.passwordSignup" class="form-control">
+  </div>
+
+  <div class="mb-3 w-75">
+    <label for="roleSignup" class="form-label">Role:</label>
+    <input type="text" name="roleSignup" id="roleSignup" ng-required="true" ng-model="signupCtrl.roleSignup" class="form-control">
+  </div>
+  
+  <button type="submit" class="btn btn-primary mb-3 w-25" >Confirm</button>
+  <a href="" class="link-primary link-offset-1 mb-3">Already have an account ? Login here!</a>
+</form>
+
+<div class="alert alert-success alert-dismissible mb-3" id="authAlert" ng-show="signupCtrl.showAlert"> 
+  <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+  <span id="authAction"></span> <strong id="authState"></strong>
+  <p id="alertMessage"></p>
+</div>
