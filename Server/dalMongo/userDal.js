@@ -8,7 +8,6 @@ const locationModel = require('../models/location.js').Model;
 const clinicModel = require('../models/clinic.js').Model;
 
 const clinicDal = require('./clinicDal.js');
-const clinic = require("../models/clinic.js");
 //create
 async function signup(Email, Username, Password, Role) {
     try {
@@ -55,7 +54,7 @@ async function findAdmins(adminEmail) { // Only use for admin
 async function findClientByEmail(clientEmail) {
     return await userModel.findOne({ email: clientEmail }).populate([
         {
-        path: clinicAttendedIDs,
+        path: clinicAttendedID,
         populate: {
             path: clinicLocationID
         }
@@ -86,13 +85,13 @@ async function getClients(pathsToFind, valuesToFind, pathToSort, sortDirection, 
             {
                 $lookup: {
                     from: 'clinic',
-                    localField: 'clinicAttendedIDs',
+                    localField: 'clinicAttendedID',
                     foreignField: '_id',
                     as: 'clinicAttended',
                 }
             }
         );
-        aggregateStage.push({ $unwind: '$clinicAttended' });
+        // aggregateStage.push({ $unwind: '$clinicAttended' }); client can only attend 1 clinic
     }
     if(pathsToFind.length > 0) {
         let filterObject = {};
@@ -197,7 +196,7 @@ async function updateClient(clientEmail, pathToUpdate, valueToUpdate) { // maybe
     let client = await findClientByEmail(clientEmail);
     if (pathToUpdate.length > 0 && valueToUpdate.length > 0) {
         for (let i in pathToUpdate) { 
-            if(['clinicAttendedIDs', 'lastFailedLogin', 'failedLoginAttemps', 'email'].includes(pathToUpdate[i]) ) {
+            if(['lastFailedLogin', 'failedLoginAttemps', 'email'].includes(pathToUpdate[i]) ) {
                 throw new Error(`Can not update this path ${pathToUpdate[i]} with this api call`);
             }
             else if (typeof(valueToUpdate[i]) === typeof(client[pathToUpdate[i]])) {
@@ -205,6 +204,13 @@ async function updateClient(clientEmail, pathToUpdate, valueToUpdate) { // maybe
             }
             else if (valueToUpdate[i].includes('{') && typeof(client[pathToUpdate[i]]) === 'object') {
                 client[pathToUpdate[i]] = JSON.parse(valueToUpdate[i]);
+            }
+            else if (pathToUpdate[i] === 'clinicAttendedID') {
+                let clinic = clinicDal.findClinicByName(valueToUpdate[i]);
+                if(!clinic) {
+                    throw new Error('Can not find clinic to update client\'s clinic attended');
+                }
+                client[pathToUpdate[i]] = clinic._id;
             }
             else {
                 throw new Error(`${pathToUpdate[i]} and ${valueToUpdate[i]} is not the same type`);
@@ -224,11 +230,11 @@ async function updateClientClinicAttended(clientEmail, clinicNameToAdd, clinicNa
         let clinic = await clinicDal.findClinicByName(clinicNameToAdd[i]);
         if(!clinic) {
             throw new Error(`There is no such clinic with the name: ${clinicNameToAdd[i]}`);
-        } else if(client.clinicAttendedIDs.includes(clinic._id)) {
+        } else if(client.clinicAttendedID.includes(clinic._id)) {
             throw new Error(`This clinic has already been added: ${clinic.clinicName}`);
         }
         else {
-            client.clinicAttendedIDs.push(clinic._id);
+            client.clinicAttendedID.push(clinic._id);
         }
     }
     for (let i in clinicNameToRemove) {
@@ -237,9 +243,9 @@ async function updateClientClinicAttended(clientEmail, clinicNameToAdd, clinicNa
             throw new Error(`There is no such clinic with the name: ${clinicNameToAdd[i]}`);
         }
         else {
-            const index = client.clinicAttendedIDs.indexOf(clinic._id);
+            const index = client.clinicAttendedID.indexOf(clinic._id);
             if (index > -1) {
-                client.clinicAttendedIDs.splice(index, 1); 
+                client.clinicAttendedID.splice(index, 1); 
             }
             else {
                 throw new Error(`This clinic does not in client attended list to be removed: ${clinic.clinicName}`);

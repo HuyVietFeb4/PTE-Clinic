@@ -4,7 +4,7 @@ var userModel = require('./user').Model
 
 
 var clientSchema  = new mongoose.Schema({ 
-    clinicAttendedIDs: [{ type: Schema.Types.ObjectId, ref: 'clinic' }],
+    clinicAttendedID: { type: Schema.Types.ObjectId, ref: 'clinic' },
     clientLocationID: { type: Schema.Types.ObjectId, ref: 'location' }
 }, { collection : 'client' });
 
