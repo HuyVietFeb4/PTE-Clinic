@@ -9,7 +9,6 @@
 angular.module('login', [
     'ngRoute',
     'apiService',
-    'clinicFilter'
 ]).config(function ($routeProvider) {
     $routeProvider
       .when('/clientLogin', {
@@ -19,7 +18,7 @@ angular.module('login', [
         template: '<admin-login></admin-login>'
       })
       .when('/chooseClinic', {
-        template: '<clinic-filter></clinic-filter><choose-clinic></choose-clinic>'
+        template: '<choose-clinic></choose-clinic>'
       })
       .otherwise({
         redirectTo: '/clientLogin'

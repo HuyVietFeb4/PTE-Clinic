@@ -26,7 +26,7 @@
     <div ng-view="" class="mainView">
     </div>
 
-    <footer-app></footer-app>
+    <div ng-include="'scripts/layouts/footer/footer.html'"></div>
 
     <!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
      <!-- <script>
@@ -59,23 +59,18 @@
         <!-- injector:js -->
         <script src="scripts/app.js"></script>
         <script src="scripts/features/clientFilter/clientFilter.module.js"></script>
-        <script src="scripts/features/clinicFilter/clinicFilter.module.js"></script>
         <script src="scripts/features/login/login.module.js"></script>
         <script src="scripts/features/signup/signup.module.js"></script>
-        <script src="scripts/layouts/footer/footer.module.js"></script>
         <script src="scripts/layouts/header/header.module.js"></script>
         <script src="scripts/service/apiService.module.js"></script>
         <script src="scripts/features/clientFilter/clientFilter.component.js"></script>
         <script src="scripts/features/clientFilter/clientFilter.controller.js"></script>
-        <script src="scripts/features/clinicFilter/clinicFilter.component.js"></script>
-        <script src="scripts/features/clinicFilter/clinicFilter.controller.js"></script>
         <script src="scripts/features/login/login.component.js"></script>
         <script src="scripts/features/login/login.controller.js"></script>
         <script src="scripts/features/login/login.service.js"></script>
         <script src="scripts/features/signup/signup.component.js"></script>
         <script src="scripts/features/signup/signup.controller.js"></script>
         <script src="scripts/features/signup/signup.service.js"></script>
-        <script src="scripts/layouts/footer/footer.component.js"></script>
         <script src="scripts/layouts/header/header.component.js"></script>
         <script src="scripts/layouts/header/header.controller.js"></script>
         <!-- endinjector -->

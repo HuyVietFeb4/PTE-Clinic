@@ -21,12 +21,13 @@ angular
     'apiService',
     'login',
     'signup',
-    'footerApp',
-    'headerApp',
-    'clinicFilter'
-  ])
+    'headerApp'
+])
   .config(function ($routeProvider) {
     $routeProvider
+      // .when('/', {
+      //   templateUrl : 'index.html',
+      // })
       .when('/login', {
         template: '<login></login>'
       })
