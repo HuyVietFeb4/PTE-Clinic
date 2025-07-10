@@ -21,7 +21,9 @@ angular
     'apiService',
     'login',
     'signup',
-    'footerApp'
+    'footerApp',
+    'headerApp',
+    'clinicFilter'
   ])
   .config(function ($routeProvider) {
     $routeProvider
