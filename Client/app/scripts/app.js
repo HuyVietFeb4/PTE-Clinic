@@ -21,6 +21,7 @@ angular
     'apiService',
     'login',
     'signup',
+    'client',
     'headerApp'
 ])
   .config(function ($routeProvider) {
@@ -33,6 +34,9 @@ angular
       })
       .when('/signup', {
         template: '<signup></signup>'
+      })
+      .when('/client', {
+        template: '<client></client>'
       })
       .otherwise({
         redirectTo: '/login'

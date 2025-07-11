@@ -1,0 +1,67 @@
+<div class="container-fluid mb-3 start-50">
+    <div class="row">
+        <div class="col-11">
+            <div class="input-group">
+                <select class="btn btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-label="multiple select for clinic search" id="pathToSearch" name="pathToSearch">
+                    <option selected class="dropdown-item">Name</option>
+                    <option class="dropdown-item">Email</option>
+                    <option class="dropdown-item">Status</option>
+                    <option class="dropdown-item">Clinic</option>
+                    <option class="dropdown-item">City</option>
+                    <option class="dropdown-item">State</option>
+                    <option class="dropdown-item">Country</option>
+                </select>
+
+                <input type="text" class="form-control" aria-label="Text input with 2 dropdown buttons" id="searchValue" name="searchValue">
+                <button type="submit" class="btn btn-outline-secondary">
+                    <img src="images/bootstrap-icon/search.svg" alt="search image">
+                </button>
+            </div>
+        </div>
+        <div class="col-1">
+            <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#filterClient">
+                <img src="images/bootstrap-icon/filter.svg" alt="">
+            </button>
+        </div>
+    </div>
+</div>
+
+
+<form class="modal fade" id="filterClient" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="staticBackdropLabel">Client filter</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <label for="filterUsername" class="form-label">Username</label>
+        <input type="text" id="filterUsername" class="form-control mb-3" aria-describedby="usernameHelpBlock">
+
+        <label for="filterEmail" class="form-label">Email</label>
+        <input type="email" id="filterEmail" class="form-control mb-3">
+
+        <label for="filterStatus" class="form-label">Status</label>
+        <input type="text" id="filterStatus" class="form-control mb-3"> 
+
+        <label for="filterClinic" class="form-label">Clinic</label>
+        <input type="text" id="filterClinic" class="form-control mb-3">
+        
+
+        <label for="filterCity" class="form-label">City</label>
+        <input type="text" id="filterCity" class="form-control mb-3">
+
+        <label for="filterState" class="form-label">State</label>
+        <input type="text" id="filterState" class="form-control mb-3">
+
+        <label for="filterCountry" class="form-label">Country</label>
+        <input type="text" id="filterCountry" class="form-control mb-3" >
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-primary">Confirm</button>
+      </div>
+    </div>
+  </div>
+</form>
