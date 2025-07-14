@@ -1,0 +1,155 @@
+<div class="container-fluid mb-5">
+    <div class="row g-2">
+        <div class="col-4">
+            <div class="card w-100">
+                <img src="images/clinics/default-clinics.jpg" class="card-img-top" alt="Clinic picture">
+                <div class="card-body d-flex flex-column justify-content-center">
+                    <h3 class="card-title text-center">Clinic Name</h3>
+                    <button type="button" class="btn btn-danger mb-3" data-bs-toggle="modal" data-bs-target="#editClinic">
+                        Edit clinic
+                    </button>
+                    <a type="button" class="btn btn-danger" href="#">
+                        Clinic's client
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="col-8 border rounded">
+            <h3 class="text-center mb-3">Clinic's info</h3>
+            <div class="row mb-3">
+                <div class="col-4">
+                    Clinic name
+                </div>
+                <div class="col-8">
+                    Clinic_1
+                </div>
+            </div>
+            <hr>
+
+            <div class="row mb-3">
+                <div class="col-4">
+                    Location name
+                </div>
+                <div class="col-8">
+                    Sumting tower
+                </div>
+            </div>
+            <hr>
+
+            <div class="row mb-3">
+                <div class="col-4">
+                    Number
+                </div>
+                <div class="col-8">
+                    36
+                </div>
+            </div>
+            <hr>
+
+            <div class="row mb-3">
+                <div class="col-4">
+                    Street
+                </div>
+                <div class="col-8">
+                    Tran Duy Hung
+                </div>
+            </div>
+            <hr>
+
+            <div class="row mb-3">
+                <div class="col-4">
+                    Ward
+                </div>
+                <div class="col-8">
+                    
+                </div>
+            </div>
+            <hr>
+
+            <div class="row mb-3">
+                <div class="col-4">
+                    District
+                </div>
+                <div class="col-8">
+                    69
+                </div>
+            </div>
+            <hr>
+
+            <div class="row mb-3">
+                <div class="col-4">
+                    City
+                </div>
+                <div class="col-8">
+                    Dondocker
+                </div>
+            </div>
+            <hr>
+
+            <div class="row mb-3">
+                <div class="col-4">
+                    State
+                </div>
+                <div class="col-8">
+                    Ohio
+                </div>
+            </div>
+            <hr>
+
+            <div class="row mb-3">
+                <div class="col-4">
+                    Country
+                </div>
+                <div class="col-8">
+                    USA
+                </div>
+            </div>
+            <hr>
+        </div>
+    </div>
+</div>
+
+
+<form class="modal fade" id="editClinic" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="staticBackdropLabel">Edit Client's Profile</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <label for="editClinicName" class="form-label">Clinic name</label>
+        <input type="text" id="editClinicName" class="form-control mb-3">
+
+        <label for="editLocationName" class="form-label">Location name</label>
+        <input type="text" id="editLocationName" class="form-control mb-3">
+
+        <label for="editNumber" class="form-label">Number</label>
+        <input type="number" id="editNumber" class="form-control mb-3">
+
+        <label for="editStreet" class="form-label">Street</label>
+        <input type="text" id="editStreet" class="form-control mb-3">
+
+        <label for="editWard" class="form-label">Ward</label>
+        <input type="text" id="editClinicName" class="form-control mb-3">
+
+        <label for="editDistrict" class="form-label">District</label>
+        <input type="text" id="editDistrict" class="form-control mb-3">
+
+        <label for="editCity" class="form-label">City</label>
+        <input type="text" id="editCity" class="form-control mb-3">
+
+        <label for="editState" class="form-label">State</label>
+        <input type="text" id="editState" class="form-control mb-3">
+
+        <label for="editCountry" class="form-label">Country</label>
+        <input type="text" id="editCountry" class="form-control mb-3">
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-primary">Confirm</button>
+      </div>
+    </div>
+  </div>
+</form>

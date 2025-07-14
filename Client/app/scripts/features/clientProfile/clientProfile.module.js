@@ -2,9 +2,9 @@
 
 /**
  * @ngdoc overview
- * @name client
+ * @name clientProfile
  * @description
- * Client module of the application.
+ * clientProfile module of the application. Show info for 1 client
  */
 angular.module('clientProfile', [
     'ngRoute',

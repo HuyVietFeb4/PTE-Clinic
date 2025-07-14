@@ -23,7 +23,8 @@ angular
     'signup',
     'client',
     'headerApp',
-    'clientProfile'
+    'clientProfile',
+    'clinicProfile'
 ])
   .config(function ($routeProvider) {
     $routeProvider
@@ -41,6 +42,9 @@ angular
       })
       .when('/clientProfile', {
         template: '<client-profile></client-profile>'
+      })
+      .when('/clinicProfile', {
+        template: '<clinic-profile></clinic-profile>'
       })
       .otherwise({
         redirectTo: '/login'
