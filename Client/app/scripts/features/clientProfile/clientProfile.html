@@ -5,7 +5,9 @@
                 <img src="images/default/default-pfp.png" class="card-img-top" alt="Client profile picture">
                 <div class="card-body d-flex flex-column justify-content-center">
                     <h3 class="card-title text-center">Client Name</h3>
-                    <a href="#" class="btn btn-danger align-item-center">Edit client</a>
+                    <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#editClient">
+                        Edit client
+                    </button>
                 </div>
             </div>
         </div>
@@ -73,3 +75,39 @@
         </div>
     </div>
 </div>
+
+
+<form class="modal fade" id="editClient" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="staticBackdropLabel">Edit Client's Profile</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <label for="editUsername" class="form-label">Username</label>
+        <input type3="text" id="editUsername" class="form-control mb-3" aria-describedby="usernameHelpBlock">
+
+        <label for="editEmail" class="form-label">Email</label>
+        <input type="email" id="editEmail" class="form-control mb-3">
+
+        <label for="editStatus" class="form-label">Status</label>
+        <select class="form-select mb-3" aria-label="Select status options" id="editStatus">
+            <option selected>Select client status</option>
+            <option value="deactivated">Deactivated</option>
+            <option value="lock">Lock</option>
+            <option value="activated">Activated</option>
+            <option value="registered">Registered</option>
+        </select>
+
+        <label for="editClinic" class="form-label">Clinic</label>
+        <input type="text" id="editClinic" class="form-control mb-3">
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-primary">Confirm</button>
+      </div>
+    </div>
+  </div>
+</form>

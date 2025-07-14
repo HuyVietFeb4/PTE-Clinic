@@ -42,7 +42,13 @@
         <input type="email" id="filterEmail" class="form-control mb-3">
 
         <label for="filterStatus" class="form-label">Status</label>
-        <input type="text" id="filterStatus" class="form-control mb-3"> 
+        <select class="form-select mb-3" aria-label="Select status options" id="filterStatus">
+            <option selected>Select client status</option>
+            <option value="deactivated">Deactivated</option>
+            <option value="lock">Lock</option>
+            <option value="activated">Activated</option>
+            <option value="registered">Registered</option>
+        </select>
 
         <label for="filterClinic" class="form-label">Clinic</label>
         <input type="text" id="filterClinic" class="form-control mb-3">
