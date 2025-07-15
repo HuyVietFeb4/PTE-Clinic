@@ -24,7 +24,8 @@ angular
     'client',
     'headerApp',
     'clientProfile',
-    'clinicProfile'
+    'clinicProfile',
+    'adminDashboard'
 ])
   .config(function ($routeProvider) {
     $routeProvider
@@ -45,6 +46,9 @@ angular
       })
       .when('/clinicProfile', {
         template: '<clinic-profile></clinic-profile>'
+      })
+      .when('/adminDashboard', {
+        template: '<admin-dashboard></admin-dashboard>'
       })
       .otherwise({
         redirectTo: '/login'

@@ -21,6 +21,7 @@ module.exports = function(config) {
     files: [
       // bower:js
       'bower_components/jquery/dist/jquery.js',
+      'bower_components/plotly/plotly.js',
       'bower_components/angular/angular.js',
       'bower_components/bootstrap/dist/js/bootstrap.bundle.min.js',
       'bower_components/angular-animate/angular-animate.js',

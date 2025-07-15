@@ -2,6 +2,7 @@
   "name": "angular-js",
   "version": "0.0.0",
   "dependencies": {
+    "plotly": "*",
     "jquery": "*",
     "angular": "*",
     "bootstrap": "*",
