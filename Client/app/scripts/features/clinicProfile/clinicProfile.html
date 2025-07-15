@@ -3,13 +3,16 @@
         <div class="col-4">
             <div class="card w-100">
                 <img src="images/clinics/default-clinics.jpg" class="card-img-top" alt="Clinic picture">
-                <div class="card-body vstack gap-1">
+                <div class="card-body vstack gap-2">
                     <h3 class="card-title text-center">Clinic Name</h3>
-                    <button type="button" class="btn btn-danger mb-3" data-bs-toggle="modal" data-bs-target="#editClinic">
+                    <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#editClinic">
                         Edit clinic
                     </button>
-                    <a type="button" class="btn btn-danger" href="#">
-                        Clinic's client
+                    <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#editClinicClientList">
+                        Edit clinic's client list
+                    </button>
+                    <a role="button" class="btn btn-primary" href="#">
+                        Clinic's client list
                     </a>
                 </div>
             </div>
@@ -153,3 +156,89 @@
     </div>
   </div>
 </form>
+
+<div class="modal fade" id="editClinicClientList" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="staticBackdropLabel">Edit clinic's client list</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+            <div class="col">
+                <div class="input-group">
+                    <input type="text" class="form-control" aria-label="Text input to search" id="searchEmail" name="searchEmail">
+                    <button type="submit" class="btn btn-outline-secondary">
+                        <img src="images/bootstrap-icon/search.svg" alt="search image">
+                    </button>
+                </div>
+                <!-- <div class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+                    <div class="toast-header">
+                        <img src="images/default/default-pfp.png" class="rounded me-2" alt="User's profile picture">
+                        <strong class="me-auto">Bootstrap</strong>
+                        <small class="text-body-secondary">11 mins ago</small>
+                        <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                    </div>
+                    <div class="toast-body">
+                        Hello, world! This is a toast message.
+                    </div>
+                </div>
+                <div class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+                    <div class="toast-header">
+                        <img src="images/default/default-pfp.png" class="rounded me-2" alt="User's profile picture">
+                        <strong class="me-auto">Bootstrap</strong>
+                        <small class="text-body-secondary">11 mins ago</small>
+                        <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                    </div>
+                    <div class="toast-body">
+                        Hello, world! This is a toast message.
+                    </div>
+                </div> -->
+                <div class="toast align-items-center show" role="alert" aria-live="assertive" aria-atomic="true">
+                    <div class="d-flex">
+                        <div class="toast-body">
+                        Hello, world! This is a toast message.
+                        </div>
+                        <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                    </div>
+                </div>
+
+                <div class="toast align-items-center show" role="alert" aria-live="assertive" aria-atomic="true">
+                    <div class="d-flex">
+                        <div class="toast-body">
+                        Hello, world! This is a toast message.
+                        </div>
+                        <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="toast align-items-center" role="alert" aria-live="assertive" aria-atomic="true">
+                    <div class="d-flex">
+                        <div class="toast-body">
+                        Hello, world! This is a toast message.
+                        </div>
+                        <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                    </div>
+                </div>
+
+                <div class="toast align-items-center" role="alert" aria-live="assertive" aria-atomic="true">
+                    <div class="d-flex">
+                        <div class="toast-body">
+                        Hello, world! This is a toast message.
+                        </div>
+                        <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-primary">Confirm</button>
+      </div>
+    </div>
+  </div>
+</div>
