@@ -28,10 +28,13 @@ module.exports = class userInitializer extends Initializer {
             return await userActionLogic.getClient(clientEmail);
         }
 
-        api.user.getAdmin = async function (adminEmail) {
-            return await userActionLogic.getAdmin(adminEmail);
+        api.user.getAdmins = async function (adminEmail) {
+            return await userActionLogic.getAdmins(adminEmail);
         }
 
+        api.user.getAdmin = async function (adminEmail, clinicName) {
+            return await userActionLogic.getAdmin(adminEmail, clinicName);
+        }
         api.user.getClients = async function(pathsToFind, valuesToFind, pathToSort, sortDirection, getLocation, getClinicAttend) {
             // pathsToFind: a list, what path to find for the client
             // valuesToFind: a list, values that system based on to find client
@@ -67,6 +70,16 @@ module.exports = class userInitializer extends Initializer {
                 throw new Error('At least 1 of the 2 clinicNameToAdd and clinicNameToRemove have values');
             }
             return await userActionLogic.updateClientClinicAttended(clientEmail, clinicNameToAdd, clinicNameToRemove);
+        }
+        
+        api.user.updateAdmin = async function (adminEmail, clinicName, pathToUpdate, valueToUpdate) {
+            if (pathToUpdate.length === 0 && valueToUpdate.length === 0) {
+                throw new Error('Must have at least 1 path and 1 value to update');
+            }
+            if(pathToUpdate.length != valueToUpdate.length) {
+                throw new Error('pathToUpdate and valueToUpdate must be the same length')
+            }
+            return await userActionLogic.updateAdmin(adminEmail, clinicName, pathToUpdate, valueToUpdate);
         }
 	}
 }

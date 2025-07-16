@@ -1,4 +1,5 @@
 const userDal = require("../dalMongo/userDal");
+
 const crypto = require("crypto");
 
 async function clientLogin(email, password) {
@@ -71,12 +72,20 @@ async function getClient(clientEmail) {
     return {success: true, message: "Retrieve client successfully", data: client}
 }
 
-async function getAdmin(adminEmail) {
-    const client = await userDal.findAdmins(adminEmail);
-    if(!client) {
-        return {success: false, message: "No client found"}
+async function getAdmins(adminEmail) {
+    const admins = await userDal.findAdmins(adminEmail);
+    if(!admins) {
+        return {success: false, message: "No admins found"}
     }
-    return {success: true, message: "Retrieve client successfully", data: client}
+    return {success: true, message: "Retrieve admins successfully", data: admins}
+}
+
+async function getAdmin(adminEmail, clinicName) {
+    const admin = await userDal.findAdminWithClinicName(adminEmail, clinicName);
+    if(!admin) {
+        return {success: false, message: "No admin found"}
+    }
+    return {success: true, message: "Retrieve admin successfully", data: admin}
 }
 
 
@@ -111,15 +120,29 @@ async function updateClientClinicAttended(clientEmail, clinicNameToAdd, clinicNa
     }
     return result;
 }
+
+async function updateAdmin(adminEmail, clinicName, pathToUpdate, valueToUpdate) {
+    const admin = await userDal.findAdminWithClinicName(adminEmail, clinicName);
+    if(!admin) {
+        return {success: false, message: "No admin found"}
+    }
+    const result = await userDal.updateAdmin(adminEmail, clinicName, pathToUpdate, valueToUpdate);
+    if (!result.success) {
+        throw new Error(result.message);
+    }
+    return result;
+}
 module.exports = {
     clientLogin: clientLogin,
     adminLogin: adminLogin,
     signup: signup,
     
     getClient: getClient,
+    getAdmins: getAdmins,
     getAdmin: getAdmin,
     getClients: getClients,
 
     updateClient: updateClient,
+    updateAdmin: updateAdmin,
     updateClientClinicAttended: updateClientClinicAttended
 };

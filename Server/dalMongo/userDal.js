@@ -51,6 +51,18 @@ async function findAdmins(adminEmail) { // Only use for admin
     }); 
 }
 
+async function findAdminWithClinicName(adminEmail, ClinicName) {
+    const clinic = await clinicModel.findOne({ clinicName: ClinicName });
+    if(!clinic) {
+        throw new error(`Can not find clinic with clinic name: ${ClinicName}`)
+    }
+    const admin = await userModel.findOne({ email: adminEmail, clinicAdministeredID: clinic._id });
+    if(!admin) {
+        throw new error(`Can not find admin with email: ${adminEmail} and clinic name: ${ClinicName}`)
+    }
+    return admin;
+}
+
 async function findClientByEmail(clientEmail) {
     return await userModel.findOne({ email: clientEmail }).populate([
         {
@@ -192,7 +204,7 @@ async function updateUserFailedLoginAttempByObject(userObject, successLogin) {
     }
 }
 
-async function updateClient(clientEmail, pathToUpdate, valueToUpdate) { // maybe limit to not use for update clinic attended
+async function updateClient(clientEmail, pathToUpdate, valueToUpdate) {
     let client = await findClientByEmail(clientEmail);
     if (pathToUpdate.length > 0 && valueToUpdate.length > 0) {
         for (let i in pathToUpdate) { 
@@ -255,6 +267,39 @@ async function updateClientClinicAttended(clientEmail, clinicNameToAdd, clinicNa
     await client.save();
     return {success: true, message: 'Successfully update client\'s clinic attended list '};
 }
+
+async function updateAdmin(adminEmail, clinicName, pathToUpdate, valueToUpdate) {
+    let admin = await findAdminWithClinicName(adminEmail, clinicName);
+
+    if (pathToUpdate.length > 0 && valueToUpdate.length > 0) {
+        for (let i in pathToUpdate) { 
+            if(['lastFailedLogin', 'failedLoginAttemps', 'email'].includes(pathToUpdate[i]) ) {
+                throw new Error(`Can not update this path ${pathToUpdate[i]} with this api call`);
+            }
+            else if (typeof(valueToUpdate[i]) === typeof(admin[pathToUpdate[i]])) {
+                admin[pathToUpdate[i]] = valueToUpdate[i];
+            }
+            else if (valueToUpdate[i].includes('{') && typeof(admin[pathToUpdate[i]]) === 'object') {
+                admin[pathToUpdate[i]] = JSON.parse(valueToUpdate[i]);
+            }
+            else if (pathToUpdate[i] === 'clinicAdministeredID') {
+                let clinic = clinicDal.findClinicByName(valueToUpdate[i]);
+                if(!clinic) {
+                    throw new Error('Can not find clinic to update admin\'s clinic administered');
+                }
+                admin[pathToUpdate[i]] = clinic._id;
+            }
+            else {
+                throw new Error(`${pathToUpdate[i]} and ${valueToUpdate[i]} is not the same type`);
+            }   
+        }
+    }
+    else {
+        throw new Error("Invalid length");
+    }
+    await admin.save();
+    return {success: true, message: 'Successfully update client'};
+}
 //delete
 
 module.exports = {
@@ -263,9 +308,11 @@ module.exports = {
     findUserByUsername: findUserByUsername, 
     findUserByEmail: findUserByEmail,
     findAdmins: findAdmins,
+    findAdminWithClinicName: findAdminWithClinicName,
     findClientByEmail: findClientByEmail,
     getClients: getClients,
 
+    updateAdmin: updateAdmin,
     updateUserFailedLoginAttempByEmail: updateUserFailedLoginAttempByEmail,
     updateUserFailedLoginAttempByObject: updateUserFailedLoginAttempByObject,
     updateClient: updateClient,

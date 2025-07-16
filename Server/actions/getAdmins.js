@@ -1,28 +1,23 @@
 'use strict'
 const { api, Action, action } = require('actionhero');
 
-module.exports = class getAdminAction extends Action {
+module.exports = class getAdminsAction extends Action {
     constructor() {
         super();
-        this.name = 'getAdmin';
-        this.description = 'Get admin action';
+        this.name = 'getAdmins';
+        this.description = 'Get admins action';
         this.inputs = {
             email: {
                 type: String,
-                required: true,
+                default: () => { return ''; },
                 validator: this.emailValidator,
-            },
-            clinicName: {
-                type: String,
-                required: true,
-                validator: this.stringValidator
             }
         }
     }
 
     async executeFunction(data) {
         try {
-            const result = await api.user.getAdmin(data.params.email);
+            const result = await api.user.getAdmins(data.params.email);
             return { data: result }; 
         } catch (error) {
             return { err: error };
@@ -42,16 +37,11 @@ module.exports = class getAdminAction extends Action {
     }
 
     emailValidator(Email) {
-        const emailRegex = /^[-!#$%&'*+\/0-9=?A-Z^_a-z{|}~](\.?[-!#$%&'*+\/0-9=?A-Z^_a-z`{|}~])*@[a-zA-Z0-9](-*\.?[a-zA-Z0-9])*\.[a-zA-Z](-?[a-zA-Z0-9])+$/;
-        if (!emailRegex.test(Email)) {
-            throw new Error('Invalid email format');
-        }
-    }
-    
-    stringValidator(string) {
-        const stringRegex = /^[_a-zA-Z0-9]+$/;
-        if(!stringRegex.test(string)) {
-            throw new Error(`Invalid string: ${string}`)
+        if (Email !== '') {
+            const emailRegex = /^[-!#$%&'*+\/0-9=?A-Z^_a-z{|}~](\.?[-!#$%&'*+\/0-9=?A-Z^_a-z`{|}~])*@[a-zA-Z0-9](-*\.?[a-zA-Z0-9])*\.[a-zA-Z](-?[a-zA-Z0-9])+$/;
+            if (!emailRegex.test(Email)) {
+                throw new Error('Invalid email format');
+            }
         }
     }
 }
