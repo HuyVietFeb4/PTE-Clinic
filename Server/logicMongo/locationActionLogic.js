@@ -14,7 +14,14 @@ async function addLocation(locationName, number, street, ward, district, city, c
 }
 
 
-
+async function getLocations(pathToFind, valuesToFind, pathToSort, sortDirection) {
+    const result = await locationDal.getLocations(pathToFind, valuesToFind, pathToSort, sortDirection);
+    if (!result.success) {
+        throw new Error(result.message);
+    }
+    return result;
+}
 module.exports = {
-    addLocation: addLocation
+    addLocation: addLocation,
+    getLocations: getLocations
 };

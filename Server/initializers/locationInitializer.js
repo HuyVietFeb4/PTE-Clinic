@@ -13,5 +13,20 @@ module.exports = class locationInitializer extends Initializer {
             return await locationActionLogic.addLocation(locationName, number, street, ward, district, city, state, country);
         };
 
+        api.location.getLocations = async function (pathToFind, valuesToFind, pathToSort, sortDirection) {
+            // pathToFind: a list, what path to find for the client
+            // valuesToFind: a list, values that system based on to find client
+            // pathToFind and valuesToFind must be the same length
+            if (pathToFind.length !== valuesToFind.length) {
+                throw new Error('pathToFind and valuesToFind must be the same length');
+            }
+
+            // pathToSort: a list, name of the path that the system will base on and sort the result
+            // sortDirection: a list, value are 1 or -1
+            if (pathToSort.length !== sortDirection.length) {
+                throw new Error('pathToSort and sortDirection must be the same length');
+            }
+            return await locationActionLogic.getLocations(pathToFind, valuesToFind, pathToSort, sortDirection);
+        }
     }
 }

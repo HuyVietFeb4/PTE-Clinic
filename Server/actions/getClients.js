@@ -7,7 +7,7 @@ module.exports = class getClientsAction extends Action {
         this.name = 'getClients';
         this.description = 'Get clients with filter and sort option action';
         this.inputs = {
-            pathsToFind: {
+            pathToFind: {
                 type: [String],
                 default: [],
                 validator: this.pathListValidator
@@ -40,7 +40,7 @@ module.exports = class getClientsAction extends Action {
 
     async executeFunction(data) {
         try {
-            const result = await api.user.getClients(data.params.pathsToFind, data.params.valuesToFind, data.params.pathToSort, data.params.sortDirection, data.params.getLocation, data.params.getClinicAttend)
+            const result = await api.user.getClients(data.params.pathToFind, data.params.valuesToFind, data.params.pathToSort, data.params.sortDirection, data.params.getLocation, data.params.getClinicAttend)
             return { data: result };
         } catch (error) {
             return { err: error };

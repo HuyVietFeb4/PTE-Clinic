@@ -77,7 +77,7 @@ async function findClientByEmail(clientEmail) {
     ])
 }
 
-async function getClients(pathsToFind, valuesToFind, pathToSort, sortDirection, getLocation, getClinicAttend) {
+async function getClients(pathToFind, valuesToFind, pathToSort, sortDirection, getLocation, getClinicAttend) {
     let aggregateStage = [];
     if (getLocation) {
         aggregateStage.push(
@@ -105,18 +105,18 @@ async function getClients(pathsToFind, valuesToFind, pathToSort, sortDirection, 
         );
         // aggregateStage.push({ $unwind: '$clinicAttended' }); client can only attend 1 clinic
     }
-    if(pathsToFind.length > 0) {
+    if(pathToFind.length > 0) {
         let filterObject = {};
-        for (let i in pathsToFind) {
+        for (let i in pathToFind) {
             let fullPath;
-            if (userModel.schema.path(pathsToFind[i])) {
-                fullPath = pathsToFind[i];
-            } else if (locationModel.schema.path(pathsToFind[i])) {
-                fullPath = `clientLocation.${pathsToFind[i]}`;
-            } else if (clinicModel.schema.path(pathsToFind[i])) {
-                fullPath = `clinicAttended.${pathsToFind[i]}`;
+            if (userModel.schema.path(pathToFind[i])) {
+                fullPath = pathToFind[i];
+            } else if (locationModel.schema.path(pathToFind[i])) {
+                fullPath = `clientLocation.${pathToFind[i]}`;
+            } else if (clinicModel.schema.path(pathToFind[i])) {
+                fullPath = `clinicAttended.${pathToFind[i]}`;
             } else {
-                return { success: false, message: `Error at userDal.js, no such path as ${pathsToFind[i]}` };
+                return { success: false, message: `Error at userDal.js, no such path as ${pathToFind[i]}` };
             }
             filterObject[fullPath] = valuesToFind[i];
         }

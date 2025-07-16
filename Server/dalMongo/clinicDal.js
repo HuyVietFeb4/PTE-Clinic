@@ -35,7 +35,7 @@ async function findClinicByNameWithFullInfo(name) {
     ]);
 }
 
-async function getClinics(pathsToFind, valuesToFind, pathToSort, sortDirection, getLocation, getClientAttendees) {
+async function getClinics(pathToFind, valuesToFind, pathToSort, sortDirection, getLocation, getClientAttendees) {
     let aggregateStage = [];
     if (getLocation) {
         aggregateStage.push(
@@ -63,18 +63,18 @@ async function getClinics(pathsToFind, valuesToFind, pathToSort, sortDirection, 
         );
         aggregateStage.push({ $unwind: '$clientAttendeds' });
     }
-    if(pathsToFind.length > 0) {
+    if(pathToFind.length > 0) {
         let filterObject = {};
-        for (let i in pathsToFind) {
+        for (let i in pathToFind) {
             let fullPath;
-            if (userModel.schema.path(pathsToFind[i])) {
-                fullPath = pathsToFind[i];
-            } else if (locationModel.schema.path(pathsToFind[i])) {
-                fullPath = `clinicLocation.${pathsToFind[i]}`;
-            } else if (clientModel.schema.path(pathsToFind[i])) {
-                fullPath = `clientAttendeds.${pathsToFind[i]}`;
+            if (clinicModel.schema.path(pathToFind[i])) {
+                fullPath = pathToFind[i];
+            } else if (locationModel.schema.path(pathToFind[i])) {
+                fullPath = `clinicLocation.${pathToFind[i]}`;
+            } else if (clientModel.schema.path(pathToFind[i])) {
+                fullPath = `clientAttendeds.${pathToFind[i]}`;
             } else {
-                return { success: false, message: `Error at clinicDal.js, no such path as ${pathsToFind[i]}` };
+                return { success: false, message: `Error at clinicDal.js, no such path as ${pathToFind[i]}` };
             }
             filterObject[fullPath] = valuesToFind[i];
         }
@@ -84,7 +84,7 @@ async function getClinics(pathsToFind, valuesToFind, pathToSort, sortDirection, 
         let sortObject = {};
         for (let i in pathToSort) {
             let fullPath;
-            if (userModel.schema.path(pathToSort[i])) {
+            if (clinicModel.schema.path(pathToSort[i])) {
                 fullPath = pathToSort[i];
             } else if (locationModel.schema.path(pathToSort[i])) {
                 fullPath = `clinicLocation.${pathToSort[i]}`;
@@ -98,8 +98,8 @@ async function getClinics(pathsToFind, valuesToFind, pathToSort, sortDirection, 
         aggregateStage.push({ $sort: sortObject });
     }
     try {
-        const clinics = await userModel.aggregate(aggregateStage);
-        return {success: true, message: 'Successfully retrieve client info', data: clinics};
+        const clinics = await clinicModel.aggregate(aggregateStage);
+        return {success: true, message: 'Successfully retrieve clinic info', data: clinics};
     } catch(error) {
         throw new Error(`Error at clinicDal.js, message: ${error.message}`);
     }

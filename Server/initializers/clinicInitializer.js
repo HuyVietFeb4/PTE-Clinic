@@ -13,12 +13,12 @@ module.exports = class clinicInitializer extends Initializer {
             return await clinicActionLogic.addClinic(clinicName, locationName);
         };
 
-        api.clinic.getClinics = async function(pathsToFind, valuesToFind, pathToSort, sortDirection, getLocation, getClientAttendees) {
-            // pathsToFind: a list, what path to find for the client
+        api.clinic.getClinics = async function(pathToFind, valuesToFind, pathToSort, sortDirection, getLocation, getClientAttendees) {
+            // pathToFind: a list, what path to find for the client
             // valuesToFind: a list, values that system based on to find client
-            // pathsToFind and valuesToFind must be the same length
-            if (pathsToFind.length !== valuesToFind.length) {
-                throw new Error('pathsToFind and valuesToFind must be the same length');
+            // pathToFind and valuesToFind must be the same length
+            if (pathToFind.length !== valuesToFind.length) {
+                throw new Error('pathToFind and valuesToFind must be the same length');
             }
 
             // pathToSort: a list, name of the path that the system will base on and sort the result
@@ -30,7 +30,7 @@ module.exports = class clinicInitializer extends Initializer {
                 throw new Error('at least one of getLocation and getClientAttendees must be true');
             }
             // Return: a list of clients with relevent clinics attended and location documents
-            return await clinicActionLogic.getClients(pathsToFind, valuesToFind, pathToSort, sortDirection, getLocation, getClientAttendees);
+            return await clinicActionLogic.getClinics(pathToFind, valuesToFind, pathToSort, sortDirection, getLocation, getClientAttendees);
         }
 
         api.clinic.updateClinic = async function(clinicName, pathToUpdate, valueToUpdate) {

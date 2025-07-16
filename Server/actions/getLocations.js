@@ -1,11 +1,11 @@
 'use strict'
 const { api, Action, action } = require('actionhero');
 
-module.exports = class getClinicsAction extends Action {
+module.exports = class getLocationssAction extends Action {
     constructor() {
         super();
-        this.name = 'getClinics';
-        this.description = 'Get clinics with filter and sort option action';
+        this.name = 'getLocations';
+        this.description = 'Get locations with filter and sort option action';
         this.inputs = {
             pathToFind: {
                 type: [String],
@@ -27,20 +27,12 @@ module.exports = class getClinicsAction extends Action {
                 default: [],
                 validator: this.sortDirectionValidator
             },
-            getLocation: {
-                type: Boolean,
-                default: true
-            },
-            getClientAttendees: {
-                type: Boolean,
-                default: true
-            }
         }
     }
 
     async executeFunction(data) {
         try {
-            const result = await api.clinic.getClinics(data.params.pathToFind, data.params.valuesToFind, data.params.pathToSort, data.params.sortDirection, data.params.getLocation, data.params.getClientAttendees)
+            const result = await api.location.getLocations(data.params.pathToFind, data.params.valuesToFind, data.params.pathToSort, data.params.sortDirection);
             return { data: result };
         } catch (error) {
             return { err: error };

@@ -89,8 +89,8 @@ async function getAdmin(adminEmail, clinicName) {
 }
 
 
-async function getClients(pathsToFind, valuesToFind, pathToSort, sortDirection, getLocation, getClinicAttend) {
-    const result = await userDal.getClients(pathsToFind, valuesToFind, pathToSort, sortDirection, getLocation, getClinicAttend);
+async function getClients(pathToFind, valuesToFind, pathToSort, sortDirection, getLocation, getClinicAttend) {
+    const result = await userDal.getClients(pathToFind, valuesToFind, pathToSort, sortDirection, getLocation, getClinicAttend);
     if (!result.success) {
         throw new Error(result.message);
     }
