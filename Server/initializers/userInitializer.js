@@ -85,5 +85,9 @@ module.exports = class userInitializer extends Initializer {
         api.user.deleteClient = async function (clientEmail) {
             return await userActionLogic.deleteClient(clientEmail);
         }
+
+        api.user.deleteAdmin = async function (adminEmail, clinicName) {
+            return await userActionLogic.deleteAdmin(adminEmail, clinicName);
+        }
 	}
 }

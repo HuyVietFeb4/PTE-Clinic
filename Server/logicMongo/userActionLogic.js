@@ -144,6 +144,18 @@ async function deleteClient(clientEmail) {
     }
     return { success: true, message: "Delete client successfully" };
 }
+
+async function deleteAdmin(adminEmail, clinicName) {
+    const admin = await userDal.findAdminWithClinicName(adminEmail, clinicName);
+    if(!admin) {
+        return {success: false, message: "No admin found"}
+    }
+    const result = await userDal.deleteAdminByEmailAndClinicName(adminEmail, clinicName);
+    if (!result.success) {
+        throw new Error(result.message);
+    }
+    return result;
+}
 module.exports = {
     clientLogin: clientLogin,
     adminLogin: adminLogin,
@@ -158,5 +170,6 @@ module.exports = {
     updateAdmin: updateAdmin,
     updateClientClinicAttended: updateClientClinicAttended,
 
-    deleteClient: deleteClient
+    deleteClient: deleteClient,
+    deleteAdmin: deleteAdmin
 };

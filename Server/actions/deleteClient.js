@@ -17,7 +17,7 @@ module.exports = class deleteClientAction extends Action {
 
     async executeFunction(data) {
         try {
-            const deleteLocationRes = await api.user.deleteClient(data.prams);
+            const deleteLocationRes = await api.user.deleteClient(data.params.clientEmail);
             return { data: deleteLocationRes };
         } catch (error) {
             return { err: error };

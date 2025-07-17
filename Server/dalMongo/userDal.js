@@ -320,6 +320,17 @@ async function deleteClientByEmail(clientEmail) {
         return { success: false, message: `Error at userDal.js, message: ${error.message}`};
     }
 }
+
+async function deleteAdminByEmailAndClinicName(adminEmail, ClinicName) {
+    try {
+        const clinic = await clinicModel.findOne({ clinicName: ClinicName });
+        await adminModel.deleteOne({ email: adminEmail, clinicAdministeredID: clinic._id });
+        return { success: true, message: 'Delete admin successfully'};
+    } catch(error) {
+        return { success: false, message: `Error at userDal.js, message: ${error.message}`};
+    }
+    
+}
 module.exports = {
     signup: signup,
 
@@ -336,5 +347,6 @@ module.exports = {
     updateClient: updateClient,
     updateClientClinicAttended: updateClientClinicAttended,
 
-    deleteClientByEmail: deleteClientByEmail
+    deleteClientByEmail: deleteClientByEmail,
+    deleteAdminByEmailAndClinicName: deleteAdminByEmailAndClinicName
 };
