@@ -54,7 +54,7 @@ module.exports = class updateAdminAction extends Action {
         const stringRegex = /^[_a-zA-Z0-9]+( [_a-zA-Z0-9]+)*$/;
         for (let string of stringList) {
             if(!stringRegex.test(string)) {
-                throw new Error(`Invalid path: ${string}`)
+                throw new Error(`Invalid string: ${string}`)
             }
         }
     }
@@ -68,7 +68,7 @@ module.exports = class updateAdminAction extends Action {
     }
 
     stringValidator(string) {
-        const stringRegex = /^[_a-zA-Z0-9]+$/;
+        const stringRegex = /^[_a-zA-Z0-9]+( [_a-zA-Z0-9]+)*$/;
         if(!stringRegex.test(string)) {
             throw new Error(`Invalid string: ${string}`)
         }

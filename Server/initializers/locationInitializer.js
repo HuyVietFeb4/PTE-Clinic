@@ -28,5 +28,15 @@ module.exports = class locationInitializer extends Initializer {
             }
             return await locationActionLogic.getLocations(pathToFind, valuesToFind, pathToSort, sortDirection);
         }
+
+        api.location.updateLocation = async function (locationName, pathToUpdate, valueToUpdate) {
+            if (pathToUpdate.length !== valueToUpdate.length) {
+                throw new Error('pathToUpdate and valueToUpdate must be the same length');
+            }
+            if (pathToUpdate.length === 0 || valueToUpdate.length === 0) {
+                throw new Error('Must have at least 1 path and value to update');
+            }
+            return await locationActionLogic.updateLocation(locationName, pathToUpdate, valueToUpdate);
+        }
     }
 }

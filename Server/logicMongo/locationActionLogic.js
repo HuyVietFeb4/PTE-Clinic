@@ -13,7 +13,6 @@ async function addLocation(locationName, number, street, ward, district, city, c
     return { success: true, message: "Add location successfully" };
 }
 
-
 async function getLocations(pathToFind, valuesToFind, pathToSort, sortDirection) {
     const result = await locationDal.getLocations(pathToFind, valuesToFind, pathToSort, sortDirection);
     if (!result.success) {
@@ -21,7 +20,20 @@ async function getLocations(pathToFind, valuesToFind, pathToSort, sortDirection)
     }
     return result;
 }
+
+async function updateLocation(locationName, pathToUpdate, valueToUpdate) {
+    const location = await locationDal.findLocationByName(locationName);
+    if(!location) {
+        return {success: false, message: "Can not find the location"};
+    }
+    const result = await locationDal.updateClient(locationName, pathToUpdate, valueToUpdate);
+    if (!result.success) {
+        throw new Error(result.message);
+    }
+    return result;
+}
 module.exports = {
     addLocation: addLocation,
-    getLocations: getLocations
+    getLocations: getLocations,
+    updateLocation: updateLocation
 };

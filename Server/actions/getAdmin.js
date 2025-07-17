@@ -49,7 +49,7 @@ module.exports = class getAdminAction extends Action {
     }
     
     stringValidator(string) {
-        const stringRegex = /^[_a-zA-Z0-9]+$/;
+        const stringRegex = /^[_a-zA-Z0-9]+( [_a-zA-Z0-9]+)*$/;
         if(!stringRegex.test(string)) {
             throw new Error(`Invalid string: ${string}`)
         }

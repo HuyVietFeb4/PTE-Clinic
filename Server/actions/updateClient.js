@@ -49,7 +49,7 @@ module.exports = class updateClientAction extends Action {
         const stringRegex = /^[_a-zA-Z0-9]+( [_a-zA-Z0-9]+)*$/;
         for (let string of stringList) {
             if(!stringRegex.test(string)) {
-                throw new Error(`Invalid path: ${string}`)
+                throw new Error(`Invalid string: ${string}`)
             }
         }
     }

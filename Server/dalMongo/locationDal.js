@@ -53,9 +53,32 @@ async function getLocations(pathToFind, valuesToFind, pathToSort, sortDirection)
         throw new Error(`Error at locationDal.js, message: ${error.message}`);
     }
 }  
+
+async function updateLocation(locationName, pathToUpdate, valueToUpdate) {
+    let location = await findLocationByName(locationName);
+    if (pathToUpdate.length > 0 && valueToUpdate.length > 0) {
+        for (let i in pathToUpdate) { 
+            if (typeof(valueToUpdate[i]) === typeof(location[pathToUpdate[i]])) {
+                location[pathToUpdate[i]] = valueToUpdate[i];
+            }
+            else if (valueToUpdate[i].includes('{') && typeof(location[pathToUpdate[i]]) === 'object') {
+                location[pathToUpdate[i]] = JSON.parse(valueToUpdate[i]);
+            }
+            else {
+                throw new Error(`${pathToUpdate[i]} and ${valueToUpdate[i]} is not the same type`);
+            }   
+        }
+    }
+    else {
+        throw new Error("Invalid length");
+    }
+    await location.save();
+    return {success: true, message: 'Successfully update location'};
+}
 module.exports = {
     addLocation: addLocation,
     findLocationByName: findLocationByName, 
     findLocationByCity: findLocationByCity,
-    getLocations: getLocations
+    getLocations: getLocations,
+    updateLocation: updateLocation
 }
