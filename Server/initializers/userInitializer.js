@@ -81,5 +81,9 @@ module.exports = class userInitializer extends Initializer {
             }
             return await userActionLogic.updateAdmin(adminEmail, clinicName, pathToUpdate, valueToUpdate);
         }
+
+        api.user.deleteClient = async function (clientEmail) {
+            return await userActionLogic.deleteClient(clientEmail);
+        }
 	}
 }

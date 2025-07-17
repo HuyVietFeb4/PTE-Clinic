@@ -21,7 +21,7 @@ async function signup(Email, Username, Password, Role) {
         await newUser.save();
         return { success: true, message: "User saved successfully" };
     } catch(error) {
-        return { success: false, message: "Error saving user", error };
+        return { success: false, message: `Error at userDal.js, message: ${error.message}` };
     }
 }
 
@@ -302,6 +302,24 @@ async function updateAdmin(adminEmail, clinicName, pathToUpdate, valueToUpdate) 
 }
 //delete
 
+async function deleteClientByEmail(clientEmail) {
+    try {
+        const client = await findUserByEmail(clientEmail);
+        const clientID = client._id;
+        const clientLocationID = client.clientLocationID;
+        const clinicAttendedID = client.clinicAttendedID;
+        const clinic = clinicModel.findById(clinicAttendedID);
+
+        await clientModel.findByIdAndDelete(clientID); 
+        await locationModel.findByIdAndDelete(clientLocationID);
+        clinic.clientAttendedIDs.pull(clientID);
+        await clinic.save();
+        return { success: true, message: 'Delete client successfully' };
+    }
+    catch(error) {
+        return { success: false, message: `Error at userDal.js, message: ${error.message}`};
+    }
+}
 module.exports = {
     signup: signup,
 
@@ -316,5 +334,7 @@ module.exports = {
     updateUserFailedLoginAttempByEmail: updateUserFailedLoginAttempByEmail,
     updateUserFailedLoginAttempByObject: updateUserFailedLoginAttempByObject,
     updateClient: updateClient,
-    updateClientClinicAttended: updateClientClinicAttended
+    updateClientClinicAttended: updateClientClinicAttended,
+
+    deleteClientByEmail: deleteClientByEmail
 };
