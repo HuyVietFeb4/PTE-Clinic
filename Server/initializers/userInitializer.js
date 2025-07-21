@@ -5,8 +5,6 @@ module.exports = class userInitializer extends Initializer {
     constructor() {
         super();
         this.name = 'user';
-        this.saltRounds = 10;
-        this.usersHash = 'user';
     }
 
     async initialize() {

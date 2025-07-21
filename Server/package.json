@@ -9,6 +9,7 @@
   "dependencies": {
     "actionhero": "19.0.1",
     "ioredis": "latest",
+    "jsonwebtoken": "^9.0.2",
     "mongoose": "^5.5.14",
     "ws": "latest"
   },

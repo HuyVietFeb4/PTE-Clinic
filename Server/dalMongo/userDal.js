@@ -1,5 +1,4 @@
 const { get } = require("mongoose");
-const { use } = require("react");
 
 const userModel = require("../models/user.js").Model;
 const clientModel = require('../models/client.js').Model;
@@ -168,7 +167,7 @@ async function updateUserFailedLoginAttempByEmail(email, successLogin) {
     } catch(error) {
         return {
             success: false,
-            message: `Error updating user: ${error.message || error.toString()}`
+            message: `Error updating user: ${error.message}`
         };
     }
 }
@@ -236,7 +235,7 @@ async function updateClient(clientEmail, pathToUpdate, valueToUpdate) {
     return {success: true, message: 'Successfully update client'};
 }
 
-async function updateClientClinicAttended(clientEmail, clinicNameToAdd, clinicNameToRemove) {
+async function updateClientClinicAttended(clientEmail, clinicNameToAdd, clinicNameToRemove) { // DONT USE THIS
     let client = await findUserByEmail(clientEmail);
     for (let i in clinicNameToAdd) {
         let clinic = await clinicDal.findClinicByName(clinicNameToAdd[i]);
