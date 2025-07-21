@@ -6,6 +6,7 @@ module.exports = class adminLoginAction extends Action {
         super();
         this.name = 'adminLogin';
         this.description = 'Admin login action';
+        this.middleware = ['authenticationMiddleware'];
         this.inputs = {
             email: {
                 type: String,

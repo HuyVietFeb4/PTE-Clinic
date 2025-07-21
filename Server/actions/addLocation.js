@@ -6,6 +6,7 @@ module.exports = class addLocationAction extends Action {
         super();
         this.name = 'addLocation';
         this.description = 'Add location action';
+        this.middleware = ['authorizationMiddleware'];
         this.inputs = {
             locationName: {
                 type: String,

@@ -6,6 +6,7 @@ module.exports = class getClinicsAction extends Action {
         super();
         this.name = 'getClinics';
         this.description = 'Get clinics with filter and sort option action';
+        this.middleware = ['authorizationMiddleware'];
         this.inputs = {
             pathToFind: {
                 type: [String],

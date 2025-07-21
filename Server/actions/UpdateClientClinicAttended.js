@@ -6,6 +6,7 @@ module.exports = class updateClientClinicAttended extends Action {
         super();
         this.name = 'updateClientClinicAttended';
         this.description = 'Update clients\'s clinic attend list action';
+        this.middleware = ['authorizationMiddleware'];
         this.inputs = {
             clientEmail: {
                 type: String,

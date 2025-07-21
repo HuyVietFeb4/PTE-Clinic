@@ -6,6 +6,7 @@ module.exports = class deleteAdminAction extends Action {
         super();
         this.name = 'deleteAdmin';
         this.description = 'Delete admin action';
+        this.middleware = ['authorizationMiddleware'];
         this.inputs = {
             adminEmail: {
                 type: String,

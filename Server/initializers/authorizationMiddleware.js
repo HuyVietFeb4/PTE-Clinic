@@ -10,7 +10,7 @@ module.exports = class authorizationMiddleware extends Initializer {
 
   async initialize() {
     const authorization = {
-      name: 'system admin authorization middleware',
+      name: 'authorization middleware',
       global: false,
       apiList: {
         client: ['clientLogin', 'signup', 'addLocation', 'updateLocation'],

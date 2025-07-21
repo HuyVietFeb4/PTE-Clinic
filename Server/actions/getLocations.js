@@ -6,6 +6,7 @@ module.exports = class getLocationssAction extends Action {
         super();
         this.name = 'getLocations';
         this.description = 'Get locations with filter and sort option action';
+        this.middleware = ['authorizationMiddleware'];
         this.inputs = {
             pathToFind: {
                 type: [String],

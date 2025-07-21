@@ -6,6 +6,7 @@ module.exports = class getClientAction extends Action {
         super();
         this.name = 'getClient';
         this.description = 'Get client action';
+        this.middleware = ['authorizationMiddleware'];
         this.inputs = {
             email: {
                 type: String,

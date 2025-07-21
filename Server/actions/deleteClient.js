@@ -6,6 +6,7 @@ module.exports = class deleteClientAction extends Action {
         super();
         this.name = 'deleteClient';
         this.description = 'Delete client action';
+        this.middleware = ['authorizationMiddleware'];
         this.inputs = {
             clientEmail: {
                 type: String,

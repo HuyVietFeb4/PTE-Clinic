@@ -6,6 +6,7 @@ module.exports = class signupAction extends Action {
         super();
         this.name = 'signup';
         this.description = 'User signup action';
+        this.middleware = ['authorizationMiddleware'];
         this.inputs = {
             username: {
                 type: String, 
