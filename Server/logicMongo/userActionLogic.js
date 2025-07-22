@@ -3,6 +3,7 @@ const jwt = require('../lib/util/jwt');
 const crypto = require("crypto");
 
 const locationDal = require('../dalMongo/locationDal');
+const clinicDal = require('../dalMongo/locationDal');
 
 async function clientLogin(email, password) {
     const hashedPassword = crypto.createHash("sha256").update(password).digest("hex");
@@ -62,8 +63,12 @@ async function adminLogin(email, password, clinicName) {
     return { success: false, message: "Login unsuccessfully"};
 }
 
-async function signup(email, username, password, role) {
+async function signup(email, username, password, clinicName, role) {
     // Not yet sanitize
+    const clinic = await clinicDal.findClinicByName(clinicName);
+    if(!clinic) {
+        throw new error(`Clinic with name ${clinicName} does not exists`);
+    }
     const hashedPassword = crypto.createHash("sha256").update(password).digest("hex");
     if (role === 'client') {
         const user = await userDal.findUserByEmail(email);
@@ -71,7 +76,7 @@ async function signup(email, username, password, role) {
             return {success: false, message: "This email has already been registered. Try a new one"}
         }
     }
-    const result = await userDal.saveUserByEmail(email, username, hashedPassword, role);
+    const result = await userDal.signup(email, username, hashedPassword, clinicName, role);
     if (!result.success) {
         throw new Error(result.message);
     }

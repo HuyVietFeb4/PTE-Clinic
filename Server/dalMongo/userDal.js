@@ -9,14 +9,15 @@ const clinicModel = require('../models/clinic.js').Model;
 const clinicDal = require('./clinicDal.js');
 const locationDal = require("./locationDal.js");
 //create
-async function signup(Email, Username, Password, Role) {
+async function signup(Email, Username, Password, clinicName, Role) {
     try {
         let newUser;
+        const clinic = await clinicDal.findClinicByName(clinicName);
         if (Role === 'client') {
-            newUser = new clientModel({ email: Email, username: Username, password: Password, role: Role });
+            newUser = new clientModel({ email: Email, username: Username, password: Password, role: Role, clientAttendedID: clinic._id });
         }
         else {
-            newUser = new adminModel({ email: Email, username: Username, password: Password, role: Role });
+            newUser = new adminModel({ email: Email, username: Username, password: Password, role: Role, clinicAdministeredID: clinic._id });
         }
         await newUser.save();
         return { success: true, message: "User saved successfully" };

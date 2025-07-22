@@ -6,7 +6,6 @@ module.exports = class signupAction extends Action {
         super();
         this.name = 'signup';
         this.description = 'User signup action';
-        this.middleware = ['authorizationMiddleware'];
         this.inputs = {
             username: {
                 type: String, 
@@ -23,6 +22,11 @@ module.exports = class signupAction extends Action {
                 required: true,
                 validator: this.passwordValidator
             },
+            clinicName: {
+                type: String,
+                required: true,
+                validator: this.usernameValidator
+            },
             role: {
                 type: String, 
                 required: true,
@@ -33,7 +37,7 @@ module.exports = class signupAction extends Action {
 
     async executeFunction(data) {
         try {
-            const result = await api.user.signup(data.params.email, data.params.password, data.paramas.role);
+            const result = await api.user.signup(data.params.email, data.params.username, data.params.password, data.params.clinicName, data.paramas.role);
             return { data: result };
         } catch (error) {
             return { err: error };

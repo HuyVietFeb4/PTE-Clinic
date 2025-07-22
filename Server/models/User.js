@@ -8,7 +8,7 @@ var userSchema  = new mongoose.Schema({
     firstName: String, 
     lastName: String, 
     accountStatus: {type: String, default: 'registered'}, // deactivated/locked/activated/registered
-    role: {type: String, default: 'client'}, // Admin, Client
+    role: {type: String, default: 'client'}, // clinicAdmin, client, systemAdmin
     lastFailedLogin: {type: Date, default: new Date()},
     failedLoginAttemps: { type: Number, default: 0 },
 }, { collection : 'user' });

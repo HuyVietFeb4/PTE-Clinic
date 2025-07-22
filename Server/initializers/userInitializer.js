@@ -10,8 +10,8 @@ module.exports = class userInitializer extends Initializer {
     async initialize() {
         api.user = {};
 
-        api.user.signup = async function (email, username, password, role) { 
-            return await userActionLogic.signup(email, username, password, role);
+        api.user.signup = async function (email, username, password, clinicName, role) { 
+            return await userActionLogic.signup(email, username, password, clinicName, role);
         };
         
         api.user.clientLogin = async function (email, username) { 
