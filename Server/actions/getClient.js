@@ -8,7 +8,7 @@ module.exports = class getClientAction extends Action {
         this.description = 'Get client action';
         this.middleware = ['authorizationMiddleware'];
         this.inputs = {
-            email: {
+            clientEmail: {
                 type: String,
                 required: true,
                 validator: this.emailValidator
@@ -18,7 +18,7 @@ module.exports = class getClientAction extends Action {
 
     async executeFunction(data) {
         try {
-            const result = await api.user.getClient(data.params.email);
+            const result = await api.user.getClient(data.params.clientEmail);
             return { data: result };
         } catch (error) {
             return { err: error };

@@ -24,12 +24,12 @@ async function findClinicByName(name) {
 async function findClinicByNameWithFullInfo(name) {
     return await clinicModel.findOne({ clinicName: name }).populate([
         {
-            path: clinicLocationID
+            path: 'clinicLocationID'
         },
         {
-            path: clientAttendedIDs,
+            path: 'clientAttendedIDs',
             populate: {
-                path: clientLocationID
+                path: 'clientLocationID'
             }
         }
     ]);
@@ -105,7 +105,7 @@ async function getClinics(pathToFind, valuesToFind, pathToSort, sortDirection, g
     }
 }
 
-async function updateClinic(clinicName, pathToUpdate, valueToUpdate) { // maybe limit to not use for update clinic attended
+async function updateClinic(clinicName, pathToUpdate, valueToUpdate) { // limit to not use for update clinic attended
     let clinic = await findClinicByNameWithFullInfo(clinicName);
     if (pathToUpdate.length > 0 && valueToUpdate.length > 0) {
         for (let i in pathToUpdate) { 
@@ -117,6 +117,13 @@ async function updateClinic(clinicName, pathToUpdate, valueToUpdate) { // maybe 
             }
             else if (valueToUpdate[i].includes('{') && typeof(clinic[pathToUpdate[i]]) === 'object') {
                 clinic[pathToUpdate[i]] = JSON.parse(valueToUpdate[i]);
+            }
+            else if (pathToUpdate[i] === 'clinicLocationID') {
+                let location = locationDal.findLocationByName(valueToUpdate[i]);
+                if(!location) {
+                    throw new Error('Can not find location to update clinic\'s location');
+                }
+                clinic[pathToUpdate[i]] = location._id;
             }
             else {
                 throw new Error(`${pathToUpdate[i]} and ${valueToUpdate[i]} is not the same type`);

@@ -1,6 +1,8 @@
 const userDal = require("../dalMongo/userDal");
-
+const jwt = require('../lib/util/jwt');
 const crypto = require("crypto");
+
+const locationDal = require('../dalMongo/locationDal');
 
 async function clientLogin(email, password) {
     const hashedPassword = crypto.createHash("sha256").update(password).digest("hex");
@@ -17,8 +19,14 @@ async function clientLogin(email, password) {
         }
     }
     const resUpdate = await userDal.updateUserFailedLoginAttempByEmail(email, true);
+    // return token
 
-    return { success: true, message: "Login successfully"};
+    const payload = {
+        id: user._id,
+        role: 'client',
+    }
+    const token = jwt.sign(payload);
+    return { success: true, message: "Login successfully", token: token};
 }
 
 async function adminLogin(email, password, clinicName) {
@@ -30,7 +38,12 @@ async function adminLogin(email, password, clinicName) {
             let returnObject = {};
             if (hashedPassword === adminAccount.password) {
                 isLoginSuccess = true;
-                returnObject = { success: true, message: "Login successfully"};
+                const payload = {
+                    id: adminAccount._id,
+                    role: 'clinicAdmin',
+                }
+                const token = jwt.sign(payload);
+                returnObject = { success: true, message: "Login successfully", token: token};
             }
             else {
                 isLoginSuccess = false;
@@ -41,6 +54,7 @@ async function adminLogin(email, password, clinicName) {
                 return resUpdate;
             }
             else {
+                //return token
                 return returnObject;
             }
         }
@@ -62,6 +76,22 @@ async function signup(email, username, password, role) {
         throw new Error(result.message);
     }
     return { success: true, message: "Signup successfully" };
+}
+
+async function addClientLocation(clientEmail, locationName, number, street, ward, district, city, state, country) {
+    const location = await locationDal.findLocationByName(locationName);
+    if(location) {
+        return {success: false, message: "Location has already exists."};
+    }
+    const client = await userDal.findUserByEmail(clientEmail); 
+    if(!client) {
+        return {success: false, message: "Client does not exists."};
+    }
+    const result = await userDal.addClientLocation(clientEmail, locationName, number, street, ward, district, city, state, country);
+    if (!result.success) {
+        throw new Error(result.message);
+    }
+    return { success: true, message: "Add client's location successfully" };
 }
 
 async function getClient(clientEmail) {
@@ -160,7 +190,8 @@ module.exports = {
     clientLogin: clientLogin,
     adminLogin: adminLogin,
     signup: signup,
-    
+    addClientLocation: addClientLocation,
+
     getClient: getClient,
     getAdmins: getAdmins,
     getAdmin: getAdmin,

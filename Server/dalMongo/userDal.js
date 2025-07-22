@@ -7,6 +7,7 @@ const locationModel = require('../models/location.js').Model;
 const clinicModel = require('../models/clinic.js').Model;
 
 const clinicDal = require('./clinicDal.js');
+const locationDal = require("./locationDal.js");
 //create
 async function signup(Email, Username, Password, Role) {
     try {
@@ -24,6 +25,18 @@ async function signup(Email, Username, Password, Role) {
     }
 }
 
+
+async function addClientLocation(clientEmail, locationName, number, street, ward, district, city, state, country) {
+    try {
+        const newLocation = new locationModel({ locationName, number, street, ward, district, city, state, country });
+        await newLocation.save();
+        const client = await findUserByEmail(clientEmail); 
+        client.clientLocationID = newLocation._id;
+        await client.save();
+    } catch(error) {
+        return { success: false, message: `Error at userDal.js, message: ${error.message}` };
+    }
+}
 //read
 async function findUserByUsername(Username) {
     return await userModel.findOne({ username: Username });
@@ -36,16 +49,16 @@ async function findUserByEmail(Email) {
 async function findAdmins(adminEmail) { // Only use for admin
     if (adminEmail === '') {
         return await userModel.find().populate({
-            path: clinicAdministeredID,
+            path: 'clinicAdministeredID',
             populate: {
-                path: clinicLocationID
+                path: 'clinicLocationID'
             }
         }); 
     }
     return await userModel.find({ email: adminEmail }).populate({
         path: clinicAdministeredID,
         populate: {
-            path: clinicLocationID
+            path: 'clinicLocationID'
         }
     }); 
 }
@@ -65,13 +78,13 @@ async function findAdminWithClinicName(adminEmail, ClinicName) {
 async function findClientByEmail(clientEmail) {
     return await userModel.findOne({ email: clientEmail }).populate([
         {
-        path: clinicAttendedID,
+        path: 'clinicAttendedID',
         populate: {
-            path: clinicLocationID
+            path: 'clinicLocationID'
         }
         },
         {
-            path: clientLocationID
+            path: 'clientLocationID'
         }
     ])
 }
@@ -216,6 +229,13 @@ async function updateClient(clientEmail, pathToUpdate, valueToUpdate) {
             else if (valueToUpdate[i].includes('{') && typeof(client[pathToUpdate[i]]) === 'object') {
                 client[pathToUpdate[i]] = JSON.parse(valueToUpdate[i]);
             }
+            else if (pathToUpdate[i] === 'clientLocationID') {
+                let location = locationDal.findLocationByName(valueToUpdate[i]);
+                if(!location) {
+                    throw new Error('Can not find location to update client\'s location');
+                }
+                client[pathToUpdate[i]] = location._id;
+            }
             else if (pathToUpdate[i] === 'clinicAttendedID') {
                 let clinic = clinicDal.findClinicByName(valueToUpdate[i]);
                 if(!clinic) {
@@ -332,7 +352,8 @@ async function deleteAdminByEmailAndClinicName(adminEmail, ClinicName) {
 }
 module.exports = {
     signup: signup,
-
+    addClientLocation: addClientLocation,
+    
     findUserByUsername: findUserByUsername, 
     findUserByEmail: findUserByEmail,
     findAdmins: findAdmins,

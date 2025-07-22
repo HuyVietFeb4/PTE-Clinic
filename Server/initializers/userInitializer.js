@@ -87,5 +87,9 @@ module.exports = class userInitializer extends Initializer {
         api.user.deleteAdmin = async function (adminEmail, clinicName) {
             return await userActionLogic.deleteAdmin(adminEmail, clinicName);
         }
+
+        api.user.addClientLocation = async function (clientEmail, locationName, number, street, ward, district, city, state, country) {
+            return await userActionLogic.addClientLocation(clientEmail, locationName, number, street, ward, district, city, state, country);
+        }
 	}
 }

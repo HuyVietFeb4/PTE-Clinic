@@ -43,6 +43,7 @@ module.exports = class adminLoginAction extends Action {
         else {
             data.response.success = dataRes.data.success;
             data.response.message = dataRes.data.message;
+            data.response.token = dataRes.data.token;
         }
     }
 
