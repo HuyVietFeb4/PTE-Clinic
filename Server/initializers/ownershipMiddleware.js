@@ -15,8 +15,9 @@ module.exports = class ownershipMiddleware extends Initializer {
       name: 'ownership middleware',
       global: false,
       preProcessor: async (data) => {
+        const token = data.params.token || data.connection.rawConnection?.req?.headers?.authorization?.split(' ')[1];
         const queryValue = data.params.clientEmail || data.params.locationName;
-        const payload = jwt.verify(data.params.token);
+        const payload = jwt.verify(token);
         if(payload.role === 'client') {
           const client = await clientModel.findOne({ id: payload.id }).populate([
             // {

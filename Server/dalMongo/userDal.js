@@ -9,6 +9,15 @@ const clinicModel = require('../models/clinic.js').Model;
 const clinicDal = require('./clinicDal.js');
 const locationDal = require("./locationDal.js");
 //create
+async function createSystemAdmin(Email, Username, Password) {
+    try {
+        const newSysAdmin = new adminModel({ email: Email, username: Username, password: Password, role: 'systemAdmin'});
+        await newSysAdmin.save();
+    } catch(error) {
+        return { success: false, message: `Error at userDal.js, message: ${error.message}` };
+    }
+}
+
 async function signup(Email, Username, Password, clinicName, Role) {
     try {
         let newUser;
@@ -354,7 +363,8 @@ async function deleteAdminByEmailAndClinicName(adminEmail, ClinicName) {
 module.exports = {
     signup: signup,
     addClientLocation: addClientLocation,
-    
+    createSystemAdmin: createSystemAdmin,
+
     findUserByUsername: findUserByUsername, 
     findUserByEmail: findUserByEmail,
     findAdmins: findAdmins,

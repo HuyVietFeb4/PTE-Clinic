@@ -19,7 +19,8 @@ module.exports = class authorizationMiddleware extends Initializer {
         systemAdmin: ['addClinic', 'addLocation', 'getClinics', 'getClient', 'getClients', 'getLocations', 'getAdmin', 'getAdmins'],
       },
       preProcessor: async (data) => {
-        const payload = jwt.verify(data.params.token);
+        const token = data.params.token || data.connection.rawConnection?.req?.headers?.authorization?.split(' ')[1];
+        const payload = jwt.verify(token);
         if(!apiList[payload.role] || !apiList[payload.role].includes(!data.action)) {
           api.log(`[AUTH FAIL] ${payload.role} tried to access ${actionName}`, 'warning');
           throw new Error('Access denied: Your role does not have sufficient permissions to perform this action.');

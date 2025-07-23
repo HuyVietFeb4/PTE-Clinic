@@ -1,13 +1,18 @@
 'use strict'
 const { api, Action } = require('actionhero');
 
-module.exports = class adminLoginAction extends Action {
+module.exports = class signupAction extends Action {
     constructor() {
         super();
-        this.name = 'adminLogin';
-        this.description = 'Admin login action';
-        this.middleware = ['authenticationMiddleware'];
+        this.name = 'createSystemAdmin';
+        this.description = 'create system admin action';
+        this.middleware = ['systemAdminMiddleware'];
         this.inputs = {
+            username: {
+                type: String, 
+                required: true,
+                validator: this.usernameValidator
+            },
             email: {
                 type: String,
                 required: true,
@@ -18,17 +23,12 @@ module.exports = class adminLoginAction extends Action {
                 required: true,
                 validator: this.passwordValidator
             },
-            clinicName: {
-                type: String,
-                required: true,
-                validator: this.clinicNameValidator
-            }
         }
     }
 
     async executeFunction(data) {
         try {
-            const result = await api.user.adminLogin(data.params.email, data.params.password, data.params.clinicName);
+            const result = await api.user.createSystemAdmin(data.params.email, data.params.username, data.params.password);
             return { data: result };
         } catch (error) {
             return { err: error };
@@ -43,7 +43,6 @@ module.exports = class adminLoginAction extends Action {
         else {
             data.response.success = dataRes.data.success;
             data.response.message = dataRes.data.message;
-            data.response.token = dataRes.data.token;
         }
     }
 
@@ -61,13 +60,18 @@ module.exports = class adminLoginAction extends Action {
         }
     }
 
-    clinicNameValidator(clinicName) {
-        const clinicNameRegex = /^[a-zA-Z0-9]+( [a-zA-Z0-9]+)*$/;
-        if (clinicName.length < 3 || clinicName.length > 100) {
-            throw new Error('Invalid location name length');
+    roleValidator(Role) {
+        let allowedRole = ['client', 'clinicAdmin', 'systemAdmin']
+        if (!allowedRole.includes(Role)) {
+            throw new Error('Invalid role');
         }
-
-        if (!clinicNameRegex.test(clinicNameRegex)) {
+    }
+    usernameValidator(Username) {
+        const usernameRegex = /^[_a-zA-Z0-9]+$/;
+        if(Username.length > 20 || Username.length < 3) {
+            throw new Error('Invalid username length (Minimum: 3 Maximum: 20)');
+        } 
+        if (!usernameRegex.test(Username)) {
             throw new Error('Invalid character(s) detected');
         }
     }

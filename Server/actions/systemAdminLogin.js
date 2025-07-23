@@ -1,12 +1,12 @@
 'use strict'
 const { api, Action } = require('actionhero');
 
-module.exports = class adminLoginAction extends Action {
+module.exports = class systemAdminLoginAction extends Action {
     constructor() {
         super();
-        this.name = 'adminLogin';
-        this.description = 'Admin login action';
-        this.middleware = ['authenticationMiddleware'];
+        this.name = 'systemAdminLogin';
+        this.description = 'System admin action';
+        this.middleware = ['authenticationMiddleware', 'systemAdminMiddleware'];
         this.inputs = {
             email: {
                 type: String,
@@ -17,18 +17,13 @@ module.exports = class adminLoginAction extends Action {
                 type: String, 
                 required: true,
                 validator: this.passwordValidator
-            },
-            clinicName: {
-                type: String,
-                required: true,
-                validator: this.clinicNameValidator
             }
         }
     }
 
     async executeFunction(data) {
         try {
-            const result = await api.user.adminLogin(data.params.email, data.params.password, data.params.clinicName);
+            const result = await api.user.systemAdminLogin(data.params.email, data.params.password);
             return { data: result };
         } catch (error) {
             return { err: error };
@@ -58,17 +53,6 @@ module.exports = class adminLoginAction extends Action {
         const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,100}$/;
         if (!passwordRegex.test(Password)) {
             throw new Error('Password must have minimum eight characters, maximum 100 characters, at least one uppercase letter, one lowercase letter, one number and one special character (@$!%*?&)');
-        }
-    }
-
-    clinicNameValidator(clinicName) {
-        const clinicNameRegex = /^[a-zA-Z0-9]+( [a-zA-Z0-9]+)*$/;
-        if (clinicName.length < 3 || clinicName.length > 100) {
-            throw new Error('Invalid location name length');
-        }
-
-        if (!clinicNameRegex.test(clinicNameRegex)) {
-            throw new Error('Invalid character(s) detected');
         }
     }
 }

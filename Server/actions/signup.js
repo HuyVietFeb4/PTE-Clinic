@@ -37,7 +37,7 @@ module.exports = class signupAction extends Action {
 
     async executeFunction(data) {
         try {
-            const result = await api.user.signup(data.params.email, data.params.username, data.params.password, data.params.clinicName, data.paramas.role);
+            const result = await api.user.signup(data.params.email, data.params.username, data.params.password, data.params.clinicName, data.params.role);
             return { data: result };
         } catch (error) {
             return { err: error };
@@ -70,7 +70,7 @@ module.exports = class signupAction extends Action {
     }
 
     roleValidator(Role) {
-        let allowedRole = ['client', 'admin']
+        let allowedRole = ['client', 'clinicAdmin', 'systemAdmin']
         if (!allowedRole.includes(Role)) {
             throw new Error('Invalid role');
         }

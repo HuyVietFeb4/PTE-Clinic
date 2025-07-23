@@ -3,8 +3,20 @@ const jwt = require('../lib/util/jwt');
 const crypto = require("crypto");
 
 const locationDal = require('../dalMongo/locationDal');
-const clinicDal = require('../dalMongo/locationDal');
+const clinicDal = require('../dalMongo/clinicDal');
 
+async function createSystemAdmin(email, username, password) {
+    const hashedPassword = crypto.createHash("sha256").update(password).digest("hex");
+    const user = await userDal.findUserByEmail(email);
+    if(user) {
+        return {success: false, message: "This email has already been registered. Try a new one"}
+    }
+    const result = await userDal.createSystemAdmin(email, username, hashedPassword);
+    if (!result.success) {
+        throw new Error(`Error at userActionLogic: ${result.message}`);
+    }
+    return { success: true, message: "create system admin account successfully" };
+}
 async function clientLogin(email, password) {
     const hashedPassword = crypto.createHash("sha256").update(password).digest("hex");
     const user = await userDal.findUserByEmail(email);
@@ -63,11 +75,35 @@ async function adminLogin(email, password, clinicName) {
     return { success: false, message: "Login unsuccessfully"};
 }
 
+async function systemAdminLogin(email, password) {
+    const hashedPassword = crypto.createHash("sha256").update(password).digest("hex");
+    const user = await userDal.findUserByEmail(email);
+    if (user.failedLoginAttemps > 5) return {success: false, message: "User is locked. Please contact support."};
+    if (!user) return { success: false, message: "User not found." };
+    if (user.password !== hashedPassword) {
+        const resUpdate = await userDal.updateUserFailedLoginAttempByEmail(email, false);
+        if(!resUpdate.success) {
+            return resUpdate;
+        }
+        else {
+            return { success: false, message: resUpdate.message}
+        }
+    }
+    const resUpdate = await userDal.updateUserFailedLoginAttempByEmail(email, true);
+    // return token
+
+    const payload = {
+        id: user._id,
+        role: 'systemAdmin',
+    }
+    const token = jwt.sign(payload);
+    return { success: true, message: "Login successfully", token: token};
+}
 async function signup(email, username, password, clinicName, role) {
     // Not yet sanitize
     const clinic = await clinicDal.findClinicByName(clinicName);
     if(!clinic) {
-        throw new error(`Clinic with name ${clinicName} does not exists`);
+        throw new Error(`Clinic with name ${clinicName} does not exists`);
     }
     const hashedPassword = crypto.createHash("sha256").update(password).digest("hex");
     if (role === 'client') {
@@ -78,7 +114,7 @@ async function signup(email, username, password, clinicName, role) {
     }
     const result = await userDal.signup(email, username, hashedPassword, clinicName, role);
     if (!result.success) {
-        throw new Error(result.message);
+        throw new Error(`Error at userActionLogic: ${result.message}`);
     }
     return { success: true, message: "Signup successfully" };
 }
@@ -194,8 +230,10 @@ async function deleteAdmin(adminEmail, clinicName) {
 module.exports = {
     clientLogin: clientLogin,
     adminLogin: adminLogin,
+    systemAdminLogin: systemAdminLogin,
     signup: signup,
     addClientLocation: addClientLocation,
+    createSystemAdmin: createSystemAdmin,
 
     getClient: getClient,
     getAdmins: getAdmins,
