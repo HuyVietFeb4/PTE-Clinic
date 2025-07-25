@@ -204,6 +204,40 @@ async function updateAdmin(adminEmail, clinicName, pathToUpdate, valueToUpdate) 
     return result;
 }
 
+async function changePasswordClient(clientEmail, oldPassword, newPassword) {
+    const client = await userDal.findUserByEmail(clientEmail);
+    if(!client) {
+        return {success: false, message: "Can not find the account"};
+    }
+    const hashedPassword = crypto.createHash("sha256").update(oldPassword).digest("hex");
+    if (hashedPassword !== client.password) {
+        throw new Error('Invalid old password');
+    }
+    hashedPassword = crypto.createHash("sha256").update(newPassword).digest("hex");
+    const result = await userDal.changePasswordClient(clientEmail, oldPassword, hashedPassword);
+    if (!result.success) {
+        throw new Error(result.message);
+    }
+    return result;
+}
+
+async function changePasswordAdmin(adminEmail, clinicName, oldPassword, newPassword) {
+    const admin = await userDal.findAdminWithClinicName(adminEmail, clinicName);
+    if(!admin) {
+        return {success: false, message: "No admin found"}
+    }
+    const hashedPassword = crypto.createHash("sha256").update(oldPassword).digest("hex");
+    if (hashedPassword !== admin.password) {
+        throw new Error('Invalid old password');
+    }
+    hashedPassword = crypto.createHash("sha256").update(newPassword).digest("hex");
+    const result = await userDal.changePasswordAdmin(adminEmail, clinicName, oldPassword, hashedPassword);
+    if (!result.success) {
+        throw new Error(result.message);
+    }
+    return result;
+}
+
 async function deleteClient(clientEmail) {
     const client = await userDal.findUserByEmail(clientEmail);
     if(!client) {
@@ -243,6 +277,8 @@ module.exports = {
     updateClient: updateClient,
     updateAdmin: updateAdmin,
     updateClientClinicAttended: updateClientClinicAttended,
+    changePasswordClient: changePasswordClient,
+    changePasswordAdmin: changePasswordAdmin,
 
     deleteClient: deleteClient,
     deleteAdmin: deleteAdmin

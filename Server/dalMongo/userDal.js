@@ -231,7 +231,7 @@ async function updateClient(clientEmail, pathToUpdate, valueToUpdate) {
     let client = await findClientByEmail(clientEmail);
     if (pathToUpdate.length > 0 && valueToUpdate.length > 0) {
         for (let i in pathToUpdate) { 
-            if(['lastFailedLogin', 'failedLoginAttemps', 'email'].includes(pathToUpdate[i]) ) {
+            if(['lastFailedLogin', 'failedLoginAttemps', 'email', 'password'].includes(pathToUpdate[i]) ) {
                 throw new Error(`Can not update this path ${pathToUpdate[i]} with this api call`);
             }
             else if (typeof(valueToUpdate[i]) === typeof(client[pathToUpdate[i]])) {
@@ -303,7 +303,7 @@ async function updateAdmin(adminEmail, clinicName, pathToUpdate, valueToUpdate) 
 
     if (pathToUpdate.length > 0 && valueToUpdate.length > 0) {
         for (let i in pathToUpdate) { 
-            if(['lastFailedLogin', 'failedLoginAttemps', 'email'].includes(pathToUpdate[i]) ) {
+            if(['lastFailedLogin', 'failedLoginAttemps', 'email', 'password'].includes(pathToUpdate[i]) ) {
                 throw new Error(`Can not update this path ${pathToUpdate[i]} with this api call`);
             }
             else if (typeof(valueToUpdate[i]) === typeof(admin[pathToUpdate[i]])) {
@@ -329,6 +329,28 @@ async function updateAdmin(adminEmail, clinicName, pathToUpdate, valueToUpdate) 
     }
     await admin.save();
     return {success: true, message: 'Successfully update client'};
+}
+
+async function changePasswordClient(clientEmail, oldPassword, newPassword) {
+    try {
+        const client = await userDal.findUserByEmail(clientEmail);
+        client.password = newPassword;
+        client.save()
+        return {success: true, message: 'Successfully update client\'s password'};
+    }catch(error) {
+        return {success: false, message: error.message};
+    }
+}
+
+async function changePasswordAdmin(adminEmail, clinicName, oldPassword, newPassword) {
+    try {
+        const admin = await userDal.findAdminWithClinicName(adminEmail, clinicName);
+        admin.password = newPassword;
+        admin.save()
+        return {success: true, message: 'Successfully update admin\'s password'};
+    }catch(error) {
+        return {success: false, message: error.message};
+    }
 }
 //delete
 
@@ -378,6 +400,8 @@ module.exports = {
     updateUserFailedLoginAttempByObject: updateUserFailedLoginAttempByObject,
     updateClient: updateClient,
     updateClientClinicAttended: updateClientClinicAttended,
+    changePasswordClient: changePasswordClient,
+    changePasswordAdmin: changePasswordAdmin,
 
     deleteClientByEmail: deleteClientByEmail,
     deleteAdminByEmailAndClinicName: deleteAdminByEmailAndClinicName

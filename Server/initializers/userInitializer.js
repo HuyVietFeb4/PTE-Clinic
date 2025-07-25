@@ -88,6 +88,20 @@ module.exports = class userInitializer extends Initializer {
             return await userActionLogic.updateAdmin(adminEmail, clinicName, pathToUpdate, valueToUpdate);
         }
 
+        api.user.changePasswordClient = async function (clientEmail, oldPassword, newPassword) {
+            if (oldPassword === newPassword) {
+                throw new Error('Old password can not be the same as new password');
+            }
+            return await userActionLogic.changePasswordClient(clientEmail, oldPassword, newPassword);
+        }
+
+        api.user.changePasswordAdmin = async function (adminEmail, clinicName, oldPassword, newPassword) {
+            if (oldPassword === newPassword) {
+                throw new Error('Old password can not be the same as new password');
+            }
+            return await userActionLogic.changePasswordAdmin(adminEmail, clinicName, oldPassword, newPassword);
+        }
+
         api.user.deleteClient = async function (clientEmail) {
             return await userActionLogic.deleteClient(clientEmail);
         }
