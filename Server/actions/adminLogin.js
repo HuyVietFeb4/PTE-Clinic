@@ -67,7 +67,7 @@ module.exports = class adminLoginAction extends Action {
             throw new Error('Invalid location name length');
         }
 
-        if (!clinicNameRegex.test(clinicNameRegex)) {
+        if (!clinicNameRegex.test(clinicName)) {
             throw new Error('Invalid character(s) detected');
         }
     }

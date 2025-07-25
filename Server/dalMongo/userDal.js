@@ -58,16 +58,17 @@ async function findUserByEmail(Email) {
 }
 
 async function findAdmins(adminEmail) { // Only use for admin
-    if (adminEmail === '') {
-        return await userModel.find().populate({
+    if (!adminEmail) {
+        return await adminModel.find().populate({
             path: 'clinicAdministeredID',
             populate: {
                 path: 'clinicLocationID'
             }
         }); 
     }
-    return await userModel.find({ email: adminEmail }).populate({
-        path: clinicAdministeredID,
+    return await adminModel.find({ email: adminEmail })
+    .populate({
+        path: 'clinicAdministeredID',
         populate: {
             path: 'clinicLocationID'
         }

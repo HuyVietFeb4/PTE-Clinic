@@ -44,11 +44,13 @@ async function clientLogin(email, password) {
 
 async function adminLogin(email, password, clinicName) {
     const hashedPassword = crypto.createHash("sha256").update(password).digest("hex");
-    const adminList = await userDal.findUserByEmail(email);
-    for (adminAccount in adminList) {
-        if(adminAccount.clinicAdministered.clinicName === clinicName) {
+    const adminList = await userDal.findAdmins(email);
+    for (adminAccount of adminList) {
+        if(adminAccount.clinicAdministeredID.clinicName === clinicName) {
             let isLoginSuccess = undefined;
             let returnObject = {};
+            console.log(hashedPassword);
+            console.log(adminAccount.password);
             if (hashedPassword === adminAccount.password) {
                 isLoginSuccess = true;
                 const payload = {
@@ -60,14 +62,15 @@ async function adminLogin(email, password, clinicName) {
             }
             else {
                 isLoginSuccess = false;
+            }
+            const resUpdate = await userDal.updateUserFailedLoginAttempByEmail(adminAccount.email, isLoginSuccess);
+            if (!isLoginSuccess) {
                 returnObject = { success: false, message: resUpdate.message};
             }
-            const resUpdate = await userDal.updateUserFailedLoginAttempByObject(adminAccount, isLoginSuccess);
             if(!resUpdate.success) {
                 return resUpdate;
             }
             else {
-                //return token
                 return returnObject;
             }
         }

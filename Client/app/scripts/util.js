@@ -49,12 +49,12 @@ function generateRandomPassword() {
 const authenticationAlert = function(action, success, message, showAlert) {
     const alertClass = success ? 'alert-success' : 'alert-danger';
     const alertState = success ? 'successfully' : 'failed';
-    $('#authAlert').removeClass().addClass(`alert ${alertClass} alert-dismissible`);
+    $('#authAlert').removeClass().addClass(`alert ${alertClass} alert-dismissible mb-3 mt-3`);
     $('#authState').text(alertState);
     
     // reset message
     $('#alertMessage').text('');
-    $('#alertMessage').text(message);
+    if (!success) $('#alertMessage').text(message);
     $('#authAction').text(action);
     showAlert = true;
 };

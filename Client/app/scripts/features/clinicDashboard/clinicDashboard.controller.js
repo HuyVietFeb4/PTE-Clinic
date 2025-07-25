@@ -25,9 +25,8 @@ angular.module('clinicDashboard').controller('clinicDashboardController', functi
         // const token = getCookieValue('api_auth_token');
         apiClinicDashboard.addClinicAction(addClinicParams).then(function(response) {
             apiClinicDashboard.addAdminAction(addAdminParams).then(function(response) {
-                let message = response.data.message + `\n password is: ${addminPassword}.`;
-                console.log(message);
-                authenticationAlert('Add clinic and admin', true, message, this.showAlert);
+                console.log(addminPassword);
+                authenticationAlert('Add clinic and admin', true, response.data.message, this.showAlert);
             }).catch(function (err) {
                 authenticationAlert('Add clinic and admin', false, err.data.error, this.showAlert);
             });
