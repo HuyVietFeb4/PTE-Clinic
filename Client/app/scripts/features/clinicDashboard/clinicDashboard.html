@@ -1,0 +1,157 @@
+<div class="container-fluid vstack gap-2">
+    <h1 class="card-title text-center">Clinic Dasboard</h1>
+    <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#addClinicAndAdmin">
+        Add Clinic and Clinic Admin
+    </button>
+
+    <!-- <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#editClinicAndAdmin">
+        Edit Clinic and Clinic Admin
+    </button> -->
+</div>
+
+<div class="alert alert-success alert-dismissible mb-3 mt-3" id="authAlert" ng-show="clinicDashboardCtrl.showAlert"> 
+  <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+  <span id="authAction"></span> <strong id="authState"></strong>
+  <p id="alertMessage"></p>
+</div>
+
+<div ng-include="'scripts/layouts/clinicList/clinicList.html'"></div>
+
+<form class="modal fade" id="addClinicAndAdmin" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true" ng-submit="clinicDashboardCtrl.addClinicandAdmin()">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title fs-5" id="staticBackdropLabel">Add Clinic</h3>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <label for="addClinicName" class="form-label">Clinic name</label>
+        <input type="text" id="addClinicName" class="form-control mb-3" ng-required="true" ng-model="clinicDashboardCtrl.addClinicName">
+
+        <label for="addLocationName" class="form-label">Location name</label>
+        <input type="text" id="addLocationName" class="form-control mb-3" ng-required="true" ng-model="clinicDashboardCtrl.addLocationName">
+
+        <label for="addNumber" class="form-label">Number</label>
+        <input type="number" id="addNumber" class="form-control mb-3" ng-model="clinicDashboardCtrl.addNumber">
+
+        <label for="addStreet" class="form-label">Street</label>
+        <input type="text" id="addStreet" class="form-control mb-3" ng-model="clinicDashboardCtrl.addStreet">
+
+        <label for="addWard" class="form-label">Ward</label>
+        <input type="text" id="addClinicName" class="form-control mb-3" ng-model="clinicDashboardCtrl.addWard">
+
+        <label for="addDistrict" class="form-label">District</label>
+        <input type="text" id="addDistrict" class="form-control mb-3" ng-model="clinicDashboardCtrl.addDistrict">
+
+        <label for="addCity" class="form-label">City</label>
+        <input type="text" id="addCity" class="form-control mb-3" ng-model="clinicDashboardCtrl.addCity">
+
+        <label for="addState" class="form-label">State</label>
+        <input type="text" id="addState" class="form-control mb-3" ng-model="clinicDashboardCtrl.addState">
+
+        <label for="addCountry" class="form-label">Country</label>
+        <input type="text" id="addCountry" class="form-control mb-3" ng-model="clinicDashboardCtrl.addCountry">
+
+        <hr>
+        <h3 class="modal-title fs-5 mb-3">Add Clinic Admin's information</h3>
+        <label for="addUsername" class="form-label">Username</label>
+        <input type="text" id="addUsername" class="form-control mb-3" ng-required="true" ng-model="clinicDashboardCtrl.addUsername">
+
+        <label for="addEmail" class="form-label">Email</label>
+        <input type="text" id="addEmail" class="form-control mb-3" ng-required="true" ng-model="clinicDashboardCtrl.addEmail">
+
+        <!-- <label for="addPassword" class="form-label">Password</label>
+        <input type="text" id="addPassword" class="form-control mb-3" ng-required="true" ng-model="clinicDashboardCtrl.addPassword"> -->
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-primary">Confirm</button>
+      </div>
+    </div>
+  </div>
+</form>
+
+<!-- <div class="modal fade modal-xl" id="editClinicClientList" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="staticBackdropLabel">Edit clinic's client list</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="alert alert-success alert-dismissible fade show mb-3" role="alert">
+            <strong>Success!</strong> Add user successfully
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+
+        <div class="input-group mb-3">
+            <input type="text" class="form-control" aria-label="Text input to search" id="searchEmail" name="searchEmail">
+            <button type="submit" class="btn btn-outline-secondary">
+                <img src="images/bootstrap-icon/search.svg" alt="search image">
+            </button>
+        </div>
+        
+        <div class="container-fluid hstack flex-wrap gap-3 justify-content-center" id="userList">
+            <div class="toast show" role="alert" aria-live="assertive" aria-atomic="true">
+                <div class="toast-header">
+                    <img src="images/default/default-pfp.png" class="rounded me-2" alt="User profile picture">
+                    <strong class="me-auto">Bootstrap</strong>
+                    <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+                <div class="toast-body">
+                    example@email.com
+                </div>
+            </div>
+
+            <div class="toast show" role="alert" aria-live="assertive" aria-atomic="true">
+                <div class="toast-header">
+                    <img src="images/default/default-pfp.png" class="rounded me-2" alt="User profile picture">
+                    <strong class="me-auto">Bootstrap</strong>
+                    <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+                <div class="toast-body">
+                    example@email.com
+                </div>
+            </div>
+
+            <div class="toast show" role="alert" aria-live="assertive" aria-atomic="true">
+                <div class="toast-header">
+                    <img src="images/default/default-pfp.png" class="rounded me-2" alt="User profile picture">
+                    <strong class="me-auto">Bootstrap</strong>
+                    <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+                <div class="toast-body">
+                    example@email.com
+                </div>
+            </div>
+
+            <div class="toast show" role="alert" aria-live="assertive" aria-atomic="true">
+                <div class="toast-header">
+                    <img src="images/default/default-pfp.png" class="rounded me-2" alt="User profile picture">
+                    <strong class="me-auto">Bootstrap</strong>
+                    <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+                <div class="toast-body">
+                    example@email.com
+                </div>
+            </div>
+
+            <div class="toast show" role="alert" aria-live="assertive" aria-atomic="true">
+                <div class="toast-header">
+                    <img src="images/default/default-pfp.png" class="rounded me-2" alt="User profile picture">
+                    <strong class="me-auto">Bootstrap</strong>
+                    <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+                <div class="toast-body">
+                    example@email.com
+                </div>
+            </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-primary">Confirm</button>
+      </div>
+    </div>
+  </div>
+</div> -->

@@ -6,7 +6,7 @@ module.exports = class addClinicAction extends Action {
         super();
         this.name = 'addClinic';
         this.description = 'Add clinic action';
-        this.middleware = ['authorizationMiddleware'];
+        this.middleware = ['systemAdminMiddleware'];
         this.inputs = {
             clinicName: {
                 type: String,
@@ -33,6 +33,9 @@ module.exports = class addClinicAction extends Action {
             city: {
                 type: String, 
             },
+            state: {
+                type: String,
+            },
             country: {
                 type: String, 
             }
@@ -41,7 +44,7 @@ module.exports = class addClinicAction extends Action {
 
     async executeFunction(data) {
         try {
-            const addLocationRes = await api.location.addLocation(data.params.locationName, data.params.number, data.params.street, data.params.ward, data.params.district, data.params.city, data.params.country);
+            const addLocationRes = await api.location.addLocation(data.params.locationName, data.params.number, data.params.street, data.params.ward, data.params.district, data.params.city, data.params.state, data.params.country);
             if(addLocationRes.success) {
                 const result = await api.clinic.addClinic(data.params.clinicName, data.params.locationName);
                 return { data: result };
@@ -71,7 +74,7 @@ module.exports = class addClinicAction extends Action {
             throw new Error('Invalid location name length');
         }
 
-        if (!clinicNameRegex.test(clinicNameRegex)) {
+        if (!clinicNameRegex.test(clinicName)) {
             throw new Error('Invalid character(s) detected');
         }
     }

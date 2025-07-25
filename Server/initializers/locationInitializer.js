@@ -11,6 +11,7 @@ module.exports = class locationInitializer extends Initializer {
 
         api.location.addLocation = async function (locationName, number, street, ward, district, city, state, country) { 
             return await locationActionLogic.addLocation(locationName, number, street, ward, district, city, state, country);
+            
         };
 
         api.location.getLocations = async function (pathToFind, valuesToFind, pathToSort, sortDirection) {

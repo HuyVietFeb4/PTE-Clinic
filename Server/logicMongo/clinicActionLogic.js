@@ -1,4 +1,4 @@
-const clinicDal = require("../dalMongo/locationDal");
+const clinicDal = require("../dalMongo/clinicDal");
 
 async function addClinic(clinicName, locationName) {
     const clinic = await clinicDal.findClinicByName(clinicName);

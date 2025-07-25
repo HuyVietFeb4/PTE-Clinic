@@ -24,7 +24,8 @@ angular
     'headerApp',
     'clientProfile',
     'clinicProfile',
-    'adminDashboard'
+    'adminDashboard',
+    'clinicDashboard',
 ])
   .config(function ($routeProvider) {
     $routeProvider
@@ -54,22 +55,14 @@ angular
       })
       .when('/adminDashboard', {
         template: '<admin-dashboard></admin-dashboard>'
+      }).when('/clinicDashboard', {
+        template: '<clinic-dashboard></clinic-dashboard>'
       })
       .otherwise({
         redirectTo: '/'
       });
   });
 
-function getCookieValue(cookieName) {
-  const cookies = document.cookie.split('; ');
-  for (let cookie of cookies) {
-    const [key, value] = cookie.split('=');
-    if (key === cookieName) {
-      return value;
-    }
-  }
-  return null;
-}
 
 angular.module('clinicApp').run(function($rootScope, $location, $http) {
   $rootScope.$on('$routeChangeStart', function(event, next, current) {

@@ -44,6 +44,7 @@ module.exports = function (grunt) {
       local_dependencies: {
         files: {
           'app/index.html': [
+            'app/scripts/util.js',
             'app/scripts/**/app.js',
             'app/scripts/**/*.module.js',
             'app/scripts/**/*.service.js',

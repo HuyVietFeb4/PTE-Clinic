@@ -1,13 +1,13 @@
 const { get } = require("mongoose");
 
-const userModel = require("../models/user.js").Model;
-const clientModel = require('../models/client.js').Model;
-const adminModel = require('../models/admin.js').Model;
-const locationModel = require('../models/location.js').Model;
-const clinicModel = require('../models/clinic.js').Model;
+const userModel = require("../models/user").Model;
+const clientModel = require('../models/client').Model;
+const adminModel = require('../models/admin').Model;
+const locationModel = require('../models/location').Model;
+const clinicModel = require('../models/clinic').Model;
 
-const clinicDal = require('./clinicDal.js');
-const locationDal = require("./locationDal.js");
+const clinicDal = require('./clinicDal');
+const locationDal = require("./locationDal");
 //create
 async function createSystemAdmin(Email, Username, Password) {
     try {
@@ -22,7 +22,7 @@ async function createSystemAdmin(Email, Username, Password) {
 async function signup(Email, Username, Password, clinicName, Role) {
     try {
         let newUser;
-        const clinic = await clinicDal.findClinicByName(clinicName);
+        const clinic = await clinicModel.findOne({ clinicName: clinicName })
         if (Role === 'client') {
             newUser = new clientModel({ email: Email, username: Username, password: Password, role: Role, clientAttendedID: clinic._id });
         }
