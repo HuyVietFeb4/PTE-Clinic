@@ -8,5 +8,4 @@
  */
 angular.module('clinicProfile', [
     'ngRoute',
-    'apiService',
 ])

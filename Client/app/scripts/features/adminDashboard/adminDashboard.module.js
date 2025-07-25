@@ -8,5 +8,4 @@
  */
 angular.module('adminDashboard', [
     'ngRoute',
-    'apiService',
 ])

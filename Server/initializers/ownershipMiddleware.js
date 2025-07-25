@@ -15,9 +15,13 @@ module.exports = class ownershipMiddleware extends Initializer {
       name: 'ownership middleware',
       global: false,
       preProcessor: async (data) => {
-        const token = data.params.token || data.connection.rawConnection?.req?.headers?.authorization?.split(' ')[1];
+        const token = data.params.token || data.connection.rawConnection?.req?.headers?.authorization?.split(' ')[1] || data.connection.cookies?.api_auth_token;
         const queryValue = data.params.clientEmail || data.params.locationName;
-        const payload = jwt.verify(token);
+        const verifyRes = await jwt.verify(token);
+        if (!verifyRes.success) {
+          throw new Error('Access denied: Your role does not have sufficient permissions to perform this action.');
+        }
+        const payload = verifyRes.message;
         if(payload.role === 'client') {
           const client = await clientModel.findOne({ id: payload.id }).populate([
             // {

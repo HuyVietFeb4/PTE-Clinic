@@ -1,4 +1,10 @@
 'use strict';
-angular.module('apiService').service('api', function($http) { 
-    
+angular.module('loginService', []).service('apiLogin', function($http) { 
+    this.systemAdminLoginAction = function(params) {
+        return $http({
+            method: 'POST',
+            url: 'http://172.26.16.1:8888/api/systemAdminLogin',
+            data: params,
+        });
+    }
 })

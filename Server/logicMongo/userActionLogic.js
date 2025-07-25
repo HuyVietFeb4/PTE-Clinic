@@ -15,13 +15,13 @@ async function createSystemAdmin(email, username, password) {
     if (!result.success) {
         throw new Error(`Error at userActionLogic: ${result.message}`);
     }
-    return { success: true, message: "create system admin account successfully" };
+    return { success: true, message: "Create system admin account successfully" };
 }
 async function clientLogin(email, password) {
     const hashedPassword = crypto.createHash("sha256").update(password).digest("hex");
     const user = await userDal.findUserByEmail(email);
-    if (user.failedLoginAttemps > 5) return {success: false, message: "User is locked. Please contact support."};
     if (!user) return { success: false, message: "User not found." };
+    if (user.failedLoginAttemps > 5) return {success: false, message: "User is locked. Please contact support."};
     if (user.password !== hashedPassword) {
         const resUpdate = await userDal.updateUserFailedLoginAttempByEmail(email, false);
         if(!resUpdate.success) {
@@ -38,7 +38,7 @@ async function clientLogin(email, password) {
         id: user._id,
         role: 'client',
     }
-    const token = jwt.sign(payload);
+    const token = await jwt.sign(payload);
     return { success: true, message: "Login successfully", token: token};
 }
 
@@ -55,7 +55,7 @@ async function adminLogin(email, password, clinicName) {
                     id: adminAccount._id,
                     role: 'clinicAdmin',
                 }
-                const token = jwt.sign(payload);
+                const token = await jwt.sign(payload);
                 returnObject = { success: true, message: "Login successfully", token: token};
             }
             else {
@@ -78,8 +78,8 @@ async function adminLogin(email, password, clinicName) {
 async function systemAdminLogin(email, password) {
     const hashedPassword = crypto.createHash("sha256").update(password).digest("hex");
     const user = await userDal.findUserByEmail(email);
-    if (user.failedLoginAttemps > 5) return {success: false, message: "User is locked. Please contact support."};
     if (!user) return { success: false, message: "User not found." };
+    if (user.failedLoginAttemps > 5) return {success: false, message: "User is locked. Please contact support."};
     if (user.password !== hashedPassword) {
         const resUpdate = await userDal.updateUserFailedLoginAttempByEmail(email, false);
         if(!resUpdate.success) {
@@ -96,7 +96,7 @@ async function systemAdminLogin(email, password) {
         id: user._id,
         role: 'systemAdmin',
     }
-    const token = jwt.sign(payload);
+    const token = await jwt.sign(payload);
     return { success: true, message: "Login successfully", token: token};
 }
 async function signup(email, username, password, clinicName, role) {

@@ -8,13 +8,5 @@
  */
 angular.module('signup', [
     'ngRoute',
-    'apiService'
-]).config(function ($routeProvider) {
-    $routeProvider
-      .when('/signup', {
-        template: '<signup></signup>'
-      })
-      .otherwise({
-        redirectTo: '/signup'
-      });
-  });
+    'signupService'
+]);

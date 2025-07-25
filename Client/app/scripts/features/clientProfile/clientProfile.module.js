@@ -8,5 +8,4 @@
  */
 angular.module('clientProfile', [
     'ngRoute',
-    'apiService'
 ])

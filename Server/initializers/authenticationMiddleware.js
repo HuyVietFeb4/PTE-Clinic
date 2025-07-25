@@ -10,7 +10,7 @@ module.exports = class AuthenticationMiddleware extends Initializer {
 
   async initialize() {
     const authenticate = {
-      name: 'authentication middleware',
+      name: 'authenticationMiddleware',
       global: false,
 
     //   preProcessor: async (data) => {
@@ -25,9 +25,13 @@ module.exports = class AuthenticationMiddleware extends Initializer {
 
       postProcessor: async (data) => {
         const token = data.response.token;
-        if (!token) {
+        if (!token && data.response.success) {
           throw new Error("Unauthorized: Invalid token");
         }
+
+        // const cookieString = `api_auth_token=${token}; Path=/; Max-Age=3600`
+        // data.connection.rawConnection.responseHeaders.push(["Set-Cookie", cookieString]);
+        // data.response.token = '';
       },
     };
 

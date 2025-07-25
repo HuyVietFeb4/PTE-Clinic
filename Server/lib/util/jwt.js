@@ -8,9 +8,10 @@ async function sign(payload) {
 
 async function verify(token) {
     try {
-      return jwt.verify(token, SECRET_KEY);
+      const payload = jwt.verify(token, SECRET_KEY)
+      return {success: true, message: payload};
     } catch (err) {
-      throw new Error('Invalid or expired token');
+      return {success: false, message: 'Invalid token'};
     }
 }
 

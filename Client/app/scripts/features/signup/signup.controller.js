@@ -1,11 +1,13 @@
-angular.module('signup').controller('signupController', function (api) {
+angular.module('signup').controller('signupController', function ($routeParams, apiSignup) {
     this.showAlert = false;
+    this.clinicNameSignup = $routeParams.clinicName;
     this.signup = function() {
       const params = {
-        Email: this.emailSignup,
-        Username: this.usernameSignup,
-        Password: this.passwordSignup,
-        Role: this.roleSignup
+        username: this.usernameSignup,
+        email: this.emailSignup,
+        password: this.passwordSignup,
+        clinicName: this.clinicNameSignup,
+        role: 'client',
       };
 
 
@@ -22,12 +24,10 @@ angular.module('signup').controller('signupController', function (api) {
         this.showAlert = true;
     };
 
-      api.signupAction(params).then(function(response) {
+      apiSignup.signupAction(params).then(function(response) {
         authenticationAlert('Signup', response.data.success, response.data.message);
       }).catch(function (err) {
-        console.log(err);
         authenticationAlert('Signup', false, err.data.error);
       });
-
     }
 });

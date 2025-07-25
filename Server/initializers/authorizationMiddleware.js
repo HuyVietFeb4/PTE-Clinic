@@ -10,7 +10,7 @@ module.exports = class authorizationMiddleware extends Initializer {
 
   async initialize() {
     const authorization = {
-      name: 'authorization middleware',
+      name: 'authorizationMiddleware',
       global: false,
       apiList: {
         client: ['clientLogin', 'signup', 'addLocation', 'getClient', 'getLocations', 'updateLocation'],
@@ -19,8 +19,12 @@ module.exports = class authorizationMiddleware extends Initializer {
         systemAdmin: ['addClinic', 'addLocation', 'getClinics', 'getClient', 'getClients', 'getLocations', 'getAdmin', 'getAdmins'],
       },
       preProcessor: async (data) => {
-        const token = data.params.token || data.connection.rawConnection?.req?.headers?.authorization?.split(' ')[1];
-        const payload = jwt.verify(token);
+        const token = data.params.token || data.connection.rawConnection?.req?.headers?.authorization?.split(' ')[1] || data.connection.cookie?.api_auth_token;
+        const verifyRes = await jwt.verify(token);
+        if (!verifyRes.success) {
+          throw new Error('Access denied: Your role does not have sufficient permissions to perform this action.');
+        }
+        const payload = verifyRes.message;
         if(!apiList[payload.role] || !apiList[payload.role].includes(!data.action)) {
           api.log(`[AUTH FAIL] ${payload.role} tried to access ${actionName}`, 'warning');
           throw new Error('Access denied: Your role does not have sufficient permissions to perform this action.');

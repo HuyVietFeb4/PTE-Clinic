@@ -46,6 +46,7 @@ module.exports = function (grunt) {
           'app/index.html': [
             'app/scripts/**/app.js',
             'app/scripts/**/*.module.js',
+            'app/scripts/**/*.service.js',
             'app/scripts/**/*.js',
           ],
         }

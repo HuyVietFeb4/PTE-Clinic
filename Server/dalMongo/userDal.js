@@ -13,6 +13,7 @@ async function createSystemAdmin(Email, Username, Password) {
     try {
         const newSysAdmin = new adminModel({ email: Email, username: Username, password: Password, role: 'systemAdmin'});
         await newSysAdmin.save();
+        return { success: true, message: `Create and save system admin account successfully` };
     } catch(error) {
         return { success: false, message: `Error at userDal.js, message: ${error.message}` };
     }
@@ -173,17 +174,17 @@ async function updateUserFailedLoginAttempByEmail(email, successLogin) {
     const maxAttempts = 5;
     try {
         if (successLogin) {
-            await userModel.findOneAndUpdate({ Email: email }, {failedLoginAttemps: 0});
+            await userModel.findOneAndUpdate({ email: email }, {failedLoginAttemps: 0});
             return { success: true, message: "Update user login attempt successfully"};
         } else {
-            const targetUser = await userModel.findOne({ Email: email });
+            const targetUser = await userModel.findOne({ email: email });
             const failedAttemps = targetUser.failedLoginAttemps;
             if ( failedAttemps > 5 && Math.floor((Date.now() - targetUser.lastFailedLogin) / 86400000) > 7 ) {
-                await userModel.findOneAndUpdate({ Email: email }, {lastFailedLogin: new Date(), failedLoginAttemps: 1});
+                await userModel.findOneAndUpdate({ email: email }, {lastFailedLogin: new Date(), failedLoginAttemps: 1});
                 return {success: true, message: `Login failed, you have ${maxAttempts-1} attempts left`};
             }
             else {
-                await userModel.findOneAndUpdate({ Email: email }, {lastFailedLogin: new Date(), failedLoginAttemps: failedAttemps + 1});
+                await userModel.findOneAndUpdate({ email: email }, {lastFailedLogin: new Date(), failedLoginAttemps: failedAttemps + 1});
                 return {success: true, message: `Login failed, you have ${maxAttempts - failedAttemps} attempts left`};
             } 
         }
@@ -203,7 +204,7 @@ async function updateUserFailedLoginAttempByObject(userObject, successLogin) {
             await userObject.save();
             return { success: true, message: "Update user login attempt successfully"};
         } else {
-            const targetUser = await userModel.findOne({ Email: email });
+            const targetUser = await userModel.findOne({ email: email });
             const failedAttemps = targetUser.failedLoginAttemps;
             if ( failedAttemps > 5 && Math.floor((Date.now() - targetUser.lastFailedLogin) / 86400000) > 7 ) {
                 userObject.lastFailedLogin = new Date();
