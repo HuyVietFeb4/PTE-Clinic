@@ -78,7 +78,7 @@ angular.module('clinicApp').run(function($rootScope, $location, $http) {
             }
         })
           .then(function(response) {
-            if (!response.data.success || (response.data.role !== 'clinicAdmin' && response.data.role !== 'systemAdmin')) {
+            if (!response.data.success || (response.data.user.role !== 'clinicAdmin' && response.data.user.role !== 'systemAdmin')) {
               $location.path('/adminLogin');
             }
             else {

@@ -20,8 +20,10 @@
   <a href="" class="link-primary link-offset-1 mb-3">Don't have an account yet? Signup here!</a>
 </form>
 
-<div class="alert alert-success alert-dismissible mb-3" id="authAlert" ng-show="adminLoginCtrl.showAlert"> 
-  <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-  <span id="authAction"></span> <strong id="authState"></strong>
-  <p id="alertMessage"></p>
+<div class="container d-flex align-items-center justify-content-center">
+  <div class="alert alert-success alert-dismissible show mb-3 w-100" id="authAlert" ng-show="signupCtrl.showAlert"> 
+    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    <span id="authAction"></span> <strong id="authState"></strong>
+    <p id="alertMessage"></p>
+  </div>
 </div>

@@ -15,4 +15,12 @@ angular.module('loginService', []).service('apiLogin', function($http) {
             data: params,
         });
     }
+
+    this.clientLoginAction = function(params) {
+        return $http({
+            method: 'POST',
+            url: 'http://172.26.16.1:8888/api/clientLogin',
+            data: params
+        })
+    }
 })
