@@ -46,7 +46,7 @@ async function adminLogin(email, password, clinicName) {
     const hashedPassword = crypto.createHash("sha256").update(password).digest("hex");
     const adminList = await userDal.findAdmins(email);
     for (adminAccount of adminList) {
-        if(adminAccount.clinicAdministeredID.clinicName === clinicName) {
+        if(adminAccount.clinicAdministeredID?.clinicName === clinicName) {
             let isLoginSuccess = undefined;
             let returnObject = {};
             console.log(hashedPassword);
@@ -63,7 +63,7 @@ async function adminLogin(email, password, clinicName) {
             else {
                 isLoginSuccess = false;
             }
-            const resUpdate = await userDal.updateUserFailedLoginAttempByEmail(adminAccount.email, isLoginSuccess);
+            const resUpdate = await userDal.updateUserFailedLoginAttempByEmail(email, isLoginSuccess);
             if (!isLoginSuccess) {
                 returnObject = { success: false, message: resUpdate.message};
             }
@@ -75,7 +75,8 @@ async function adminLogin(email, password, clinicName) {
             }
         }
     }
-    return { success: false, message: "Login unsuccessfully"};
+    const resUpdate = await userDal.updateUserFailedLoginAttempByEmail(adminAccount.email, false);
+    return { success: false, message: resUpdate.message};
 }
 
 async function systemAdminLogin(email, password) {
