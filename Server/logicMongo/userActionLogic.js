@@ -48,7 +48,7 @@ async function adminLogin(email, password, clinicName) {
     const hashedPassword = crypto.createHash("sha256").update(password).digest("hex");
     const adminList = await userDal.findAdmins(email);
     for (adminAccount of adminList) {
-        if(adminAccount.clinicAdministeredID?.clinicName === clinicName) {
+        if(adminAccount.clinicAdministeredID?.clinicName === clinicName && adminAccount.role === 'clinicAdmin') {
             let isLoginSuccess = undefined;
             let returnObject = {};
             console.log(hashedPassword);
@@ -86,6 +86,7 @@ async function systemAdminLogin(email, password) {
     const hashedPassword = crypto.createHash("sha256").update(password).digest("hex");
     const user = await userDal.findUserByEmail(email);
     if (!user) return { success: false, message: "User not found." };
+    if(user.role !== 'systemAdmin') return { success: false, message: 'User not found.' };
     if (user.failedLoginAttemps > 5) return {success: false, message: "User is locked. Please contact support."};
     if (user.password !== hashedPassword) {
         const resUpdate = await userDal.updateUserFailedLoginAttempByEmail(email, false);
