@@ -21,6 +21,7 @@ async function clientLogin(email, password) {
     const hashedPassword = crypto.createHash("sha256").update(password).digest("hex");
     const user = await userDal.findUserByEmail(email);
     if (!user) return { success: false, message: "User not found." };
+    if(user.role !== 'client') return { success: false, message: 'User not found.' };
     if (user.failedLoginAttemps > 5) return {success: false, message: "User is locked. Please contact support."};
     if (user.password !== hashedPassword) {
         const resUpdate = await userDal.updateUserFailedLoginAttempByEmail(email, false);
