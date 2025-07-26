@@ -22,6 +22,6 @@ module.exports = class validateTokenAction extends Action {
         }
         const payload = verifyRes.message;
         data.response.success = true;
-        data.response.role = payload.role;
+        data.response.user = payload;
     }
 }

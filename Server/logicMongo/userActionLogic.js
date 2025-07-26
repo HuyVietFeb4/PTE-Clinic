@@ -36,6 +36,7 @@ async function clientLogin(email, password) {
 
     const payload = {
         id: user._id,
+        email: email,
         role: 'client',
     }
     const token = await jwt.sign(payload);
@@ -55,6 +56,7 @@ async function adminLogin(email, password, clinicName) {
                 isLoginSuccess = true;
                 const payload = {
                     id: adminAccount._id,
+                    email: email,
                     role: 'clinicAdmin',
                 }
                 const token = await jwt.sign(payload);
@@ -98,6 +100,7 @@ async function systemAdminLogin(email, password) {
 
     const payload = {
         id: user._id,
+        email: email,
         role: 'systemAdmin',
     }
     const token = await jwt.sign(payload);
