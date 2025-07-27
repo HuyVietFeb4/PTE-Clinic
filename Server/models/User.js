@@ -4,7 +4,7 @@ var Schema = mongoose.Schema;
 var userSchema  = new mongoose.Schema({ 
     email : String,
     password: String,
-    userName: String,
+    username: String,
     firstName: String, 
     lastName: String, 
     accountStatus: {type: String, default: 'registered'}, // deactivated/locked/activated/registered

@@ -36,6 +36,7 @@ async function clientLogin(email, password) {
     // return token
 
     const payload = {
+        username: user.username,
         id: user._id,
         email: email,
         role: 'client',
@@ -51,11 +52,10 @@ async function adminLogin(email, password, clinicName) {
         if(adminAccount.clinicAdministeredID?.clinicName === clinicName && adminAccount.role === 'clinicAdmin') {
             let isLoginSuccess = undefined;
             let returnObject = {};
-            console.log(hashedPassword);
-            console.log(adminAccount.password);
             if (hashedPassword === adminAccount.password) {
                 isLoginSuccess = true;
                 const payload = {
+                    username: adminAccount.username,
                     id: adminAccount._id,
                     email: email,
                     role: 'clinicAdmin',
@@ -101,6 +101,7 @@ async function systemAdminLogin(email, password) {
     // return token
 
     const payload = {
+        username: user.username,
         id: user._id,
         email: email,
         role: 'systemAdmin',
