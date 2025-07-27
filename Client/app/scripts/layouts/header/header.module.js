@@ -6,4 +6,6 @@
  * @description
  * Header module of the application.
  */
-angular.module('headerApp', []);
+angular.module('headerApp', [
+    'headerService'
+]);

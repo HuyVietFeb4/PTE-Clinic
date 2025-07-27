@@ -9,16 +9,15 @@
         <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarLink">
-        <div class="navbar-nav">
-            <a class="nav-link active" aria-current="page" href="#">Client</a>
-            <a class="nav-link" href="#">Clinic</a>
-            <a class="nav-link" href="#">Report</a>
+        <div class="navbar-nav" ng-if="headerAppCtrl.links.length">
+          <a class="nav-link"  ng-repeat="link in headerAppCtrl.links" href="{{link.url}}"> {{link.name}} </a>
         </div>
+
 
         <div class="navbar-nav ms-auto"> 
             <a class="nav-link" href="#">
                 <img src="images/default/default-pfp.png" alt="User Profile" width="50" height="50" class="d-inline-block"> 
-                User Name
+                {{ headerAppCtrl.username }}
             </a>
         </div>
     </div>

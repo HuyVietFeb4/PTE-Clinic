@@ -13,11 +13,11 @@ angular.module('clinicDashboard').controller('clinicDashboardController', functi
             country: this.addCountry
         }
 
-        const addminPassword = generateRandomPassword();
+        const adminPassword = generateRandomPassword();
         const addAdminParams = {
             username: this.addUsername,
             email: this.addEmail,
-            password: addminPassword,
+            password: adminPassword,
             clinicName: this.addClinicName,
             role: 'clinicAdmin',
         }
@@ -25,8 +25,8 @@ angular.module('clinicDashboard').controller('clinicDashboardController', functi
         // const token = getCookieValue('api_auth_token');
         apiClinicDashboard.addClinicAction(addClinicParams).then(function(response) {
             apiClinicDashboard.addAdminAction(addAdminParams).then(function(response) {
-                console.log(addminPassword);
                 authenticationAlert('Add clinic and admin', true, response.data.message, this.showAlert);
+                console.log(adminPassword);
             }).catch(function (err) {
                 authenticationAlert('Add clinic and admin', false, err.data.error, this.showAlert);
             });
