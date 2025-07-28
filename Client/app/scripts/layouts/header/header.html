@@ -14,7 +14,7 @@
         </div>
 
 
-        <div class="navbar-nav ms-auto"> 
+        <div class="navbar-nav ms-auto" ng-if="headerAppCtrl.loggedIn"> 
             <a class="nav-link" href="#!/">
                 <img src="images/default/default-pfp.png" alt="User Profile" width="50" height="50" class="d-inline-block"> 
                 {{ headerAppCtrl.username }}

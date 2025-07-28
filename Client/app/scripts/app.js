@@ -78,17 +78,41 @@ angular.module('clinicApp').factory('authService', function() {
   };
 })
 
-angular.module('clinicApp').run(function($rootScope, $location, authService) {
+angular.module('clinicApp').run(function($rootScope, $location, authService, $http) {
   $rootScope.$on('$routeChangeStart', function(event, next, current) {
       const freeRoutes = ['/:clinicName/signup', '/clientLogin', '/adminLogin', '/systemAdminLogin', '/'];
       if (!freeRoutes.includes(next.originalPath)) {
-        const user = authService.getUser();
-        if (!user || (user.role !== 'clinicAdmin' && user.role !== 'systemAdmin')) {
-          $location.path(current.originalPath || '/');
-          return;
-        }
+        // const user = authService.getUser();
+        // if (!user || (user.role !== 'clinicAdmin' && user.role !== 'systemAdmin')) {
+        //   $location.path(current?.originalPath || '/');
+        //   return;
+        // }
 
-        $location.path(next.originalPath);
+        // $location.path(next.originalPath);
+
+        const token = getCookieValue('api_auth_token');
+        $http({
+            method: 'GET',
+            url: 'http://172.26.16.1:8888/api/validateToken',
+            headers: {
+                'Authorization': 'Bearer ' + token
+            }
+        })
+        .then(function(response) {
+          if (!response.data.success || (response.data.user.role !== 'clinicAdmin' && response.data.user.role !== 'systemAdmin')) {
+            $location.path(current?.originalPath || '/');
+          }
+          else {
+            authService.setUser(response.data.user);
+            $rootScope.$broadcast('userUpdated');
+            console.log('After set user: ');
+            console.log(authService.getUser());
+            $location.path(next.originalPath);
+          }
+        })
+        .catch(function() {
+          $location.path(current?.originalPath || '/');
+        });
 
       }
   });
