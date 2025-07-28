@@ -8,7 +8,6 @@ angular.module('adminProfile').controller('adminProfileController', function (ap
     const token = getCookieValue('api_auth_token');
     apiAdminProfile.getUserAction(token).then(function(response) {
         const user = response.data.user;
-        console.log(user);
         vm.username = user.username;
         vm.accountStatus = user.accountStatus;
         vm.email = user.email;

@@ -2,9 +2,9 @@
 
 /**
  * @ngdoc overview
- * @name clientProfile
+ * @name adminProfile
  * @description
- * clientProfile module of the application. Show info for 1 client
+ * adminProfile module of the application. Show info for 1 admin (for admin)
  */
 angular.module('adminProfile', [
     'adminProfileService'

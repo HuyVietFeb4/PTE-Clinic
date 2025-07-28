@@ -30,7 +30,7 @@ angular.module('headerApp').controller('headerAppController', function ($scope, 
         ];
       }
       else {
-        vm.linkProfile = '#!/adminProfile'; // fix later
+        vm.linkProfile = '#!/clientProfile'; // fix later
       }
     }
   }
