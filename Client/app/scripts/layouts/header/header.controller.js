@@ -5,6 +5,7 @@ angular.module('headerApp').controller('headerAppController', function ($scope, 
   vm.username = '';
   vm.loggedIn = false;
 
+  vm.linkProfile = '#!/';
   function updateHeader() {
     const user = authService.getUser();
     if (user) {
@@ -15,16 +16,21 @@ angular.module('headerApp').controller('headerAppController', function ($scope, 
       vm.links = [];
 
       if (role === 'systemAdmin') {
+        vm.linkProfile = '#!/adminProfile';
         vm.links = [
           { name: 'Client', url: '#!/client' },
           { name: 'Clinic', url: '#!/clinicDashboard' },
           { name: 'Report', url: '#!/adminDashboard' }
         ];
       } else if (role === 'clinicAdmin') {
+        vm.linkProfile = '#!/adminProfile';
         vm.links = [
           { name: 'Client', url: '#!/client' },
           { name: 'Clinic', url: '#!/clinicProfile' }
         ];
+      }
+      else {
+        vm.linkProfile = '#!/adminProfile'; // fix later
       }
     }
   }

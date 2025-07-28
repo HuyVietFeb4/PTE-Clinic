@@ -1,0 +1,84 @@
+<div class="container-fluid">
+    <div class="row g-2">
+        <div class="col-4">
+            <div class="card w-100">
+                <img src="images/default/default-pfp.png" class="card-img-top" alt="Admin profile picture">
+                <div class="card-body d-flex flex-column justify-content-center">
+                    <h3 class="card-title text-center">{{ adminProfileCtrl.username }}</h3>
+                    <button type="button" class="btn btn-danger mb-3" data-bs-toggle="modal" data-bs-target="#editAdmin">
+                        Edit admin
+                    </button>
+                    <button type="button" class="btn btn-danger mb-3" ng-click="adminProfileCtrl.logout()">
+                        Log out
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="col-8 border rounded">
+            <h3 class="text-center mb-3 mt-3">Admin's info</h3>
+            <div class="row mb-3">
+                <div class="col-4">
+                    Username
+                </div>
+                <div class="col-8">
+                    {{ adminProfileCtrl.username }}
+                </div>
+            </div>
+            <hr>
+
+            <div class="row mb-3">
+                <div class="col-4">
+                    Email
+                </div>
+                <div class="col-8">
+                    {{ adminProfileCtrl.email }}
+                </div>
+            </div>
+            <hr>
+
+            <div class="row mb-3">
+                <div class="col-4">
+                    Status
+                </div>
+                <div class="col-8">
+                    {{ adminProfileCtrl.accountStatus }}
+                </div>
+            </div>
+            <hr>
+
+            <div class="row mb-3" ng-if="adminProfileCtrl.clinicName">
+                <div class="col-4">
+                    Clinic
+                </div>
+                <div class="col-8">
+                    {{ adminProfileCtrl.clinicName }}
+                </div>
+            </div>
+            <hr ng-if="adminProfileCtrl.clinicName">
+        </div>
+    </div>
+</div>
+
+
+<form class="modal fade" id="editAdmin" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="staticBackdropLabel">Edit Admin's Profile</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <label for="editUsername" class="form-label">Username</label>
+        <input type="text" id="editUsername" class="form-control mb-3">
+
+        <label for="editEmail" class="form-label">Email</label>
+        <input type="email" id="editEmail" class="form-control mb-3">
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-primary">Confirm</button>
+      </div>
+    </div>
+  </div>
+</form>

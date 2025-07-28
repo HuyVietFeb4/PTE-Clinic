@@ -24,6 +24,7 @@ angular
     'headerApp',
     'clientProfile',
     'clinicProfile',
+    'adminProfile',
     'adminDashboard',
     'clinicDashboard',
 ])
@@ -49,6 +50,9 @@ angular
       })
       .when('/clientProfile', {
         template: '<client-profile></client-profile>'
+      })
+      .when('/adminProfile', {
+        template: '<admin-profile></admin-profile>'
       })
       .when('/clinicProfile', {
         template: '<clinic-profile></clinic-profile>'
@@ -82,14 +86,6 @@ angular.module('clinicApp').run(function($rootScope, $location, authService, $ht
   $rootScope.$on('$routeChangeStart', function(event, next, current) {
       const freeRoutes = ['/:clinicName/signup', '/clientLogin', '/adminLogin', '/systemAdminLogin', '/'];
       if (!freeRoutes.includes(next.originalPath)) {
-        // const user = authService.getUser();
-        // if (!user || (user.role !== 'clinicAdmin' && user.role !== 'systemAdmin')) {
-        //   $location.path(current?.originalPath || '/');
-        //   return;
-        // }
-
-        // $location.path(next.originalPath);
-
         const token = getCookieValue('api_auth_token');
         $http({
             method: 'GET',
@@ -100,18 +96,16 @@ angular.module('clinicApp').run(function($rootScope, $location, authService, $ht
         })
         .then(function(response) {
           if (!response.data.success || (response.data.user.role !== 'clinicAdmin' && response.data.user.role !== 'systemAdmin')) {
-            $location.path(current?.originalPath || '/');
+            $location.path('/');
           }
           else {
             authService.setUser(response.data.user);
             $rootScope.$broadcast('userUpdated');
-            console.log('After set user: ');
-            console.log(authService.getUser());
             $location.path(next.originalPath);
           }
         })
         .catch(function() {
-          $location.path(current?.originalPath || '/');
+          $location.path('/');
         });
 
       }
