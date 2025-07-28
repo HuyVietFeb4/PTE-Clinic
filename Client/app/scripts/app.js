@@ -82,26 +82,6 @@ angular.module('clinicApp').run(function($rootScope, $location, authService) {
   $rootScope.$on('$routeChangeStart', function(event, next, current) {
       const freeRoutes = ['/:clinicName/signup', '/clientLogin', '/adminLogin', '/systemAdminLogin', '/'];
       if (!freeRoutes.includes(next.originalPath)) {
-        // $http.get('http://172.26.16.1:8888/api/validateToken', { withCredentials: true })
-        // const token = getCookieValue('api_auth_token');
-        // $http({
-        //     method: 'GET',
-        //     url: 'http://172.26.16.1:8888/api/validateToken',
-        //     headers: {
-        //         'Authorization': 'Bearer ' + token
-        //     }
-        // })
-        //   .then(function(response) {
-        //     if (!response.data.success || (response.data.user.role !== 'clinicAdmin' && response.data.user.role !== 'systemAdmin')) {
-        //       $location.path('/adminLogin');
-        //     }
-        //     else {
-        //       $location.path(next.originalPath);
-        //     }
-        //   })
-        //   .catch(function() {
-        //     $location.path('/adminLogin');
-        //   });
         const user = authService.getUser();
         if (!user || (user.role !== 'clinicAdmin' && user.role !== 'systemAdmin')) {
           $location.path(current.originalPath || '/');

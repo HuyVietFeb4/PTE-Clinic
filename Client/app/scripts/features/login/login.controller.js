@@ -11,16 +11,6 @@ angular.module('login').controller('clientLoginController', function (apiLogin, 
             authenticationAlert('Client login', response.data.success, response.data.message, vm.showAlert);
             document.cookie = `api_auth_token=${response.data.token}; Path=/; Max-Age=3600`;
 
-            // $http({
-            //     method: 'GET',
-            //     url: 'http://172.26.16.1:8888/api/validateToken',
-            //     headers: {
-            //         'Authorization': 'Bearer ' + response.data.token
-            //     }
-            // })
-            // .then(function(response) {
-            //     authService.setUser(response.data.user);
-            // })
             apiLogin.validateTokenAction(response.data.token).then(function(response) {
                 authService.setUser(response.data.user);
             })
@@ -49,17 +39,6 @@ angular.module('login').controller('adminLoginController', function (apiLogin, a
             authenticationAlert('Clinic admin login', response.data.success, response.data.message, vm.showAlert);
             document.cookie = `api_auth_token=${response.data.token}; Path=/; Max-Age=3600`;
 
-            // $http({
-            //     method: 'GET',
-            //     url: 'http://172.26.16.1:8888/api/validateToken',
-            //     headers: {
-            //         'Authorization': 'Bearer ' + response.data.token
-            //     }
-            // })
-            // .then(function(response) {
-            //     authService.setUser(response.data.user);
-            // })
-
             apiLogin.validateTokenAction(response.data.token).then(function(response) {
                 authService.setUser(response.data.user);
             })
@@ -87,17 +66,6 @@ angular.module('login').controller('systemAdminLoginController', function (apiLo
         apiLogin.systemAdminLoginAction(params).then(function(response) {
             authenticationAlert('System admin login', response.data.success, response.data.message, vm.showAlert);
             document.cookie = `api_auth_token=${response.data.token}; Path=/; Max-Age=3600`;
-
-            // $http({
-            //     method: 'GET',
-            //     url: 'http://172.26.16.1:8888/api/validateToken',
-            //     headers: {
-            //         'Authorization': 'Bearer ' + response.data.token
-            //     }
-            // })
-            // .then(function(response) {
-            //     authService.setUser(response.data.user);
-            // })
 
             apiLogin.validateTokenAction(response.data.token).then(function(response) {
                 authService.setUser(response.data.user);
