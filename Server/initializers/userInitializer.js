@@ -1,5 +1,7 @@
 const { Initializer, api } = require('actionhero');
 const userActionLogic = require('../logicMongo/userActionLogic');
+const jwt = require('../lib/util/jwt');
+
 
 module.exports = class userInitializer extends Initializer {
     constructor() {
@@ -41,6 +43,7 @@ module.exports = class userInitializer extends Initializer {
         api.user.getAdmin = async function (adminEmail, clinicName) {
             return await userActionLogic.getAdmin(adminEmail, clinicName);
         }
+
         api.user.getClients = async function(pathToFind, valuesToFind, pathToSort, sortDirection, getLocation, getClinicAttend) {
             // pathToFind: a list, what path to find for the client
             // valuesToFind: a list, values that system based on to find client
@@ -59,6 +62,14 @@ module.exports = class userInitializer extends Initializer {
             }
             // Return: a list of clients with relevent clinics attended and location documents
             return await userActionLogic.getClients(pathToFind, valuesToFind, pathToSort, sortDirection, getLocation, getClinicAttend);
+        }
+
+        api.user.getUser = async function (token) {
+            const verifyRes = await jwt.verify(token);
+            if(!token || !verifyRes) {
+                throw new Error('Invalid token to get user');
+            }
+            return await userActionLogic.getUser(verifyRes.message); // pass the payload
         }
 
         api.user.updateClient = async function (clientEmail, pathToUpdate, valueToUpdate) {

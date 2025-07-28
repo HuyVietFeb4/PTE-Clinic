@@ -169,6 +169,14 @@ async function getAdmin(adminEmail, clinicName) {
     return {success: true, message: "Retrieve admin successfully", data: admin}
 }
 
+async function getUser(payload) {
+    const user = await userDal.getUser(payload);
+    if(!user) {
+        return {success: false, message: "Can not get user information."}
+    }
+    return {success: true, message: "Retrieve user successfully", data: user}
+}
+
 
 async function getClients(pathToFind, valuesToFind, pathToSort, sortDirection, getLocation, getClinicAttend) {
     const result = await userDal.getClients(pathToFind, valuesToFind, pathToSort, sortDirection, getLocation, getClinicAttend);
@@ -283,6 +291,7 @@ module.exports = {
     getAdmins: getAdmins,
     getAdmin: getAdmin,
     getClients: getClients,
+    getUser: getUser,
 
     updateClient: updateClient,
     updateAdmin: updateAdmin,

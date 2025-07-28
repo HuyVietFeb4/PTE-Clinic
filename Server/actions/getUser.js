@@ -1,29 +1,17 @@
 'use strict'
 const { api, Action, action } = require('actionhero');
 
-module.exports = class getAdminAction extends Action {
+module.exports = class getUserAction extends Action {
     constructor() {
         super();
-        this.name = 'getAdmin';
-        this.description = 'Get admin action';
-        this.middleware = ['authorizationMiddleware'];
-        this.inputs = {
-            email: {
-                type: String,
-                required: true,
-                validator: this.emailValidator,
-            },
-            clinicName: {
-                type: String,
-                required: true,
-                validator: this.stringValidator
-            }
-        }
+        this.name = 'getUser';
+        this.description = 'Get user action';
     }
 
     async executeFunction(data) {
         try {
-            const result = await api.user.getAdmin(data.params.email);
+            const token = data.connection.rawConnection?.cookies?.api_auth_token || data.params.token || data.connection.rawConnection?.req?.headers?.authorization?.split(' ')[1] ;
+            const result = await api.user.getUser(token);
             return { data: result }; 
         } catch (error) {
             return { err: error };
@@ -38,7 +26,7 @@ module.exports = class getAdminAction extends Action {
         else {
             data.response.success = dataRes.data.success;
             data.response.message = dataRes.data.message;
-            data.response.admin = dataRes.data.data;
+            data.response.user = dataRes.data.data;
         }
     }
 

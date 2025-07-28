@@ -170,6 +170,54 @@ async function getClients(pathToFind, valuesToFind, pathToSort, sortDirection, g
         throw new Error(`Error at userDal.js, message: ${error.message}`);
     }
 }
+
+// async function getUser(payload) {
+//     if(payload.role === 'client') {
+//         return userModel.findOne({ _id: payload.id }).populate([
+//             {
+//             path: 'clinicAttendedID',
+//             populate: {
+//                 path: 'clinicLocationID'
+//             }
+//             },
+//             {
+//                 path: 'clientLocationID'
+//             }
+//         ])
+//     }
+//     else if(payload.role === 'clinicAdmin'){
+//         return userModel.findOne({ _id: payload.id }).populate({
+//             path: 'clinicAdministeredID',
+//             populate: {
+//                 path: 'clinicLocationID'
+//             }
+//         });
+//     }
+//     else if(payload.role === 'systemAdmin') {
+//         return userModel.findOne({ _id: payload.id });
+//     }
+//     else {
+//         return null;
+//     }
+// } my version
+
+async function getUser(payload) { // clean code version
+    const baseQuery = userModel.findOne({ _id: payload.id });
+    const populateMap = {
+        client: [
+            { path: 'clinicAttendedID', populate: { path: 'clinicLocationID' } },
+            { path: 'clientLocationID' }
+        ],
+        clinicAdmin: [
+            { path: 'clinicAdministeredID', populate: { path: 'clinicLocationID' } }
+        ],
+        systemAdmin: []
+    };
+
+    const pathsToPopulate = populateMap[payload.role] || [];
+
+    return baseQuery.populate(pathsToPopulate);
+}
 //update
 async function updateUserFailedLoginAttempByEmail(email, successLogin) {
     const maxAttempts = 5;
@@ -395,6 +443,7 @@ module.exports = {
     findAdminWithClinicName: findAdminWithClinicName,
     findClientByEmail: findClientByEmail,
     getClients: getClients,
+    getUser: getUser,
 
     updateAdmin: updateAdmin,
     updateUserFailedLoginAttempByEmail: updateUserFailedLoginAttempByEmail,
