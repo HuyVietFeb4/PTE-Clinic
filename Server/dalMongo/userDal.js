@@ -24,7 +24,7 @@ async function signup(Email, Username, Password, clinicName, Role) {
         let newUser;
         const clinic = await clinicModel.findOne({ clinicName: clinicName })
         if (Role === 'client') {
-            newUser = new clientModel({ email: Email, username: Username, password: Password, role: Role, clientAttendedID: clinic._id });
+            newUser = new clientModel({ email: Email, username: Username, password: Password, role: Role, clinicAttendedID: clinic._id });
         }
         else {
             newUser = new adminModel({ email: Email, username: Username, password: Password, role: Role, clinicAdministeredID: clinic._id });
