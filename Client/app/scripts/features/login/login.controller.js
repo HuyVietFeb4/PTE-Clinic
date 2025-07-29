@@ -1,4 +1,4 @@
-angular.module('login').controller('clientLoginController', function (apiLogin, $location, sessionFactory) {
+angular.module('login').controller('clientLoginController', function (apiLogin, $location, sessionFactory, $timeout) {
     const vm = this;
     vm.showAlert = false;
 
@@ -9,8 +9,12 @@ angular.module('login').controller('clientLoginController', function (apiLogin, 
         };
         apiLogin.clientLoginAction(params).then(function(response) {
             authenticationAlert('Client login', response.data.success, response.data.message, vm.showAlert);
-            document.cookie = `api_auth_token=${response.data.token}; Path=/; Max-Age=3600`;
-            $location.path('/');
+            if(response.data.success) {
+                $timeout(function() {
+                    document.cookie = `api_auth_token=${response.data.token}; Path=/; Max-Age=3600`;
+                    $location.path('/');
+                }, 2000);
+            }
         }).catch(function (err) {
             const errorMsg = err?.data?.error || err?.message || 'Something went wrong';
             authenticationAlert('Client login', false, errorMsg, vm.showAlert);
@@ -18,7 +22,7 @@ angular.module('login').controller('clientLoginController', function (apiLogin, 
     }
 });
 
-angular.module('login').controller('adminLoginController', function (apiLogin, $location) {
+angular.module('login').controller('adminLoginController', function (apiLogin, $location, $timeout) {
     const vm = this;
     this.showAlert = false;
 
@@ -30,8 +34,12 @@ angular.module('login').controller('adminLoginController', function (apiLogin, $
         };
         apiLogin.clinicAdminLoginAction(params).then(function(response) {
             authenticationAlert('Clinic admin login', response.data.success, response.data.message, vm.showAlert);
-            document.cookie = `api_auth_token=${response.data.token}; Path=/; Max-Age=3600`;
-            $location.path('/');
+            if(response.data.success) {
+                $timeout(function() {
+                    document.cookie = `api_auth_token=${response.data.token}; Path=/; Max-Age=3600`;
+                    $location.path('/');
+                }, 2000);
+            }
         }).catch(function (err) {
             const errorMsg = err?.data?.error || err?.message || 'Something went wrong';
             authenticationAlert('Clinic admin login', false, errorMsg, vm.showAlert);
@@ -39,7 +47,7 @@ angular.module('login').controller('adminLoginController', function (apiLogin, $
     }
 });
 
-angular.module('login').controller('systemAdminLoginController', function (apiLogin, $location) {
+angular.module('login').controller('systemAdminLoginController', function (apiLogin, $location, $timeout) {
     const vm = this;
     vm.showAlert = false;
     vm.systemAdminLogin = function() {
@@ -50,8 +58,12 @@ angular.module('login').controller('systemAdminLoginController', function (apiLo
         };
         apiLogin.systemAdminLoginAction(params).then(function(response) {
             authenticationAlert('System admin login', response.data.success, response.data.message, vm.showAlert);
-            document.cookie = `api_auth_token=${response.data.token}; Path=/; Max-Age=3600`;
-            $location.path('/');
+            if(response.data.success) {
+                $timeout(function() {
+                    document.cookie = `api_auth_token=${response.data.token}; Path=/; Max-Age=3600`;
+                    $location.path('/');
+                }, 2000);
+            }
         }).catch(function (err) {
             const errorMsg = err?.data?.error || err?.message || 'Something went wrong';
             authenticationAlert('System admin login', false, errorMsg, vm.showAlert);

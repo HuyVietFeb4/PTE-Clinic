@@ -189,19 +189,12 @@ angular.module('clinicApp').run(function(sessionFactory, $location, $rootScope) 
 
 
   $rootScope.$on('$routeChangeStart', (event, next) => {
-    // const path = next.originalPath;
-    // if (freeRoutes.includes(path)) return;
-    // if (clientRoutes.includes(path)) {
-    //   return validateAccess(['client'], path);
-    // }
-    // // default to admin-level access check
-    // validateAccess(['clinicAdmin', 'systemAdmin'], path);
     if (freeRoutes.includes(next.originalPath)) return;
     sessionFactory.init()
     .then(function(user) {
       $rootScope.$broadcast('userUpdated');
       if (user.accountStatus !== 'activated') {
-        // move to something
+        // move to notActivated
         return $location.path('/notActivated')
       }
       const path = next.originalPath;
