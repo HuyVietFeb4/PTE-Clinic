@@ -39,6 +39,7 @@ async function clientLogin(email, password) {
         username: user.username,
         id: user._id,
         email: email,
+        accountStatus: user.accountStatus,
         role: 'client',
     }
     const token = await jwt.sign(payload);
@@ -58,6 +59,7 @@ async function adminLogin(email, password, clinicName) {
                     username: adminAccount.username,
                     id: adminAccount._id,
                     email: email,
+                    accountStatus: adminAccount.accountStatus,
                     role: 'clinicAdmin',
                 }
                 const token = await jwt.sign(payload);
@@ -104,6 +106,7 @@ async function systemAdminLogin(email, password) {
         username: user.username,
         id: user._id,
         email: email,
+        accountStatus: user.accountStatus,
         role: 'systemAdmin',
     }
     const token = await jwt.sign(payload);

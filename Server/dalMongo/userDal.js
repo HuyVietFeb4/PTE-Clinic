@@ -11,7 +11,7 @@ const locationDal = require("./locationDal");
 //create
 async function createSystemAdmin(Email, Username, Password) {
     try {
-        const newSysAdmin = new adminModel({ email: Email, username: Username, password: Password, role: 'systemAdmin'});
+        const newSysAdmin = new adminModel({ email: Email, username: Username, password: Password, role: 'systemAdmin', accountStatus: 'activated'});
         await newSysAdmin.save();
         return { success: true, message: `Create and save system admin account successfully` };
     } catch(error) {
@@ -27,7 +27,7 @@ async function signup(Email, Username, Password, clinicName, Role) {
             newUser = new clientModel({ email: Email, username: Username, password: Password, role: Role, clinicAttendedID: clinic._id });
         }
         else {
-            newUser = new adminModel({ email: Email, username: Username, password: Password, role: Role, clinicAdministeredID: clinic._id });
+            newUser = new adminModel({ email: Email, username: Username, password: Password, role: Role, accountStatus: 'activated', clinicAdministeredID: clinic._id });
         }
         await newUser.save();
         return { success: true, message: "User saved successfully" };
