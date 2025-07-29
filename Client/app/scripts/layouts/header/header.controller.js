@@ -1,4 +1,4 @@
-angular.module('headerApp').controller('headerAppController', function ($scope, authService) {
+angular.module('headerApp').controller('headerAppController', function ($scope, sessionFactory) {
   const vm = this;
 
   vm.links = [];
@@ -7,7 +7,7 @@ angular.module('headerApp').controller('headerAppController', function ($scope, 
 
   vm.linkProfile = '#!/';
   function updateHeader() {
-    const user = authService.getUser();
+    const user = sessionFactory.getUser();
     if (user) {
       vm.username = user.username;
       vm.loggedIn = true;

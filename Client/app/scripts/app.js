@@ -27,6 +27,7 @@ angular
     'viewClientProfile',
     'adminProfile',
     'adminDashboard',
+    'notActivated',
     'clinicDashboard',
 ])
   .config(function ($routeProvider) {
@@ -63,30 +64,19 @@ angular
       })
       .when('/adminDashboard', {
         template: '<admin-dashboard></admin-dashboard>'
-      }).when('/clinicDashboard', {
+      })
+      .when('/clinicDashboard', {
         template: '<clinic-dashboard></clinic-dashboard>'
+      })
+      .when('/notActivated', {
+        template: '<not-activated></not-activated>'
       })
       .otherwise({
         redirectTo: '/'
       });
   });
 
-angular.module('clinicApp').factory('authService', function() {
-  let currentUser = null;
-  return {
-    setUser(user) {
-      currentUser = user;
-    },
-    getUser() {
-      return currentUser;
-    },
-    clearUser() {
-      currentUser = null;
-    }
-  };
-})
-
-// angular.module('clinicApp').run(function($rootScope, $location, authService, $http) {
+// angular.module('clinicApp').run(function($rootScope, $location, sessionFactory, $http) {
 //   $rootScope.$on('$routeChangeStart', function(event, next, current) {
 //       const freeRoutes = ['/:clinicName/signup', '/clientLogin', '/adminLogin', '/systemAdminLogin', '/'];
 //       const clientRoutes = ['/clientProfile'];
@@ -104,7 +94,7 @@ angular.module('clinicApp').factory('authService', function() {
 //             $location.path('/');
 //           }
 //           else {
-//             authService.setUser(response.data.user);
+//             sessionFactory.setUser(response.data.user);
 //             $rootScope.$broadcast('userUpdated');
 //             $location.path(next.originalPath);
 //           }
@@ -127,7 +117,7 @@ angular.module('clinicApp').factory('authService', function() {
 //             $location.path('/');
 //           }
 //           else {
-//             authService.setUser(response.data.user);
+//             sessionFactory.setUser(response.data.user);
 //             $rootScope.$broadcast('userUpdated');
 //             $location.path(next.originalPath);
 //           }
@@ -138,42 +128,93 @@ angular.module('clinicApp').factory('authService', function() {
 //       }
 //   });
 
-// }) 
+// }) my code
 
-angular.module('clinicApp').run(function($rootScope, $location, authService, $http) {
+// angular.module('clinicApp').run(function($rootScope, $location, sessionFactory, $http) {
+//   const freeRoutes = ['/:clinicName/signup', '/clientLogin', '/adminLogin', '/systemAdminLogin', '/'];
+//   const clientRoutes = ['/clientProfile', '/notActivated'];
+
+//   function validateAccess(allowedRoles, nextPath) {
+//     const token = getCookieValue('api_auth_token');
+//     $http({
+//       method: 'GET',
+//       url: apiUrl,
+//       headers: { Authorization: 'Bearer ' + token }
+//     })
+//     .then(response => {
+//       const { success, user } = response.data;
+      
+//       if (!success || !allowedRoles.includes(user.role)) {
+//         return $location.path('/');
+//       }
+
+//       sessionFactory.setUser(user);
+//       $rootScope.$broadcast('userUpdated');
+
+//       if (user.accountStatus !== 'activated') {
+//         // move to something
+//         return $location.path('/notActivated')
+//       }
+
+//       $location.path(nextPath);
+//     })
+//     .catch(() => $location.path('/'));
+//   }
+
+//   $rootScope.$on('$routeChangeStart', (event, next) => {
+//     const path = next.originalPath;
+
+//     if (freeRoutes.includes(path)) return;
+
+//     if (clientRoutes.includes(path)) {
+//       return validateAccess(['client'], path);
+//     }
+
+//     // default to admin-level access check
+//     validateAccess(['clinicAdmin', 'systemAdmin'], path);
+//   });
+// }); // clean code version
+
+
+angular.module('clinicApp').run(function(sessionFactory, $location, $rootScope) {
   const freeRoutes = ['/:clinicName/signup', '/clientLogin', '/adminLogin', '/systemAdminLogin', '/'];
-  const clientRoutes = ['/clientProfile'];
-  const apiUrl = 'http://172.26.16.1:8888/api/validateToken';
+  const clientRoutes = ['/clientProfile', '/notActivated'];
 
-  function validateAccess(allowedRoles, nextPath) {
-    const token = getCookieValue('api_auth_token');
-    $http({
-      method: 'GET',
-      url: apiUrl,
-      headers: { Authorization: 'Bearer ' + token }
-    })
-    .then(response => {
-      const { success, user } = response.data;
-      if (!success || !allowedRoles.includes(user.role)) {
-        return $location.path('/');
-      }
-      authService.setUser(user);
-      $rootScope.$broadcast('userUpdated');
-      $location.path(nextPath);
-    })
-    .catch(() => $location.path('/'));
+  function validateAccess(allowedRoles, nextPath, user) {    
+    if (!allowedRoles.includes(user.role)) {
+      return $location.path('/');
+    }
+    $location.path(nextPath);
   }
 
+
   $rootScope.$on('$routeChangeStart', (event, next) => {
-    const path = next.originalPath;
-
-    if (freeRoutes.includes(path)) return;
-
-    if (clientRoutes.includes(path)) {
-      return validateAccess(['client'], path);
-    }
-
-    // default to admin-level access check
-    validateAccess(['clinicAdmin', 'systemAdmin'], path);
+    // const path = next.originalPath;
+    // if (freeRoutes.includes(path)) return;
+    // if (clientRoutes.includes(path)) {
+    //   return validateAccess(['client'], path);
+    // }
+    // // default to admin-level access check
+    // validateAccess(['clinicAdmin', 'systemAdmin'], path);
+    if (freeRoutes.includes(next.originalPath)) return;
+    sessionFactory.init()
+    .then(function(user) {
+      $rootScope.$broadcast('userUpdated');
+      if (user.accountStatus !== 'activated') {
+        // move to something
+        return $location.path('/notActivated')
+      }
+      const path = next.originalPath;
+      if (clientRoutes.includes(path)) {
+        return validateAccess(['client'], path, user);
+      }
+      validateAccess(['clinicAdmin', 'systemAdmin'], path, user);
+    })
+    .catch(function(error) {
+      console.warn('Session init failed:', error);
+      $location.path('/');
+    });
   });
-}); // clean code version
+
+  
+})

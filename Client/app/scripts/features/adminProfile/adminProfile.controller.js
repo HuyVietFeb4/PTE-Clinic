@@ -1,4 +1,4 @@
-angular.module('adminProfile').controller('adminProfileController', function (apiAdminProfile, $location, authService, $rootScope) {
+angular.module('adminProfile').controller('adminProfileController', function (apiAdminProfile, $location, sessionFactory, $rootScope) {
     // call api jwt getUser to get info
     const vm = this;
     vm.username = '';
@@ -17,7 +17,7 @@ angular.module('adminProfile').controller('adminProfileController', function (ap
     })
 
     vm.logout = function() {
-        authService.clearUser();
+        sessionFactory.clearUser();
         $rootScope.$broadcast('userUpdated');
         document.cookie = `api_auth_token=; Path=/; Max-Age=0`;
         $location.path('/');

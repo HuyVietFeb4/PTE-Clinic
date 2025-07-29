@@ -1,4 +1,4 @@
-angular.module('clientProfile').controller('clientProfileController', function (apiClientProfile, $location, authService, $rootScope) {
+angular.module('clientProfile').controller('clientProfileController', function (apiClientProfile, $location, sessionFactory, $rootScope) {
     // call api jwt getUser to get info
     const vm = this;
     vm.username = '';
@@ -11,7 +11,6 @@ angular.module('clientProfile').controller('clientProfileController', function (
     }
     apiClientProfile.getUserAction(token).then(function(response) {
         const user = response.data.user;
-        console.log(user);
         vm.username = user.username;
         vm.accountStatus = user.accountStatus;
         vm.email = user.email;
@@ -21,7 +20,7 @@ angular.module('clientProfile').controller('clientProfileController', function (
     })
 
     vm.logout = function() {
-        authService.clearUser();
+        sessionFactory.clearUser();
         $rootScope.$broadcast('userUpdated');
         document.cookie = `api_auth_token=; Path=/; Max-Age=0`;
         $location.path('/');

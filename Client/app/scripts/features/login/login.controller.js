@@ -1,4 +1,4 @@
-angular.module('login').controller('clientLoginController', function (apiLogin, $location) {
+angular.module('login').controller('clientLoginController', function (apiLogin, $location, sessionFactory) {
     const vm = this;
     vm.showAlert = false;
 

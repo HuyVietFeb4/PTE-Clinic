@@ -1,3 +1,4 @@
+'use strict'
 function getCookieValue(cookieName) {
   const cookies = document.cookie.split('; ');
   for (let cookie of cookies) {
