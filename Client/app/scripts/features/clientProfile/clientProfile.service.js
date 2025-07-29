@@ -7,5 +7,15 @@ angular.module('clientProfileService', []).service('apiClientProfile', function(
                 'Authorization': `Bearer ${token}`
             }
         });
+    };
+    this.updateClientAction = function(params, token) {
+        return $http({
+            method: 'POST',
+            url: `http://172.26.16.1:8888/api/getUser`,
+            params: params,
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        });
     }
 })

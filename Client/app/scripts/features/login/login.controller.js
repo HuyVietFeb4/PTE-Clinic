@@ -8,7 +8,7 @@ angular.module('login').controller('clientLoginController', function (apiLogin, 
             password: vm.passwordLogin,
         };
         apiLogin.clientLoginAction(params).then(function(response) {
-            authenticationAlert('Client login', response.data.success, response.data.message, vm.showAlert);
+            triggerAlert('Client login', response.data.success, response.data.message, vm.showAlert);
             if(response.data.success) {
                 $timeout(function() {
                     document.cookie = `api_auth_token=${response.data.token}; Path=/; Max-Age=3600`;
@@ -17,7 +17,7 @@ angular.module('login').controller('clientLoginController', function (apiLogin, 
             }
         }).catch(function (err) {
             const errorMsg = err?.data?.error || err?.message || 'Something went wrong';
-            authenticationAlert('Client login', false, errorMsg, vm.showAlert);
+            triggerAlert('Client login', false, errorMsg, vm.showAlert);
         });
     }
 });
@@ -33,7 +33,7 @@ angular.module('login').controller('adminLoginController', function (apiLogin, $
             clinicName: vm.clinicNameLogin,
         };
         apiLogin.clinicAdminLoginAction(params).then(function(response) {
-            authenticationAlert('Clinic admin login', response.data.success, response.data.message, vm.showAlert);
+            triggerAlert('Clinic admin login', response.data.success, response.data.message, vm.showAlert);
             if(response.data.success) {
                 $timeout(function() {
                     document.cookie = `api_auth_token=${response.data.token}; Path=/; Max-Age=3600`;
@@ -42,7 +42,7 @@ angular.module('login').controller('adminLoginController', function (apiLogin, $
             }
         }).catch(function (err) {
             const errorMsg = err?.data?.error || err?.message || 'Something went wrong';
-            authenticationAlert('Clinic admin login', false, errorMsg, vm.showAlert);
+            triggerAlert('Clinic admin login', false, errorMsg, vm.showAlert);
         });
     }
 });
@@ -57,7 +57,7 @@ angular.module('login').controller('systemAdminLoginController', function (apiLo
             token: 'i-have-been-authorized-by-the-company-to-use-system-admin-api',
         };
         apiLogin.systemAdminLoginAction(params).then(function(response) {
-            authenticationAlert('System admin login', response.data.success, response.data.message, vm.showAlert);
+            triggerAlert('System admin login', response.data.success, response.data.message, vm.showAlert);
             if(response.data.success) {
                 $timeout(function() {
                     document.cookie = `api_auth_token=${response.data.token}; Path=/; Max-Age=3600`;
@@ -66,7 +66,7 @@ angular.module('login').controller('systemAdminLoginController', function (apiLo
             }
         }).catch(function (err) {
             const errorMsg = err?.data?.error || err?.message || 'Something went wrong';
-            authenticationAlert('System admin login', false, errorMsg, vm.showAlert);
+            triggerAlert('System admin login', false, errorMsg, vm.showAlert);
         });
     }
 });

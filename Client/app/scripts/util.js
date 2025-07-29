@@ -47,7 +47,7 @@ function generateRandomPassword() {
 }
 
 
-const authenticationAlert = function(action, success, message, showAlert) {
+const triggerAlert = function(action, success, message, showAlert) {
     const alertClass = success ? 'alert-success' : 'alert-danger';
     const alertState = success ? 'successfully' : 'failed';
     $('#authAlert').removeClass().addClass(`alert ${alertClass} alert-dismissible mb-3 mt-3`);

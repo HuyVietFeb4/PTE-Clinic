@@ -25,4 +25,24 @@ angular.module('clientProfile').controller('clientProfileController', function (
         document.cookie = `api_auth_token=; Path=/; Max-Age=0`;
         $location.path('/');
     }
+
+    vm.clientEdit = function() {
+        const params = {
+            clientEmail: vm.email,
+            pathToUpdate: [],
+            valueToUpdate: []
+        }
+
+        for (let key of vm) {
+            if (key.startsWith('edit') && vm[key] !== undefined && vm[key] !== '') {
+                const path = key.replace(/^edit/, ''); // e.g., editusername → username
+                params.pathToUpdate.push(path);
+                params.valueToUpdate.push(vm[key]);
+            }
+        }
+
+        console.log('Update Params:', params);
+
+
+    }
 });

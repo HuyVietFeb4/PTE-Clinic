@@ -89,10 +89,10 @@
       </div>
       <div class="modal-body">
         <label for="editUsername" class="form-label">Username</label>
-        <input type="text" id="editUsername" class="form-control mb-3">
+        <input type="text" id="editUsername" class="form-control mb-3" ng-model="clientProfileCtrl.editusername">
 
         <label for="editEmail" class="form-label">Email</label>
-        <input type="email" id="editEmail" class="form-control mb-3">
+        <input type="email" id="editEmail" class="form-control mb-3" ng-model="clientProfileCtrl.editemail">
 
         <!-- <label for="editStatus" class="form-label">Status</label>
         <select class="form-select mb-3" aria-label="Select status options" id="editStatus">
@@ -109,7 +109,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="submit" class="btn btn-primary">Confirm</button>
+        <button type="submit" class="btn btn-primary" ng-submit="clientProfileCtrl.clientEdit()">Confirm</button>
       </div>
     </div>
   </div>

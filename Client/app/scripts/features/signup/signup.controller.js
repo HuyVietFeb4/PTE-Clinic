@@ -12,9 +12,9 @@ angular.module('signup').controller('signupController', function ($routeParams, 
 
 
       apiSignup.signupAction(params).then(function(response) {
-        authenticationAlert('Signup', response.data.success, response.data.message, this.showAlert);
+        triggerAlert('Signup', response.data.success, response.data.message, this.showAlert);
       }).catch(function (err) {
-        authenticationAlert('Signup', false, err.data.error, this.showAlert);
+        triggerAlert('Signup', false, err.data.error, this.showAlert);
       });
     }
 });

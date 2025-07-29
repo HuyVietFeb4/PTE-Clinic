@@ -3,6 +3,7 @@ angular.module('notActivated').controller('notActivatedController', function ($l
   vm.accountStatus = sessionFactory.getUser().accountStatus;
   vm.logout = function() {
       sessionFactory.clearUser();
+      $rootScope.$broadcast('userUpdated');
       document.cookie = `api_auth_token=; Path=/; Max-Age=0`;
       $location.path('/');
   }
