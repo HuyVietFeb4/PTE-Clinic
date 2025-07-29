@@ -25,6 +25,9 @@ module.exports = class authorizationMiddleware extends Initializer {
           throw new Error('Access denied: Your role does not have sufficient permissions to perform this action.');
         }
         const payload = verifyRes.message;
+        if (payload.accountStatus !== 'activated') {
+          throw new Error('Access denied: Your account has not been activated, please contact our support for more information');
+        }
         if(!apiList[payload.role] || !apiList[payload.role].includes(!data.action)) {
           api.log(`[AUTH FAIL] ${payload.role} tried to access ${actionName}`, 'warning');
           throw new Error('Access denied: Your role does not have sufficient permissions to perform this action.');

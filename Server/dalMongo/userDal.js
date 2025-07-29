@@ -101,6 +101,10 @@ async function findClientByEmail(clientEmail) {
     ])
 }
 
+async function findSystemAdminByEmail(adminEmail) {
+    return await userModel.findOne({ email: adminEmail });
+}
+
 async function getClients(pathToFind, valuesToFind, pathToSort, sortDirection, getLocation, getClinicAttend) {
     let aggregateStage = [];
     if (getLocation) {
@@ -276,8 +280,8 @@ async function updateUserFailedLoginAttempByObject(userObject, successLogin) {
     }
 }
 
-async function updateClient(clientEmail, pathToUpdate, valueToUpdate) {
-    let client = await findClientByEmail(clientEmail);
+async function updateClient(adminEmail, pathToUpdate, valueToUpdate) {
+    let client = await findClientByEmail(adminEmail);
     if (pathToUpdate.length > 0 && valueToUpdate.length > 0) {
         for (let i in pathToUpdate) { 
             if(['lastFailedLogin', 'failedLoginAttemps', 'email', 'password'].includes(pathToUpdate[i]) ) {
@@ -313,6 +317,32 @@ async function updateClient(clientEmail, pathToUpdate, valueToUpdate) {
     }
     await client.save();
     return {success: true, message: 'Successfully update client'};
+}
+
+
+async function updateSystemAdmin(adminEmail, pathToUpdate, valueToUpdate) {
+    let systemAdmin = await findSystemAdminByEmail(adminEmail);
+    if (pathToUpdate.length > 0 && valueToUpdate.length > 0) {
+        for (let i in pathToUpdate) { 
+            if(['lastFailedLogin', 'failedLoginAttemps', 'email', 'password'].includes(pathToUpdate[i]) ) {
+                throw new Error(`Can not update this path ${pathToUpdate[i]} with this api call`);
+            }
+            else if (typeof(valueToUpdate[i]) === typeof(systemAdmin[pathToUpdate[i]])) {
+                systemAdmin[pathToUpdate[i]] = valueToUpdate[i];
+            }
+            else if (valueToUpdate[i].includes('{') && typeof(systemAdmin[pathToUpdate[i]]) === 'object') {
+                systemAdmin[pathToUpdate[i]] = JSON.parse(valueToUpdate[i]);
+            }
+            else {
+                throw new Error(`${pathToUpdate[i]} and ${valueToUpdate[i]} is not the same type`);
+            }   
+        }
+    }
+    else {
+        throw new Error("Invalid length");
+    }
+    await systemAdmin.save();
+    return {success: true, message: 'Successfully update system admin'};
 }
 
 async function updateClientClinicAttended(clientEmail, clinicNameToAdd, clinicNameToRemove) { // DONT USE THIS
@@ -450,6 +480,7 @@ module.exports = {
     updateUserFailedLoginAttempByObject: updateUserFailedLoginAttempByObject,
     updateClient: updateClient,
     updateClientClinicAttended: updateClientClinicAttended,
+    updateSystemAdmin: updateSystemAdmin,
     changePasswordClient: changePasswordClient,
     changePasswordAdmin: changePasswordAdmin,
 

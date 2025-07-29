@@ -206,6 +206,7 @@ async function updateClientClinicAttended(clientEmail, clinicNameToAdd, clinicNa
     if(!client) {
         return {success: false, message: "Can not find the account"};
     }
+    if(client.role !== 'client') return { success: false, message: 'Can not update user' };
     const result = await userDal.updateClientClinicAttended(clientEmail, clinicNameToAdd, clinicNameToRemove);
     if (!result.success) {
         throw new Error(result.message);
@@ -218,7 +219,21 @@ async function updateAdmin(adminEmail, clinicName, pathToUpdate, valueToUpdate) 
     if(!admin) {
         return {success: false, message: "No admin found"}
     }
+    if(admin.role !== 'clinicAdmin') return { success: false, message: 'Can not update user' };
     const result = await userDal.updateAdmin(adminEmail, clinicName, pathToUpdate, valueToUpdate);
+    if (!result.success) {
+        throw new Error(result.message);
+    }
+    return result;
+}
+
+async function updateSystemAdmin(adminEmail, pathToUpdate, valueToUpdate) {
+    const admin = await userDal.findUserByEmail(adminEmail);
+    if(!admin) {
+        return {success: false, message: "No admin found"}
+    }
+    if(admin.role !== 'systemAdmin') return { success: false, message: 'Can not update user' };
+    const result = await userDal.updateSystemAdmin(adminEmail, pathToUpdate, valueToUpdate);
     if (!result.success) {
         throw new Error(result.message);
     }
@@ -298,6 +313,7 @@ module.exports = {
 
     updateClient: updateClient,
     updateAdmin: updateAdmin,
+    updateSystemAdmin: updateSystemAdmin,
     updateClientClinicAttended: updateClientClinicAttended,
     changePasswordClient: changePasswordClient,
     changePasswordAdmin: changePasswordAdmin,

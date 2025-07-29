@@ -90,13 +90,39 @@ module.exports = class userInitializer extends Initializer {
         }
         
         api.user.updateAdmin = async function (adminEmail, clinicName, pathToUpdate, valueToUpdate) {
+            if (!Array.isArray(pathToUpdate)) {
+                pathToUpdate = [pathToUpdate];
+            }
+
+            if (!Array.isArray(valueToUpdate)) {
+                valueToUpdate = [valueToUpdate];
+            }
+
             if (pathToUpdate.length === 0 && valueToUpdate.length === 0) {
                 throw new Error('Must have at least 1 path and 1 value to update');
             }
             if(pathToUpdate.length != valueToUpdate.length) {
-                throw new Error('pathToUpdate and valueToUpdate must be the same length')
+                throw new Error(`pathToUpdate, length: ${pathToUpdate.length} and valueToUpdate, length: ${valueToUpdate.length} must be the same length`);
             }
             return await userActionLogic.updateAdmin(adminEmail, clinicName, pathToUpdate, valueToUpdate);
+        }
+
+        api.user.updateSystemAdmin = async function (adminEmail, pathToUpdate, valueToUpdate) {
+            if (!Array.isArray(pathToUpdate)) {
+                pathToUpdate = [pathToUpdate];
+            }
+
+            if (!Array.isArray(valueToUpdate)) {
+                valueToUpdate = [valueToUpdate];
+            }
+
+            if (pathToUpdate.length === 0 && valueToUpdate.length === 0) {
+                throw new Error('Must have at least 1 path and 1 value to update');
+            }
+            if(pathToUpdate.length != valueToUpdate.length) {
+                throw new Error(`pathToUpdate, length: ${pathToUpdate.length} and valueToUpdate, length: ${valueToUpdate.length} must be the same length`);
+            }
+            return await userActionLogic.updateSystemAdmin(adminEmail, pathToUpdate, valueToUpdate);
         }
 
         api.user.changePasswordClient = async function (clientEmail, oldPassword, newPassword) {
