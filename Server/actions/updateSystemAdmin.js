@@ -6,6 +6,7 @@ module.exports = class updateSystemAdminAction extends Action {
         super();
         this.name = 'updateSystemAdmin';
         this.description = 'Update system admin info action';
+        this.middleware = ['authorizationMiddleware'];
         this.inputs = {
             adminEmail: {
                 type: String,

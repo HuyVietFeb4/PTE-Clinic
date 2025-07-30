@@ -47,41 +47,70 @@ async function clientLogin(email, password) {
 }
 
 async function adminLogin(email, password, clinicName) {
+    // const hashedPassword = crypto.createHash("sha256").update(password).digest("hex");
+    // const adminList = await userDal.findAdmins(email);
+    // for (adminAccount of adminList) {
+    //     if(adminAccount.clinicAdministeredID?.clinicName === clinicName && adminAccount.role === 'clinicAdmin') {
+    //         let isLoginSuccess = undefined;
+    //         let returnObject = {};
+    //         if (hashedPassword === adminAccount.password) {
+    //             isLoginSuccess = true;
+    //             const payload = {
+    //                 username: adminAccount.username,
+    //                 id: adminAccount._id,
+    //                 email: email,
+    //                 accountStatus: adminAccount.accountStatus,
+    //                 role: 'clinicAdmin',
+    //                 clinicAdministeredID: adminAccount.clinicAdministeredID,
+    //             }
+    //             const token = await jwt.sign(payload);
+    //             returnObject = { success: true, message: "Login successfully", token: token};
+    //         }
+    //         else {
+    //             isLoginSuccess = false;
+    //         }
+    //         const resUpdate = await userDal.updateUserFailedLoginAttempByEmail(email, isLoginSuccess);
+    //         if (!isLoginSuccess) {
+    //             returnObject = { success: false, message: resUpdate.message};
+    //         }
+    //         if(!resUpdate.success) {
+    //             return resUpdate;
+    //         }
+    //         else {
+    //             return returnObject;
+    //         }
+    //     }
+    // }
+    // const resUpdate = await userDal.updateUserFailedLoginAttempByEmail(adminAccount.email, false);
+    // return { success: false, message: resUpdate.message};
+
     const hashedPassword = crypto.createHash("sha256").update(password).digest("hex");
-    const adminList = await userDal.findAdmins(email);
-    for (adminAccount of adminList) {
-        if(adminAccount.clinicAdministeredID?.clinicName === clinicName && adminAccount.role === 'clinicAdmin') {
-            let isLoginSuccess = undefined;
-            let returnObject = {};
-            if (hashedPassword === adminAccount.password) {
-                isLoginSuccess = true;
-                const payload = {
-                    username: adminAccount.username,
-                    id: adminAccount._id,
-                    email: email,
-                    accountStatus: adminAccount.accountStatus,
-                    role: 'clinicAdmin',
-                }
-                const token = await jwt.sign(payload);
-                returnObject = { success: true, message: "Login successfully", token: token};
-            }
-            else {
-                isLoginSuccess = false;
-            }
-            const resUpdate = await userDal.updateUserFailedLoginAttempByEmail(email, isLoginSuccess);
-            if (!isLoginSuccess) {
-                returnObject = { success: false, message: resUpdate.message};
-            }
-            if(!resUpdate.success) {
-                return resUpdate;
-            }
-            else {
-                return returnObject;
-            }
+    const admin = await userDal.findAdminWithClinicName(email, clinicName);
+    if (!admin) return { success: false, message: "User not found." };
+    if(admin.role !== 'clinicAdmin') return { success: false, message: 'User not found.' };
+    if (admin.failedLoginAttemps > 5) return {success: false, message: "User is locked. Please contact support."};
+    if (admin.password !== hashedPassword) {
+        const resUpdate = await userDal.updateUserFailedLoginAttempByObject(admin, false);
+        if(!resUpdate.success) {
+            return resUpdate;
+        }
+        else {
+            return { success: false, message: resUpdate.message}
         }
     }
-    const resUpdate = await userDal.updateUserFailedLoginAttempByEmail(adminAccount.email, false);
-    return { success: false, message: resUpdate.message};
+    const resUpdate = await userDal.updateUserFailedLoginAttempByObject(admin, true);
+    // return token
+
+    const payload = {
+        username: admin.username,
+        id: admin._id,
+        email: email,
+        accountStatus: admin.accountStatus,
+        role: 'clinicAdmin',
+        clinicAdministeredID: admin.clinicAdministeredID,
+    }
+    const token = await jwt.sign(payload);
+    return { success: true, message: "Login successfully", token: token};
 }
 
 async function systemAdminLogin(email, password) {
@@ -181,8 +210,8 @@ async function getUser(payload) {
 }
 
 
-async function getClients(pathToFind, valuesToFind, pathToSort, sortDirection, getLocation, getClinicAttend) {
-    const result = await userDal.getClients(pathToFind, valuesToFind, pathToSort, sortDirection, getLocation, getClinicAttend);
+async function getClients(pathToFind, valuesToFind, pathToSort, sortDirection, getLocation, getClinicAttend, limit, skip) {
+    const result = await userDal.getClients(pathToFind, valuesToFind, pathToSort, sortDirection, getLocation, getClinicAttend, limit, skip);
     if (!result.success) {
         throw new Error(result.message);
     }

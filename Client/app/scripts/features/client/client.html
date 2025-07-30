@@ -1,4 +1,93 @@
 <div class="container-fluid">
-    <div ng-include="'scripts/layouts/clientFilter/clientFilter.html'"></div>
-    <div ng-include="'scripts/layouts/clientList/clientList.html'"></div>
+    <div class="container-fluid">
+        <div class="input-group">
+            <select class="btn btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-label="multiple select for clinic search" id="pathToSearch" name="pathToSearch">
+                <option selected class="dropdown-item">Username</option>
+                <option class="dropdown-item">Email</option>
+                <option class="dropdown-item">Status</option>
+                <option class="dropdown-item">Clinic</option>
+            </select>
+
+            <input type="text" class="form-control" aria-label="Text input with dropdown buttons" id="searchValue" name="searchValue">
+            <button type="submit" class="btn btn-outline-secondary">
+                <img src="images/bootstrap-icon/search.svg" alt="search image">
+            </button>
+        </div>
+    </div>
+
+    <div class="container-fluid">
+        <h1 class="text-center mt-3">All client account or sum shi</h1>
+        <table class="table table-striped mt-3">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Username</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Clinic</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- <tr>
+                    <th scope="row">1</th>
+                    <td>Mark@example.com</td>
+                    <td>OttoMark</td>
+                    <td>Activated</td>
+                    <td>Clinic_1</td>
+                </tr>
+
+                <tr>
+                    <th scope="row">2</th>
+                    <td>Tom@example.com</td>
+                    <td>Tom Hanks</td>
+                    <td>Deactivated</td>
+                    <td>Clinic_2</td>
+                </tr>
+
+                <tr>
+                    <th scope="row">3</th>
+                    <td>MarkXoan@example.com</td>
+                    <td>Mark Xoanian</td>
+                    <td>Registered</td>
+                    <td>Clinic_3</td>
+                </tr>
+
+                <tr>
+                    <th scope="row">4</th>
+                    <td>Harry@osb.com</td>
+                    <td>Harry Osborns</td>
+                    <td>Activated</td>
+                    <td>Clinic_69</td>
+                </tr>
+
+                <tr>
+                    <th scope="row">5</th>
+                    <td>Anna@Hath.com</td>
+                    <td>Anna Hatheway</td>
+                    <td>Locked</td>
+                    <td>Clinic_69</td>
+                </tr> -->
+                <tr ng-repeat="client in clientCtrl.clients">
+                    <th scope="row">{{$index + 1 + (clientCtrl.currentPage - 1) * clientCtrl.clientsPerPage}}</th>
+                    <td>{{client.email}}</td>
+                    <td>{{client.username}}</td>
+                    <td>{{client.accountStatus}}</td>
+                    <td>{{client.clinicAttended[0].clinicName}}</td>
+                </tr>
+
+            </tbody>
+        </table>
+    </div>
+
+    <nav aria-label="pagination for client list" class="container d-flex justify-content-center mt-5">
+        <ul class="pagination">
+            <li class="page-item" ng-if="clientCtrl.currentPage > 1"><a href="#!/client/{{clientCtrl.currentPage - 1}}" class="page-link">Previous</a></li>
+            <li class="page-item" ng-if="clientCtrl.currentPage > 1"><a class="page-link" href="#!/client/{{clientCtrl.currentPage - 1}}"> {{ clientCtrl.currentPage - 1 }}</a></li>
+            <li class="page-item active">
+                <a class="page-link" aria-current="page"> {{ clientCtrl.currentPage }} </a>
+            </li>
+            <li class="page-item" ng-if="clientCtrl.currentPage < clientCtrl.totalPages"><a class="page-link" href="#!/client/{{clientCtrl.currentPage + 1}}"> {{ clientCtrl.currentPage + 1 }} </a></li>
+            <li class="page-item" ng-if="clientCtrl.currentPage < clientCtrl.totalPages"><a class="page-link" href="#!/client/{{clientCtrl.currentPage + 1}}">Next</a></li>
+        </ul>
+    </nav>
 </div>

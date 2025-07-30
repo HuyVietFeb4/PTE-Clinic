@@ -17,97 +17,97 @@
                 </div>
             </div>
         </div>
-        <div class="col-8 border rounded">
-            <h3 class="text-center mb-3">Clinic's info</h3>
-            <div class="row mb-3">
+        <div class="col-8 border rounded" >
+            <h3 class="text-center mb-3 mt-3">Clinic's info</h3>
+            <div class="row mb-3" ng-if="clinicProfileCtrl.clinicName">
                 <div class="col-4">
                     Clinic name
                 </div>
                 <div class="col-8">
-                    Clinic_1
+                    {{ clinicProfileCtrl.clinicName }}
                 </div>
             </div>
-            <hr>
+            <hr ng-if="clinicProfileCtrl.clinicName">
 
-            <div class="row mb-3">
+            <div class="row mb-3" ng-if="clinicProfileCtrl.locationName">
                 <div class="col-4">
                     Location name
                 </div>
                 <div class="col-8">
-                    Sumting tower
+                    {{ clinicProfileCtrl.locationName }}
                 </div>
             </div>
-            <hr>
+            <hr ng-if="clinicProfileCtrl.locationName">
 
-            <div class="row mb-3">
+            <div class="row mb-3" ng-if="clinicProfileCtrl.number">
                 <div class="col-4">
                     Number
                 </div>
                 <div class="col-8">
-                    36
+                    {{ clinicProfileCtrl.number }}
                 </div>
             </div>
-            <hr>
+            <hr ng-if="clinicProfileCtrl.number">
 
-            <div class="row mb-3">
+            <div class="row mb-3" ng-if="clinicProfileCtrl.street">
                 <div class="col-4">
                     Street
                 </div>
                 <div class="col-8">
-                    Tran Duy Hung
+                    {{ clinicProfileCtrl.street }}
                 </div>
             </div>
-            <hr>
+            <hr ng-if="clinicProfileCtrl.street">
 
-            <div class="row mb-3">
+            <div class="row mb-3" ng-if="clinicProfileCtrl.ward">
                 <div class="col-4">
                     Ward
                 </div>
                 <div class="col-8">
-                    
+                    {{ clinicProfileCtrl.ward }}
                 </div>
             </div>
-            <hr>
+            <hr ng-if="clinicProfileCtrl.ward">
 
-            <div class="row mb-3">
+            <div class="row mb-3" ng-if="clinicProfileCtrl.district">
                 <div class="col-4">
                     District
                 </div>
                 <div class="col-8">
-                    69
+                    {{ clinicProfileCtrl.district }}
                 </div>
             </div>
-            <hr>
+            <hr ng-if="clinicProfileCtrl.district">
 
-            <div class="row mb-3">
+            <div class="row mb-3" ng-if="clinicProfileCtrl.city">
                 <div class="col-4">
                     City
                 </div>
                 <div class="col-8">
-                    Dondocker
+                    {{ clinicProfileCtrl.city }}
                 </div>
             </div>
-            <hr>
+            <hr ng-if="clinicProfileCtrl.city">
 
-            <div class="row mb-3">
+            <div class="row mb-3" ng-if="clinicProfileCtrl.state">
                 <div class="col-4">
                     State
                 </div>
                 <div class="col-8">
-                    Ohio
+                    {{ clinicProfileCtrl.state }}
                 </div>
             </div>
-            <hr>
+            <hr ng-if="clinicProfileCtrl.state">
 
-            <div class="row mb-3">
+            <div class="row mb-3" ng-if="clinicProfileCtrl.country">
                 <div class="col-4">
                     Country
                 </div>
                 <div class="col-8">
-                    USA
+                    {{ clinicProfileCtrl.country }}
                 </div>
             </div>
-            <hr>
+            <hr ng-if="clinicProfileCtrl.country">
         </div>
     </div>
 </div>

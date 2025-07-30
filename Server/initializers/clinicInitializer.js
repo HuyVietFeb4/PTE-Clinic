@@ -14,6 +14,22 @@ module.exports = class clinicInitializer extends Initializer {
         };
 
         api.clinic.getClinics = async function(pathToFind, valuesToFind, pathToSort, sortDirection, getLocation, getClientAttendees) {
+            if (!Array.isArray(pathToFind)) {
+                pathToFind = [pathToFind];
+            }
+
+            if (!Array.isArray(valuesToFind)) {
+                valuesToFind = [valuesToFind];
+            }
+
+            if (!Array.isArray(pathToSort)) {
+                pathToSort = [pathToSort];
+            }
+
+            if (!Array.isArray(sortDirection)) {
+                sortDirection = [sortDirection];
+            }
+
             // pathToFind: a list, what path to find for the client
             // valuesToFind: a list, values that system based on to find client
             // pathToFind and valuesToFind must be the same length
@@ -33,7 +49,31 @@ module.exports = class clinicInitializer extends Initializer {
             return await clinicActionLogic.getClinics(pathToFind, valuesToFind, pathToSort, sortDirection, getLocation, getClientAttendees);
         }
 
+        api.clinic.getClinic = async function(pathToFind, valuesToFind, getLocation) {
+            // if (!getLocation && !getClientAttendees) {
+            //     throw new Error('at least one of getLocation and getClientAttendees must be true');
+            // }
+            // Return: a list of clients with relevent clinics attended and location documents
+            return await clinicActionLogic.getClinic(pathToFind, valuesToFind, getLocation);
+        }
+
         api.clinic.updateClinic = async function(clinicName, pathToUpdate, valueToUpdate) {
+            if (!Array.isArray(pathToUpdate)) {
+                pathToUpdate = [pathToUpdate];
+            }
+
+            if (!Array.isArray(valueToUpdate)) {
+                valueToUpdate = [valueToUpdate];
+            }
+
+            if (!Array.isArray(pathToSort)) {
+                pathToSort = [pathToSort];
+            }
+
+            if (!Array.isArray(sortDirection)) {
+                sortDirection = [sortDirection];
+            }
+
             if (pathToUpdate.length !== valueToUpdate.length) {
                 throw new Error('pathToUpdate and valueToUpdate must be the same length');
             }

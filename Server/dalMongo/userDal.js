@@ -25,6 +25,8 @@ async function signup(Email, Username, Password, clinicName, Role) {
         const clinic = await clinicModel.findOne({ clinicName: clinicName })
         if (Role === 'client') {
             newUser = new clientModel({ email: Email, username: Username, password: Password, role: Role, clinicAttendedID: clinic._id });
+            clinic.clientAttendedIDs.push(newUser._id);
+            await clinic.save();
         }
         else {
             newUser = new adminModel({ email: Email, username: Username, password: Password, role: Role, accountStatus: 'activated', clinicAdministeredID: clinic._id });
@@ -105,8 +107,10 @@ async function findSystemAdminByEmail(adminEmail) {
     return await userModel.findOne({ email: adminEmail });
 }
 
-async function getClients(pathToFind, valuesToFind, pathToSort, sortDirection, getLocation, getClinicAttend) {
+async function getClients(pathToFind, valuesToFind, pathToSort, sortDirection, getLocation, getClinicAttend, limit, skip) {
     let aggregateStage = [];
+    pathToFind.push('role');
+    valuesToFind.push('client');
     if (getLocation) {
         aggregateStage.push(
             {
@@ -118,7 +122,6 @@ async function getClients(pathToFind, valuesToFind, pathToSort, sortDirection, g
                 }
             }
         );
-        // aggregateStage.push({ $unwind: '$clientLocation' }); maybe not needed
     }
     if (getClinicAttend) {
         aggregateStage.push(
@@ -131,13 +134,12 @@ async function getClients(pathToFind, valuesToFind, pathToSort, sortDirection, g
                 }
             }
         );
-        // aggregateStage.push({ $unwind: '$clinicAttended' }); client can only attend 1 clinic
     }
     if(pathToFind.length > 0) {
         let filterObject = {};
         for (let i in pathToFind) {
             let fullPath;
-            if (userModel.schema.path(pathToFind[i])) {
+            if (clientModel.schema.path(pathToFind[i])) {
                 fullPath = pathToFind[i];
             } else if (locationModel.schema.path(pathToFind[i])) {
                 fullPath = `clientLocation.${pathToFind[i]}`;
@@ -154,7 +156,7 @@ async function getClients(pathToFind, valuesToFind, pathToSort, sortDirection, g
         let sortObject = {};
         for (let i in pathToSort) {
             let fullPath;
-            if (userModel.schema.path(pathToSort[i])) {
+            if (clientModel.schema.path(pathToSort[i])) {
                 fullPath = pathToSort[i];
             } else if (locationModel.schema.path(pathToSort[i])) {
                 fullPath = `clientLocation.${pathToSort[i]}`;
@@ -167,9 +169,22 @@ async function getClients(pathToFind, valuesToFind, pathToSort, sortDirection, g
         }
         aggregateStage.push({ $sort: sortObject });
     }
+
+
+    if (typeof skip === 'number') {
+        aggregateStage.push({ $skip: skip });
+    }
+    if (typeof limit === 'number') {
+        aggregateStage.push({ $limit: limit });
+    }
+    const countPipeline = [...aggregateStage]; 
+    const filteredPipeline = countPipeline.filter(stage => !stage.$skip && !stage.$limit);
+    filteredPipeline.push({ $count: 'totalCount' });
     try {
         const clients = await userModel.aggregate(aggregateStage);
-        return {success: true, message: 'Successfully retrieve client info', data: clients};
+        const countResult = await userModel.aggregate(filteredPipeline);
+        const totalCount = countResult[0]?.totalCount || 0;
+        return {success: true, message: 'Successfully retrieve client info', data: clients, totalCount: totalCount};
     } catch(error) {
         throw new Error(`Error at userDal.js, message: ${error.message}`);
     }
@@ -257,9 +272,8 @@ async function updateUserFailedLoginAttempByObject(userObject, successLogin) {
             await userObject.save();
             return { success: true, message: "Update user login attempt successfully"};
         } else {
-            const targetUser = await userModel.findOne({ email: email });
-            const failedAttemps = targetUser.failedLoginAttemps;
-            if ( failedAttemps > 5 && Math.floor((Date.now() - targetUser.lastFailedLogin) / 86400000) > 7 ) {
+            const failedAttemps = userObject.failedLoginAttemps;
+            if ( failedAttemps > 5 && Math.floor((Date.now() - userObject.lastFailedLogin) / 86400000) > 7 ) {
                 userObject.lastFailedLogin = new Date();
                 userObject.failedLoginAttemps = 1;
                 await userObject.save();
@@ -275,7 +289,7 @@ async function updateUserFailedLoginAttempByObject(userObject, successLogin) {
     } catch(error) {
         return {
             success: false,
-            message: `Error updating user: ${error.message || error.toString()}`
+            message: `Error updating user: ${error.message}`
         };
     }
 }

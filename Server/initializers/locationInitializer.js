@@ -15,6 +15,22 @@ module.exports = class locationInitializer extends Initializer {
         };
 
         api.location.getLocations = async function (pathToFind, valuesToFind, pathToSort, sortDirection) {
+            if (!Array.isArray(pathToFind)) {
+                pathToFind = [pathToFind];
+            }
+
+            if (!Array.isArray(valuesToFind)) {
+                valuesToFind = [valuesToFind];
+            }
+
+            if (!Array.isArray(pathToSort)) {
+                pathToSort = [pathToSort];
+            }
+
+            if (!Array.isArray(sortDirection)) {
+                sortDirection = [sortDirection];
+            }
+
             // pathToFind: a list, what path to find for the client
             // valuesToFind: a list, values that system based on to find client
             // pathToFind and valuesToFind must be the same length
@@ -31,6 +47,14 @@ module.exports = class locationInitializer extends Initializer {
         }
 
         api.location.updateLocation = async function (locationName, pathToUpdate, valueToUpdate) {
+            if (!Array.isArray(pathToUpdate)) {
+                pathToUpdate = [pathToUpdate];
+            }
+
+            if (!Array.isArray(valueToUpdate)) {
+                valueToUpdate = [valueToUpdate];
+            }
+
             if (pathToUpdate.length !== valueToUpdate.length) {
                 throw new Error('pathToUpdate and valueToUpdate must be the same length');
             }

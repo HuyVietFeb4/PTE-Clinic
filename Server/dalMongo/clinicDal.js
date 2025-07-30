@@ -1,15 +1,15 @@
 const locationModel = require("../models/location").Model;
 const clinicModel = require("../models/clinic").Model;
 const clientModel = require('../models/client').Model;
-
+const mongoose = require('mongoose');
 const locationDal = require("./locationDal");
 const userDal = require("./userDal");
 // Create
 async function addClinic(ClinicName, locationName) {
     try {
         const newClinic = new clinicModel({ clinicName: ClinicName });
-        const clinicLocation = locationDal.findLocationByName(locationName);
-        newClinic.clientLocationID = clinicLocation._id;
+        const clinicLocation = await locationDal.findLocationByName(locationName);
+        newClinic.clinicLocationID = clinicLocation._id;
         await newClinic.save();
         return { success: true, message: "Clinic added successfully" };
     } catch(error) {
@@ -34,6 +34,57 @@ async function findClinicByNameWithFullInfo(name) {
         }
     ]);
 }
+
+async function getClinic(pathToFind, valuesToFind, getLocation) {
+    let aggregateStage = [];
+    if (getLocation) {
+        aggregateStage.push(
+            {
+                $lookup: {
+                    from: 'location',
+                    localField: 'clinicLocationID',
+                    foreignField: '_id',
+                    as: 'clinicLocation',
+                }
+            }
+        );
+    }
+    // if (getClientAttendees) {
+    //     aggregateStage.push(
+    //         {
+    //             $lookup: {
+    //                 from: 'client',
+    //                 localField: 'clientAttendedIDs',
+    //                 foreignField: '_id',
+    //                 as: 'clientAttendeds',
+    //             }
+    //         }
+    //     );
+    //     aggregateStage.push({ $unwind: '$clientAttendeds' });
+    // }
+    let filterObject = {};
+    if (clinicModel.schema.path(pathToFind) || pathToFind === '_id') {
+        fullPath = pathToFind;
+    }
+    else {
+        return { success: false, message: `Error at clinicDal.js, no such path as ${pathToFind}` };
+    }
+
+    if (pathToFind === '_id') {
+        valuesToFind = mongoose.Types.ObjectId(valuesToFind);
+    }
+
+    filterObject[fullPath] = valuesToFind;
+    aggregateStage.push({ $match: filterObject });
+
+    try {
+        const clinic = await clinicModel.aggregate(aggregateStage);
+        return {success: true, message: 'Successfully retrieve clinic info', data: clinic};
+    } catch(error) {
+        throw new Error(`Error at clinicDal.js, message: ${error.message}`);
+    }
+}
+
 
 async function getClinics(pathToFind, valuesToFind, pathToSort, sortDirection, getLocation, getClientAttendees) {
     let aggregateStage = [];
@@ -174,6 +225,7 @@ module.exports = {
     findClinicByName: findClinicByName, 
     findClinicByNameWithFullInfo: findClinicByNameWithFullInfo,
     getClinics: getClinics,
+    getClinic: getClinic,
 
     updateClinic: updateClinic,
     updateClinicClientAttendee: updateClinicClientAttendee

@@ -131,8 +131,6 @@ angular.module('adminProfile').controller('adminProfileController', function (ap
         const action = isClinicAdmin ? apiAdminProfile.updateAdminAction : apiAdminProfile.updateSystemAdminAction;
         const label = isClinicAdmin ? 'Update admin' : 'Update system admin';
 
-        console.log(action);
-        console.log(params);
         action(params, token)
             .then(response => handleUpdateResponse(label, response))
             .catch(err => handleError(label, err));

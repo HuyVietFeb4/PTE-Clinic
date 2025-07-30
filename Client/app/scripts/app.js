@@ -47,7 +47,7 @@ angular
       .when('/adminLogin/chooseClinic', {
         template: '<choose-clinic></choose-clinic>'
       })
-      .when('/client', {
+      .when('/client/:page', {
         template: '<client></client>'
       })
       .when('/clientProfile', {
@@ -184,7 +184,6 @@ angular.module('clinicApp').run(function(sessionFactory, $location, $rootScope) 
     if (!allowedRoles.includes(user.role)) {
       return $location.path('/');
     }
-    $location.path(nextPath);
   }
 
 

@@ -24,7 +24,7 @@ module.exports = class getClientsAction extends Action {
                 validator: this.pathListValidator
             },
             sortDirection: {
-                type: [Number], 
+                type: [String], 
                 default: [],
                 validator: this.sortDirectionValidator
             },
@@ -35,13 +35,24 @@ module.exports = class getClientsAction extends Action {
             getClinicAttend: {
                 type: Boolean,
                 default: true
+            },
+            limit: {
+                type: String,
+                default: '-1',
+                validator: this.numberValidator,
+            },
+            skip: {
+                type: String,
+                default: '0',
+                validator: this.numberValidator,
             }
         }
     }
 
     async executeFunction(data) {
         try {
-            const result = await api.user.getClients(data.params.pathToFind, data.params.valuesToFind, data.params.pathToSort, data.params.sortDirection, data.params.getLocation, data.params.getClinicAttend)
+            const result = await api.user.getClients(data.params.pathToFind, data.params.valuesToFind, data.params.pathToSort, data.params.sortDirection
+            , data.params.getLocation, data.params.getClinicAttend, parseInt(data.params.limit), parseInt(data.params.skip));
             return { data: result };
         } catch (error) {
             return { err: error };
@@ -57,6 +68,7 @@ module.exports = class getClientsAction extends Action {
             data.response.success = dataRes.data.success;
             data.response.message = dataRes.data.message;
             data.response.clients = dataRes.data.data;
+            data.response.totalCount = dataRes.data.totalCount;
         }
     }
 
@@ -78,9 +90,20 @@ module.exports = class getClientsAction extends Action {
     }
     sortDirectionValidator(sortDirection) {
         for (let value of sortDirection) {
-            if (value !== -1 && value !== 1) {
-                throw new Error('sort value must be -1 or 1');
+            if (value !== '-1' && value !== '1') {
+                throw new Error('Sort value must be -1 or 1');
             }
+        }
+    }
+
+    numberValidator(numberStr) {
+        const numberRegex = /^[0-9]+/;
+        if(!numberRegex.test(numberStr)) {
+            throw new Error('Invalid number format');
+        }
+        const number = parseInt(numberStr);
+        if(number > 10000000 || number < -1) {
+            throw new Error('Number out of range');
         }
     }
 }

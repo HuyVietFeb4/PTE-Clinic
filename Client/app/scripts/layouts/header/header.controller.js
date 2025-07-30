@@ -25,7 +25,7 @@ angular.module('headerApp').controller('headerAppController', function ($scope, 
       } else if (role === 'clinicAdmin') {
         vm.linkProfile = '#!/adminProfile';
         vm.links = [
-          { name: 'Client', url: '#!/client' },
+          { name: 'Client', url: '#!/client/1' },
           { name: 'Clinic', url: '#!/clinicProfile' }
         ];
       }

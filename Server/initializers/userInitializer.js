@@ -44,7 +44,23 @@ module.exports = class userInitializer extends Initializer {
             return await userActionLogic.getAdmin(adminEmail, clinicName);
         }
 
-        api.user.getClients = async function(pathToFind, valuesToFind, pathToSort, sortDirection, getLocation, getClinicAttend) {
+        api.user.getClients = async function(pathToFind, valuesToFind, pathToSort, sortDirection, getLocation, getClinicAttend, limit, skip) {
+            if (!Array.isArray(pathToFind)) {
+                pathToFind = [pathToFind];
+            }
+
+            if (!Array.isArray(valuesToFind)) {
+                valuesToFind = [valuesToFind];
+            }
+
+            if (!Array.isArray(pathToSort)) {
+                pathToSort = [pathToSort];
+            }
+
+            if (!Array.isArray(sortDirection)) {
+                sortDirection = [sortDirection];
+            }
+
             // pathToFind: a list, what path to find for the client
             // valuesToFind: a list, values that system based on to find client
             // pathToFind and valuesToFind must be the same length
@@ -61,7 +77,7 @@ module.exports = class userInitializer extends Initializer {
                 throw new Error('at least one of getLocation and getClinicAttend must be true');
             }
             // Return: a list of clients with relevent clinics attended and location documents
-            return await userActionLogic.getClients(pathToFind, valuesToFind, pathToSort, sortDirection, getLocation, getClinicAttend);
+            return await userActionLogic.getClients(pathToFind, valuesToFind, pathToSort, sortDirection, getLocation, getClinicAttend, limit, skip);
         }
 
         api.user.getUser = async function (token) {
@@ -73,6 +89,14 @@ module.exports = class userInitializer extends Initializer {
         }
 
         api.user.updateClient = async function (clientEmail, pathToUpdate, valueToUpdate) {
+            if (!Array.isArray(pathToUpdate)) {
+                pathToUpdate = [pathToUpdate];
+            }
+
+            if (!Array.isArray(valueToUpdate)) {
+                valueToUpdate = [valueToUpdate];
+            }
+
             if (pathToUpdate.length !== valueToUpdate.length) {
                 throw new Error('pathToUpdate and valueToUpdate must be the same length');
             }

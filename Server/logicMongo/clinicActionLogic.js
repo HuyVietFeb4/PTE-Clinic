@@ -21,6 +21,14 @@ async function getClinics(pathToFind, valuesToFind, pathToSort, sortDirection, g
     return result;
 }
 
+async function getClinic(pathToFind, valuesToFind, getLocation) {
+    const result = await clinicDal.getClinic(pathToFind, valuesToFind, getLocation);
+    if (!result.success) {
+        throw new Error(result.message);
+    }
+    return result;
+}
+
 async function updateClinic(clinicName, pathToUpdate, valueToUpdate) {
     const clinic = await clinicDal.findClinicByName(clinicName);
     if(!clinic) {
@@ -49,6 +57,7 @@ module.exports = {
     addClinic: addClinic,
 
     getClinics: getClinics,
+    getClinic: getClinic,
 
     updateClinic: updateClinic,
     updateClinicClientAttendee: updateClinicClientAttendee
