@@ -185,6 +185,14 @@ async function getClient(clientEmail) {
     return {success: true, message: "Retrieve client successfully", data: client}
 }
 
+async function getClientByID(clientID) {
+    const client = await userDal.getClientByID(clientID);
+    if(!client) {
+        return {success: false, message: "No client found"}
+    }
+    return {success: true, message: "Retrieve client successfully", data: client}
+}
+
 async function getAdmins(adminEmail) {
     const admins = await userDal.findAdmins(adminEmail);
     if(!admins) {
@@ -335,6 +343,7 @@ module.exports = {
     createSystemAdmin: createSystemAdmin,
 
     getClient: getClient,
+    getClientByID: getClientByID,
     getAdmins: getAdmins,
     getAdmin: getAdmin,
     getClients: getClients,

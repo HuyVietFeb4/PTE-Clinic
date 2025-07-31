@@ -45,5 +45,9 @@ angular.module('client').controller('clientController', function (apiClient, $ro
         vm.fetchClients();
     }
 
+    vm.goToClient = function(clientID) {
+        $location.path(`/viewClientProfile/${clientID}`);
+    }
+
     vm.fetchClients();
 });

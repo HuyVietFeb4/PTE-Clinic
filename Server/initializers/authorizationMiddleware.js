@@ -15,8 +15,8 @@ module.exports = class authorizationMiddleware extends Initializer {
       apiList: {
         client: ['clientLogin', 'signup', 'addLocation', 'getClient', 'getLocations', 'updateLocation'],
         clinicAdmin: ['adminLogin', 'addLocation', 'getClinics', 'getClient', 'getClients', 'getLocations', 'updateClinic', 
-        'updateClinicClientAttendee', 'updateClient', 'updateAdmin', 'updateLocation', 'deleteClient', 'deleteAdmin', 'getClinic'],
-        systemAdmin: ['addClinic', 'addLocation', 'getClinics', 'getClient', 'getClients', 'getLocations', 'getAdmin', 'getAdmins', 'updateSystemAdmin', 'getClinic'],
+        'updateClinicClientAttendee', 'updateClient', 'updateAdmin', 'updateLocation', 'deleteClient', 'deleteAdmin', 'getClinic', 'getClientByID'],
+        systemAdmin: ['addClinic', 'addLocation', 'getClinics', 'getClient', 'getClients', 'getLocations', 'getAdmin', 'getAdmins', 'updateSystemAdmin', 'getClinic', 'getClientByID'],
       },
       preProcessor: async (data) => {
         const token = data.params.token || data.connection.rawConnection?.req?.headers?.authorization?.split(' ')[1] || data.connection.cookie?.api_auth_token;

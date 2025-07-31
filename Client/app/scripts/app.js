@@ -53,7 +53,7 @@ angular
       .when('/clientProfile', {
         template: '<client-profile></client-profile>'
       })
-      .when('/viewClientProfile', {
+      .when('/viewClientProfile/:clientID', {
         template: '<view-client-profile></view-client-profile>'
       })
       .when('/adminProfile', {

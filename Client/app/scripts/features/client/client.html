@@ -28,53 +28,13 @@
                 </tr>
             </thead>
             <tbody>
-                <!-- <tr>
-                    <th scope="row">1</th>
-                    <td>Mark@example.com</td>
-                    <td>OttoMark</td>
-                    <td>Activated</td>
-                    <td>Clinic_1</td>
-                </tr>
-
-                <tr>
-                    <th scope="row">2</th>
-                    <td>Tom@example.com</td>
-                    <td>Tom Hanks</td>
-                    <td>Deactivated</td>
-                    <td>Clinic_2</td>
-                </tr>
-
-                <tr>
-                    <th scope="row">3</th>
-                    <td>MarkXoan@example.com</td>
-                    <td>Mark Xoanian</td>
-                    <td>Registered</td>
-                    <td>Clinic_3</td>
-                </tr>
-
-                <tr>
-                    <th scope="row">4</th>
-                    <td>Harry@osb.com</td>
-                    <td>Harry Osborns</td>
-                    <td>Activated</td>
-                    <td>Clinic_69</td>
-                </tr>
-
-                <tr>
-                    <th scope="row">5</th>
-                    <td>Anna@Hath.com</td>
-                    <td>Anna Hatheway</td>
-                    <td>Locked</td>
-                    <td>Clinic_69</td>
-                </tr> -->
-                <tr ng-repeat="client in clientCtrl.clients">
+                <tr ng-repeat="client in clientCtrl.clients" ng-click="clientCtrl.goToClient(client._id)">
                     <th scope="row">{{$index + 1 + (clientCtrl.currentPage - 1) * clientCtrl.clientsPerPage}}</th>
                     <td>{{client.email}}</td>
                     <td>{{client.username}}</td>
                     <td>{{client.accountStatus}}</td>
                     <td>{{client.clinicAttended[0].clinicName}}</td>
                 </tr>
-
             </tbody>
         </table>
     </div>

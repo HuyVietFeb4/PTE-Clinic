@@ -103,6 +103,20 @@ async function findClientByEmail(clientEmail) {
     ])
 }
 
+async function getClientByID(clientID) {
+    return await userModel.findOne({ _id: clientID }).populate([
+        {
+        path: 'clinicAttendedID',
+        populate: {
+            path: 'clinicLocationID'
+        }
+        },
+        {
+            path: 'clientLocationID'
+        }
+    ])
+}
+
 async function findSystemAdminByEmail(adminEmail) {
     return await userModel.findOne({ email: adminEmail });
 }
@@ -483,6 +497,7 @@ module.exports = {
 
     findUserByUsername: findUserByUsername, 
     findUserByEmail: findUserByEmail,
+    getClientByID: getClientByID,
     findAdmins: findAdmins,
     findAdminWithClinicName: findAdminWithClinicName,
     findClientByEmail: findClientByEmail,

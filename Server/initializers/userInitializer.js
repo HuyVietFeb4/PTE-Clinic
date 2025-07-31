@@ -36,6 +36,10 @@ module.exports = class userInitializer extends Initializer {
             return await userActionLogic.getClient(clientEmail);
         }
 
+        api.user.getClientByID = async function (clientID) {
+            return await userActionLogic.getClientByID(clientID);
+        }
+
         api.user.getAdmins = async function (adminEmail) {
             return await userActionLogic.getAdmins(adminEmail);
         }
