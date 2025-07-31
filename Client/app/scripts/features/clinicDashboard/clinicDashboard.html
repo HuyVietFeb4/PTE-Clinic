@@ -15,7 +15,22 @@
   <p id="alertMessage"></p>
 </div>
 
-<div ng-include="'scripts/layouts/clinicList/clinicList.html'"></div>
+<!-- <div ng-include="'scripts/layouts/clinicList/clinicList.html'"></div> -->
+
+<div class="container-fluid m-3">
+    <div class="row g-2">
+        <div class="col-6 col-md-3" style="cursor: pointer;" ng-repeat="clinic in clinicDashboardCtrl.clinics" ng-click="clinicDashboardCtrl.goToClinic(clinic.clinicName)">
+            <div class="card">
+                <img src="images/clinics/default-clinics.jpg" class="card-img-top" alt="clinic image">
+                <div class="card-body">
+                    <h5 class="card-title">{{ clinic.clinicName}}</h5>
+                    <p class="card-text">Location: {{ clinic.clinicLocation[0].locationName }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 <form class="modal fade" id="addClinicAndAdmin" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true" ng-submit="clinicDashboardCtrl.addClinicandAdmin()">
   <div class="modal-dialog">

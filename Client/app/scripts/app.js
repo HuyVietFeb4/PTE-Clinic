@@ -62,6 +62,9 @@ angular
       .when('/clinicProfile', {
         template: '<clinic-profile></clinic-profile>'
       })
+      .when('/clinicProfile/:clinicName', {
+        template: '<clinic-profile></clinic-profile>'
+      })
       .when('/adminDashboard', {
         template: '<admin-dashboard></admin-dashboard>'
       })

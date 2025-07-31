@@ -16,7 +16,7 @@ angular.module('client').controller('clientController', function (apiClient, $ro
             skip: (vm.currentPage - 1) * vm.clientsPerPage ,
             getLocation: false,
         };
-
+        // Not done yet, still filter function left to do
         apiClient.getClients(params, token).then(function(response) {
             vm.clients = response.data.clients;
             vm.totalClients = response.data.totalCount;

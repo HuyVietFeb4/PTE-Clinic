@@ -11,8 +11,8 @@ angular.module('viewClientProfile').controller('viewClientProfileController', fu
     const params = {
         clientID: vm.clientID
     }
-    apiViewClientProfile.getClientAction(params, token).then(function(respond) {
-        const client = respond.data.client;
+    apiViewClientProfile.getClientAction(params, token).then(function(response) {
+        const client = response.data.client;
         vm.username = client.username;
         vm.accountStatus = client.accountStatus;
         vm.email = client.email;

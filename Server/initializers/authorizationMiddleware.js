@@ -14,7 +14,7 @@ module.exports = class authorizationMiddleware extends Initializer {
       global: false,
       apiList: {
         client: ['clientLogin', 'signup', 'addLocation', 'getClient', 'getLocations', 'updateLocation'],
-        clinicAdmin: ['adminLogin', 'addLocation', 'getClinics', 'getClient', 'getClients', 'getLocations', 'updateClinic', 
+        clinicAdmin: ['adminLogin', 'addLocation', 'getClient', 'getClients', 'getLocations', 'updateClinic', 
         'updateClinicClientAttendee', 'updateClient', 'updateAdmin', 'updateLocation', 'deleteClient', 'deleteAdmin', 'getClinic', 'getClientByID'],
         systemAdmin: ['addClinic', 'addLocation', 'getClinics', 'getClient', 'getClients', 'getLocations', 'getAdmin', 'getAdmins', 'updateSystemAdmin', 'getClinic', 'getClientByID'],
       },
@@ -22,7 +22,8 @@ module.exports = class authorizationMiddleware extends Initializer {
         const token = data.params.token || data.connection.rawConnection?.req?.headers?.authorization?.split(' ')[1] || data.connection.cookie?.api_auth_token;
         const verifyRes = await jwt.verify(token);
         if (!verifyRes.success) {
-          throw new Error('Access denied: Your role does not have sufficient permissions to perform this action.');
+          console.log(token);
+          throw new Error(`Access denied: ${verifyRes.message}`);
         }
         const payload = verifyRes.message;
         if (payload.accountStatus !== 'activated') {

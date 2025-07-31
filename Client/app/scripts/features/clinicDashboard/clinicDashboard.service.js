@@ -20,4 +20,14 @@ angular.module('clinicDashboardService', []).service('apiClinicDashboard', funct
             }
         })
     }
+    this.getClinics = function(params, token) {
+        return $http({
+            method: 'POST',
+            url: 'http://172.26.16.1:8888/api/getClinics',
+            data: params,
+            headers: {
+                'Authorization': 'Bearer ' + token
+            }
+        })
+    }
 })

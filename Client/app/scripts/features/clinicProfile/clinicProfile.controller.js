@@ -1,4 +1,4 @@
-angular.module('clinicProfile').controller('clinicProfileController', function (sessionFactory, apiClinicProfile) {
+angular.module('clinicProfile').controller('clinicProfileController', function (sessionFactory, apiClinicProfile, $routeParams, $route) {
     const vm = this;
     vm.clinicName = '';
     vm.locationName = '';
@@ -37,6 +37,6 @@ angular.module('clinicProfile').controller('clinicProfileController', function (
         });
     }
     else if(admin.role === 'systemAdmin'){ // take info from route
-
+        
     }
 });
