@@ -1,4 +1,8 @@
 angular.module('clientService', []).service('apiClient', function($http) { 
+    this.searchClientParams = {
+        valuesToFind: [],
+        pathToFind: [],
+    }
     this.getClients = function(params, token) {
         return $http({
             method: 'POST',

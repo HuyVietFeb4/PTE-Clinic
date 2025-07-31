@@ -116,6 +116,25 @@ angular.module('clinicProfile').controller('clinicProfileController', function (
         }
     }
     else if(admin.role === 'systemAdmin'){ // take info from route
+        const params = {
+            pathToFind: 'clinicName',
+            valuesToFind: $routeParams.clinicName,
+        }
         
+        apiClinicProfile.getClinicAction(params, token).then(function(response) {
+            const clinic = response.data.clinic[0];
+            const clinicLocation = clinic.clinicLocation[0];
+            vm.clinicName = clinic.clinicName;
+            vm.locationName = clinicLocation.locationName;
+            vm.number = clinicLocation.number;
+            vm.street = clinicLocation.street;
+            vm.ward = clinicLocation.ward;
+            vm.district = clinicLocation.district;
+            vm.city = clinicLocation.city;
+            vm.state = clinicLocation.state;
+            vm.country = clinicLocation.country;
+        }).catch(function(error) {
+            console.log(error.message)
+        });
     }
 });

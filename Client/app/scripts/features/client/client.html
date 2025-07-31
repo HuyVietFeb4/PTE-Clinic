@@ -1,15 +1,15 @@
 <div class="container-fluid">
     <div class="container-fluid">
         <div class="input-group">
-            <select class="btn btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-label="multiple select for clinic search" id="pathToSearch" name="pathToSearch">
-                <option selected class="dropdown-item">Username</option>
-                <option class="dropdown-item">Email</option>
-                <option class="dropdown-item">Status</option>
-                <option class="dropdown-item">Clinic</option>
+            <select class="form-select" aria-label="multiple select for clinic search" id="pathToFind" name="pathToFind" ng-model="clientCtrl.pathToFind">
+                <option selected value="username" class="dropdown-item">Username</option>
+                <option value="email" class="dropdown-item">Email</option>
+                <option value="accountStatus" class="dropdown-item">Status</option>
+                <option value="clinicName" class="dropdown-item">Clinic</option>
             </select>
 
-            <input type="text" class="form-control" aria-label="Text input with dropdown buttons" id="searchValue" name="searchValue">
-            <button type="submit" class="btn btn-outline-secondary">
+            <input type="text" class="form-control" aria-label="Text input with dropdown buttons" id="valuesToFind" name="valuesToFind" ng-model="clientCtrl.valuesToFind">
+            <button class="btn btn-outline-secondary" ng-click="clientCtrl.fetchClients()">
                 <img src="images/bootstrap-icon/search.svg" alt="search image">
             </button>
         </div>

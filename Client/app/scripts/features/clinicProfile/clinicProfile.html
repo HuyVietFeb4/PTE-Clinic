@@ -4,14 +4,14 @@
             <div class="card w-100">
                 <img src="images/clinics/default-clinics.jpg" class="card-img-top" alt="Clinic picture">
                 <div class="card-body vstack gap-2">
-                    <h3 class="card-title text-center">Clinic Name</h3>
-                    <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#editClinic">
+                    <h3 class="card-title text-center">{{ clinicProfileCtrl.clinicName }}</h3>
+                    <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#editClinic" ng-if="clinicProfileCtrl.role === 'clinicAdmin'">
                         Edit clinic
                     </button>
-                    <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#editClinicClientList">
+                    <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#editClinicClientList" ng-if="clinicProfileCtrl.role === 'clinicAdmin'">
                         Edit clinic's client list
                     </button>
-                    <a role="button" class="btn btn-primary" href="#">
+                    <a role="button" class="btn btn-primary" href="#" ng-if="clinicProfileCtrl.role === 'clinicAdmin'">
                         Clinic's client list
                     </a>
                 </div>

@@ -1,4 +1,4 @@
-angular.module('client').controller('clientController', function (apiClient, $routeParams, $location) {
+angular.module('client').controller('clientController', function (apiClient, $routeParams, $location, $route) {
     const vm = this;
     vm.clientsPerPage = 6;
     vm.currentPage = (parseInt($routeParams.page) > 0) ? parseInt($routeParams.page) : 1; // skip = (currentPage - 1) * limit
@@ -11,12 +11,20 @@ angular.module('client').controller('clientController', function (apiClient, $ro
     const token = getCookieValue('api_auth_token');
 
     vm.fetchClients = function() {
+        console.log('here')
+        // Not done yet, still filter function left to do
+        if(vm.valuesToFind && vm.pathToFind) {
+            apiClient.searchClientParams.pathToFind = [vm.pathToFind];
+            apiClient.searchClientParams.valuesToFind = [vm.valuesToFind];
+        }
+
         const params = {
             limit: vm.clientsPerPage,
             skip: (vm.currentPage - 1) * vm.clientsPerPage ,
             getLocation: false,
+            pathToFind: apiClient.searchClientParams.pathToFind,
+            valuesToFind: apiClient.searchClientParams.valuesToFind
         };
-        // Not done yet, still filter function left to do
         apiClient.getClients(params, token).then(function(response) {
             vm.clients = response.data.clients;
             vm.totalClients = response.data.totalCount;
@@ -47,6 +55,10 @@ angular.module('client').controller('clientController', function (apiClient, $ro
 
     vm.goToClient = function(clientID) {
         $location.path(`/viewClientProfile/${clientID}`);
+    }
+
+    vm.refreshPage = function() {
+        $route.reload();
     }
 
     vm.fetchClients();
