@@ -6,12 +6,12 @@ module.exports = class updateLocationAction extends Action {
         super();
         this.name = 'updateLocation';
         this.description = 'Update location info action';
-        this.middleware = ['authorizationMiddleware', 'ownershipMiddleware'];
+        this.middleware = ['authorizationMiddleware'];
         this.inputs = {
             locationName: {
                 type: String,
                 require: true,
-                validator: this.emailValidator
+                validator: this.stringValidator
             },
             pathToUpdate: {
                 type: [String],
@@ -46,6 +46,12 @@ module.exports = class updateLocationAction extends Action {
         }
     }
 
+    stringValidator(string) {
+        const stringRegex = /^[_a-zA-Z0-9]+( [_a-zA-Z0-9]+)*$/;
+        if(!stringRegex.test(string)) {
+            throw new Error(`Invalid string: ${string}`)
+        }
+    }
     stringListValidator(stringList) {
         const stringRegex = /^[_a-zA-Z0-9]+( [_a-zA-Z0-9]+)*$/;
         for (let string of stringList) {

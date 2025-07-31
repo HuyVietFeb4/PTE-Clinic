@@ -34,7 +34,7 @@ async function updateClinic(clinicName, pathToUpdate, valueToUpdate) {
     if(!clinic) {
         return {success: false, message: "Can not find the clinic"};
     }
-    const result = await clinicDal.updateClient(clinicName, pathToUpdate, valueToUpdate);
+    const result = await clinicDal.updateClinic(clinicName, pathToUpdate, valueToUpdate);
     if (!result.success) {
         throw new Error(result.message);
     }

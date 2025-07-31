@@ -112,8 +112,16 @@
     </div>
 </div>
 
+<div class="container d-flex align-items-center justify-content-center">
+  <div class="alert alert-success alert-dismissible fade mb-3 w-100" id="authAlert" ng-show="clinicProfileCtrl.showAlert"> 
+    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    <span id="authAction"></span> <strong id="authState"></strong>
+    <p id="alertMessage"></p>
+  </div>
+</div>
 
-<form class="modal fade" id="editClinic" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+
+<form class="modal fade" id="editClinic" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true" ng-if="clinicProfileCtrl.role === 'clinicAdmin'" ng-submit="clinicProfileCtrl.clinicEdit()">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
@@ -122,31 +130,31 @@
       </div>
       <div class="modal-body">
         <label for="editClinicName" class="form-label">Clinic name</label>
-        <input type="text" id="editClinicName" class="form-control mb-3">
+        <input type="text" id="editClinicName" class="form-control mb-3" ng-model="clinicProfileCtrl.editclinicName">
 
         <label for="editLocationName" class="form-label">Location name</label>
-        <input type="text" id="editLocationName" class="form-control mb-3">
+        <input type="text" id="editLocationName" class="form-control mb-3" ng-model="clinicProfileCtrl.editlocationName">
 
         <label for="editNumber" class="form-label">Number</label>
-        <input type="number" id="editNumber" class="form-control mb-3">
+        <input type="number" id="editNumber" class="form-control mb-3" ng-model="clinicProfileCtrl.editnumber">
 
         <label for="editStreet" class="form-label">Street</label>
-        <input type="text" id="editStreet" class="form-control mb-3">
+        <input type="text" id="editStreet" class="form-control mb-3" ng-model="clinicProfileCtrl.editstreet">
 
         <label for="editWard" class="form-label">Ward</label>
-        <input type="text" id="editClinicName" class="form-control mb-3">
+        <input type="text" id="editWard" class="form-control mb-3" ng-model="clinicProfileCtrl.editward">
 
         <label for="editDistrict" class="form-label">District</label>
-        <input type="text" id="editDistrict" class="form-control mb-3">
+        <input type="text" id="editDistrict" class="form-control mb-3" ng-model="clinicProfileCtrl.editdistrict">
 
         <label for="editCity" class="form-label">City</label>
-        <input type="text" id="editCity" class="form-control mb-3">
+        <input type="text" id="editCity" class="form-control mb-3" ng-model="clinicProfileCtrl.editcity">
 
         <label for="editState" class="form-label">State</label>
-        <input type="text" id="editState" class="form-control mb-3">
+        <input type="text" id="editState" class="form-control mb-3" ng-model="clinicProfileCtrl.editstate">
 
         <label for="editCountry" class="form-label">Country</label>
-        <input type="text" id="editCountry" class="form-control mb-3">
+        <input type="text" id="editCountry" class="form-control mb-3" ng-model="clinicProfileCtrl.editcountry">
 
       </div>
       <div class="modal-footer">
@@ -157,7 +165,9 @@
   </div>
 </form>
 
-<div class="modal fade modal-xl" id="editClinicClientList" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+
+<!-- Maybe not doing this -->
+<div class="modal fade modal-xl" id="editClinicClientList" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true"> 
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
@@ -165,7 +175,7 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <div class="alert alert-success alert-dismissible fade show mb-3" role="alert">
+        <div class="alert alert-success alert-dismissible fade mb-3" role="alert">
             <strong>Success!</strong> Add user successfully
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>

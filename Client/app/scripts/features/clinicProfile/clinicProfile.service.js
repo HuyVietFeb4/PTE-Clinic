@@ -20,4 +20,26 @@ angular.module('clinicProfileService', []).service('apiClinicProfile', function(
             }
         });
     }
+
+    this.updateClinicAction = function(params, token) {
+        return $http({
+            method: 'POST',
+            url: `http://172.26.16.1:8888/api/updateClinic`,
+            params: params,
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        });
+    }
+
+    this.updateLocationAction = function(params, token) {
+        return $http({
+            method: 'POST',
+            url: `http://172.26.16.1:8888/api/updateLocation`,
+            params: params,
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        });
+    }
 })

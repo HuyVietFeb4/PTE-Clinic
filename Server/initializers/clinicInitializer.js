@@ -65,15 +65,7 @@ module.exports = class clinicInitializer extends Initializer {
             if (!Array.isArray(valueToUpdate)) {
                 valueToUpdate = [valueToUpdate];
             }
-
-            if (!Array.isArray(pathToSort)) {
-                pathToSort = [pathToSort];
-            }
-
-            if (!Array.isArray(sortDirection)) {
-                sortDirection = [sortDirection];
-            }
-
+            
             if (pathToUpdate.length !== valueToUpdate.length) {
                 throw new Error('pathToUpdate and valueToUpdate must be the same length');
             }

@@ -26,7 +26,7 @@ async function updateLocation(locationName, pathToUpdate, valueToUpdate) {
     if(!location) {
         return {success: false, message: "Can not find the location"};
     }
-    const result = await locationDal.updateClient(locationName, pathToUpdate, valueToUpdate);
+    const result = await locationDal.updateLocation(locationName, pathToUpdate, valueToUpdate);
     if (!result.success) {
         throw new Error(result.message);
     }

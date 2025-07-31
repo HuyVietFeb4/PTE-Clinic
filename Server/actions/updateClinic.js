@@ -11,7 +11,7 @@ module.exports = class updateClinicAction extends Action {
             clinicName: {
                 type: String,
                 require: true,
-                validator: this.emailValidator
+                validator: this.stringValidator
             },
             pathToUpdate: {
                 type: [String],
@@ -28,7 +28,7 @@ module.exports = class updateClinicAction extends Action {
 
     async executeFunction(data) {
         try {
-            const result = await api.clinic.updateClient(data.params.clinicName, data.params.pathToUpdate, data.params.valueToUpdate);
+            const result = await api.clinic.updateClinic(data.params.clinicName, data.params.pathToUpdate, data.params.valueToUpdate);
             return { data: result };
         } catch (error) {
             return { err: error };
