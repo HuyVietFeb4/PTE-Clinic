@@ -251,6 +251,29 @@ async function getUser(payload) { // clean code version
 
     return baseQuery.populate(pathsToPopulate);
 }
+
+async function userReport() {
+    try {
+        const report = {
+            sum: 0,
+            registeredSinceLastWeek: 0,
+            clientSum: 0,
+            systemAdminSum: 0,
+            clinicAdminSum: 0 
+        }
+        const allUser = await userModel.find();
+        report.sum = allUser.length;
+        for (const user of allUser) {
+            report[`${user.role}Sum`]++;
+            if(((Date.now() - user._id.getTimestamp()) / (1000 * 60 * 60 * 24 * 7)) < 7) {
+                report.registeredSinceLastWeek++;
+            }
+        }
+        return {success: true, message: 'Retrieve user report successfully', data: report};
+    } catch(error) {
+        throw new Error(`Error at getUser() in userDal.js, error: ${error.message}`)
+    }
+}
 //update
 async function updateUserFailedLoginAttempByEmail(email, successLogin) {
     const maxAttempts = 5;
@@ -503,6 +526,7 @@ module.exports = {
     findClientByEmail: findClientByEmail,
     getClients: getClients,
     getUser: getUser,
+    userReport: userReport,
 
     updateAdmin: updateAdmin,
     updateUserFailedLoginAttempByEmail: updateUserFailedLoginAttempByEmail,

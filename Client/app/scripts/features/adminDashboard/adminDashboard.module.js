@@ -7,5 +7,5 @@
  * clinicProfile module of the application. Show profile for each clinic
  */
 angular.module('adminDashboard', [
-    'ngRoute',
+    'adminDashboardService',
 ])

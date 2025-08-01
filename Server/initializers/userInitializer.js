@@ -48,6 +48,10 @@ module.exports = class userInitializer extends Initializer {
             return await userActionLogic.getAdmin(adminEmail, clinicName);
         }
 
+        api.user.userReport = async function () {
+            return await userActionLogic.userReport();
+        }
+
         api.user.getClients = async function(pathToFind, valuesToFind, pathToSort, sortDirection, getLocation, getClinicAttend, limit, skip) {
             if (!Array.isArray(pathToFind)) {
                 pathToFind = [pathToFind];

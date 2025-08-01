@@ -7,8 +7,8 @@
                     <h6 class="text-body-secondary">Total users</h6>
                     <img src="images/bootstrap-icon/people-fill.svg" alt="Total user icon" style="height: 20px; width: 30px">
                 </div>
-                <h3 class="card-title mb-2">69</h3>
-                <p class="card-text"><strong class="text-success">90%</strong> Up to sumshi</p>
+                <h3 class="card-title mb-2">{{ adminDashboardCtrl.totalUser }}</h3>
+                <p class="card-text"><strong class="text-success">{{ adminDashboardCtrl.percentRegisteredLastWeek }}%</strong> Up from last week</p>
             </div>
         </div>
 
@@ -18,8 +18,8 @@
                     <h6 class="text-body-secondary">Total clinics</h6>
                     <img src="images/bootstrap-icon/hospital-fill.svg" alt="Total user icon" style="height: 20px; width: 30px">
                 </div>
-                <h3 class="card-title mb-2">36</h3>
-                <p class="card-text"><strong class="text-success">420%</strong> Up to sumshi</p>
+                <h3 class="card-title mb-2">{{ adminDashboardCtrl.totalClinics }}</h3>
+                <!-- <p class="card-text"><strong class="text-success">420%</strong> Up to sumshi</p> -->
             </div>
         </div>
     </div>
@@ -34,53 +34,53 @@
         </div>
     </div>
 
-    <div class="border rounded p-2">
-        <div id="userRegisteredOvertimeLineChar"></div>
-    </div>
+    <!-- <div class="border rounded p-2">
+        <div id="userRegisteredOvertimeLineChar"></div> 
+    </div> Maybe not doing this --> 
     
 </div>
 
 <script> // For demonstration purpose only
 
 
-// userStatusPieChart
+// // userStatusPieChart
 
-const xPieChart = ["Italy", "France", "Spain", "USA", "Argentina"];
-const yPieChart = [55, 49, 44, 24, 15];
+// const xPieChart = ["Italy", "France", "Spain", "USA", "Argentina"];
+// const yPieChart = [55, 49, 44, 24, 15];
 
-const layoutPieChart = {title:"World Wide Wine Production"};
+// const layoutPieChart = {title:"World Wide Wine Production"};
 
-const dataPieChart = [{labels:xPieChart, values:yPieChart, type:"pie"}];
+// const dataPieChart = [{labels:xPieChart, values:yPieChart, type:"pie"}];
 
-Plotly.newPlot("userStatusPieChart", dataPieChart, layoutPieChart);
+// Plotly.newPlot("userStatusPieChart", dataPieChart, layoutPieChart);
 
-// userPerClinicHorizontalBarChart
-const xHorizontalBarChart = [55, 49, 44, 24, 15];
-const yHorizontalBarChart = ["Italy","France","Spain","USA","Argentina"];
+// // userPerClinicHorizontalBarChart
+// const xHorizontalBarChart = [55, 49, 44, 24, 15];
+// const yHorizontalBarChart = ["Italy","France","Spain","USA","Argentina"];
 
-const dataHorizontalBarChart = [{
-  x: xHorizontalBarChart,
-  y: yHorizontalBarChart,
-  type: "bar",
-  orientation: "h",
-  marker: {color:"rgba(255,0,0,0.6)"}
-}];
+// const dataHorizontalBarChart = [{
+//   x: xHorizontalBarChart,
+//   y: yHorizontalBarChart,
+//   type: "bar",
+//   orientation: "h",
+//   marker: {color:"rgba(255,0,0,0.6)"}
+// }];
 
-const layoutHorizontalBarChart = {title:"World Wide Wine Production"};
+// const layoutHorizontalBarChart = {title:"World Wide Wine Production"};
 
-Plotly.newPlot("userPerClinicHorizontalBarChart", dataHorizontalBarChart, layoutHorizontalBarChart);
+// Plotly.newPlot("userPerClinicHorizontalBarChart", dataHorizontalBarChart, layoutHorizontalBarChart);
 
 // userRegisteredOvertimeLineChar
-let expLineChart = "Math.sin(x)";
+// let expLineChart = "Math.sin(x)";
 
-const xLineChart = [];
-const yLineChart = [];
-for (let x = 0; x <= 10; x += 0.1) {
-  xLineChart.push(x);
-  yLineChart.push(eval(expLineChart));
-}
+// const xLineChart = [];
+// const yLineChart = [];
+// for (let x = 0; x <= 10; x += 0.1) {
+//   xLineChart.push(x);
+//   yLineChart.push(eval(expLineChart));
+// }
 
-const dataLineChart = [{x:xLineChart, y:yLineChart, mode:"lines"}];
-const layoutLineChart = {title: "y = " + expLineChart};
-Plotly.newPlot("userRegisteredOvertimeLineChar", dataLineChart, layoutLineChart);
+// const dataLineChart = [{x:xLineChart, y:yLineChart, mode:"lines"}];
+// const layoutLineChart = {title: "y = " + expLineChart};
+// Plotly.newPlot("userRegisteredOvertimeLineChar", dataLineChart, layoutLineChart);
 </script>

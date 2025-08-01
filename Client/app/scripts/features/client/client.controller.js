@@ -11,8 +11,6 @@ angular.module('client').controller('clientController', function (apiClient, $ro
     const token = getCookieValue('api_auth_token');
 
     vm.fetchClients = function() {
-        console.log('here')
-        // Not done yet, still filter function left to do
         if(vm.valuesToFind && vm.pathToFind) {
             apiClient.searchClientParams.pathToFind = [vm.pathToFind];
             apiClient.searchClientParams.valuesToFind = [vm.valuesToFind];

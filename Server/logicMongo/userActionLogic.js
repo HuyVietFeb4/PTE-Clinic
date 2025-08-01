@@ -226,6 +226,14 @@ async function getClients(pathToFind, valuesToFind, pathToSort, sortDirection, g
     return result;
 }
 
+async function userReport() {
+    const result = await userDal.userReport();
+    if (!result.success) {
+        throw new Error(result.message);
+    }
+    return result;
+}
+
 async function updateClient(clientEmail, pathToUpdate, valueToUpdate) {
     const client = await userDal.findUserByEmail(clientEmail);
     if(!client) {
@@ -348,6 +356,7 @@ module.exports = {
     getAdmin: getAdmin,
     getClients: getClients,
     getUser: getUser,
+    userReport: userReport,
 
     updateClient: updateClient,
     updateAdmin: updateAdmin,
