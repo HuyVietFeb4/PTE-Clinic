@@ -10,7 +10,7 @@ angular.module('adminDashboard').controller('adminDashboardController', function
         vm.totalUser = userReport.sum;
         vm.percentRegisteredLastWeek = (userReport.registeredSinceLastWeek / userReport.sum) * 100;
 
-        // userStatusPieChart
+        // userRolePieChart
         const xPieChart = ["Client", "Clinic Admin", "System Admin"];
         const yPieChart = [userReport.clientSum, userReport.clinicAdminSum, userReport.systemAdminSum];
 
@@ -18,7 +18,19 @@ angular.module('adminDashboard').controller('adminDashboardController', function
 
         const dataPieChart = [{labels:xPieChart, values:yPieChart, type:"pie"}];
 
-        Plotly.newPlot("userStatusPieChart", dataPieChart, layoutPieChart);
+        Plotly.newPlot("userRolePieChart", dataPieChart, layoutPieChart);
+
+
+        // userStatusPieChart
+
+        const xStatusPieChart = ["Activated", "Locked", "Deactivated", "Registered"];
+        const yStatusPieChart = [userReport.activatedSum, userReport.lockedSum, userReport.deactivatedSum, userReport.registeredSum];
+
+        const layoutStatusPieChart = {title:"User Status Distribution"};
+
+        const dataStatusPieChart = [{labels:xStatusPieChart, values:yStatusPieChart, type:"pie"}];
+
+        Plotly.newPlot("userStatusPieChart", dataStatusPieChart, layoutStatusPieChart);
     }).catch(function(error) {
 
     })

@@ -259,12 +259,17 @@ async function userReport() {
             registeredSinceLastWeek: 0,
             clientSum: 0,
             systemAdminSum: 0,
-            clinicAdminSum: 0 
+            clinicAdminSum: 0,
+            activatedSum: 0,
+            lockedSum: 0,
+            deactivatedSum: 0,
+            registeredSum: 0
         }
         const allUser = await userModel.find();
         report.sum = allUser.length;
         for (const user of allUser) {
             report[`${user.role}Sum`]++;
+            report[`${user.accountStatus}Sum`]++;
             if(((Date.now() - user._id.getTimestamp()) / (1000 * 60 * 60 * 24 * 7)) < 7) {
                 report.registeredSinceLastWeek++;
             }
