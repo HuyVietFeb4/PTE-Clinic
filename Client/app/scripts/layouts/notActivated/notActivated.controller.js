@@ -1,4 +1,4 @@
-angular.module('notActivated').controller('notActivatedController', function ($location, sessionFactory) {
+angular.module('notActivated').controller('notActivatedController', function ($location, sessionFactory, $rootScope) {
   const vm = this;
   vm.accountStatus = sessionFactory.getUser().accountStatus;
   vm.logout = function() {

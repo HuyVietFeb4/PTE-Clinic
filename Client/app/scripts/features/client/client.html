@@ -13,10 +13,23 @@
                 <img src="images/bootstrap-icon/search.svg" alt="search image">
             </button>
         </div>
+
+        <button type="button" class="btn btn-danger mt-3" data-bs-toggle="modal" data-bs-target="#addClient" ng-if="clientCtrl.user.role === 'clinicAdmin'">
+            Add Client
+        </button>
     </div>
 
+    <div class="container d-flex align-items-center justify-content-center">
+        <div class="alert alert-success alert-dismissible show mt-3 w-100" id="authAlert" ng-show="clientCtrl.showAlert"> 
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            <span id="authAction"></span> <strong id="authState"></strong>
+            <p id="alertMessage"></p>
+        </div>
+    </div>
+
+
     <div class="container-fluid">
-        <h1 class="text-center mt-3">All client account or sum shi</h1>
+        <h1 class="text-center mt-3">Client account</h1>
         <table class="table table-striped mt-3">
             <thead>
                 <tr>
@@ -51,3 +64,30 @@
         </ul>
     </nav>
 </div>
+
+
+<form class="modal fade" id="addClient" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true" ng-submit="clientCtrl.addClient()" ng-if="clientCtrl.user.role === 'clinicAdmin'">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title fs-5" id="staticBackdropLabel">Add Client</h3>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <label for="addUsername" class="form-label">Username</label>
+        <input type="text" id="addUsername" class="form-control mb-3" ng-required="true" ng-model="clientCtrl.addUsername">
+
+        <label for="addEmail" class="form-label">Email</label>
+        <input type="email" id="addEmail" class="form-control mb-3" ng-required="true" ng-model="clientCtrl.addEmail">
+
+        <label for="addClinicName" class="form-label">Clinic name</label>
+        <input type="text" id="addClinicName" class="form-control mb-3" ng-required="true" ng-model="clientCtrl.addClinicName">
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-primary">Confirm</button>
+      </div>
+    </div>
+  </div>
+</form>

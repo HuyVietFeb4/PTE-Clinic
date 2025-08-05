@@ -1,14 +1,40 @@
-angular.module('client').controller('clientController', function (apiClient, $routeParams, $location, $route) {
+angular.module('client').controller('clientController', function (apiClient, $routeParams, $location, $route, sessionFactory, $timeout) {
     const vm = this;
     vm.clientsPerPage = 6;
     vm.currentPage = (parseInt($routeParams.page) > 0) ? parseInt($routeParams.page) : 1; // skip = (currentPage - 1) * limit
     
+    vm.showAlert = false;
     vm.sortPath = '';
     vm.clients = [];
     vm.totalClients = 0;
     vm.totalPages = 0;
     vm.numAdjacentPages = 2;
+    vm.user = sessionFactory.getUser();
     const token = getCookieValue('api_auth_token');
+
+    vm.addClient = function() {
+        const clientPassword = generateRandomPassword();
+        const params = {
+            username: vm.addUsername,
+            email: vm.addEmail,
+            password: clientPassword,
+            clinicName: vm.addClinicName,
+            role: 'client',
+        }
+
+        apiClient.addClientAction(params, token).then(function(response) {
+            triggerAlert('Add client', response.data.success, response.data.message, vm.showAlert);
+            if(response.data.success) {
+                console.log(clientPassword);
+                $('#addClient').modal('hide');
+                $timeout(() => {
+                    $route.reload();
+                }, 5000);
+            }
+        }).catch(function (err) {
+            triggerAlert('Add client', false, err.data.error, vm.showAlert);
+        });
+    }
 
     vm.fetchClients = function() {
         if(vm.valuesToFind && vm.pathToFind) {
@@ -60,4 +86,6 @@ angular.module('client').controller('clientController', function (apiClient, $ro
     }
 
     vm.fetchClients();
+
+
 });
