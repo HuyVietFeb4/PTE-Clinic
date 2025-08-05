@@ -14,6 +14,12 @@
     <label for="passwordSignup" class="form-label">Password:</label>
     <input type="password" name="passwordSignup" id="passwordSignup" ng-required="true" ng-model="signupCtrl.passwordSignup" class="form-control">
   </div>
+
+  <div class="mb-3 w-75">
+    <label for="confirmPasswordSignup" class="form-label">Confirm password:</label>
+    <input type="password" name="confirmPasswordSignup" id="confirmPasswordSignup" ng-required="true" ng-model="signupCtrl.confirmPasswordSignup" class="form-control">
+    <p class="text-danger mt-1" ng-show="signupCtrl.confirmPasswordSignup !== signupCtrl.passwordSignup">Passwords do not match. Please double-check and try again.</p>
+  </div>
   
   <div class="mb-3 w-75">
     <label for="clinicNameSignup" class="form-label">Clinic name:</label>
