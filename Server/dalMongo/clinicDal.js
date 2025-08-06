@@ -21,6 +21,9 @@ async function findClinicByName(name) {
     return await clinicModel.findOne({ clinicName: name });
 }
 
+async function findClinicByID(ID) {
+    return await clinicModel.findById(ID);
+}
 async function findClinicByNameWithFullInfo(name) {
     return await clinicModel.findOne({ clinicName: name }).populate([
         {
@@ -222,6 +225,7 @@ async function updateClinicClientAttendee(clinicName, clientEmailToAdd, clientEm
 module.exports = {
     addClinic: addClinic,
 
+    findClinicByID: findClinicByID,
     findClinicByName: findClinicByName, 
     findClinicByNameWithFullInfo: findClinicByNameWithFullInfo,
     getClinics: getClinics,

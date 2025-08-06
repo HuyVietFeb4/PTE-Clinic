@@ -59,6 +59,11 @@ async function findUserByEmail(Email) {
     return await userModel.findOne({ email: Email });
 }
 
+
+async function findUsersByEmail(Email) {
+    return await userModel.find({ email: Email });
+}
+
 async function findAdmins(adminEmail) { // Only use for admin
     if (!adminEmail) {
         return await adminModel.find().populate({
@@ -80,11 +85,11 @@ async function findAdmins(adminEmail) { // Only use for admin
 async function findAdminWithClinicName(adminEmail, ClinicName) {
     const clinic = await clinicModel.findOne({ clinicName: ClinicName });
     if(!clinic) {
-        throw new error(`Can not find clinic with clinic name: ${ClinicName}`)
+        throw new Error(`Can not find clinic with clinic name: ${ClinicName}`)
     }
     const admin = await userModel.findOne({ email: adminEmail, clinicAdministeredID: clinic._id });
     if(!admin) {
-        throw new error(`Can not find admin with email: ${adminEmail} and clinic name: ${ClinicName}`)
+        throw new Error(`Can not find admin with email: ${adminEmail} and clinic name: ${ClinicName}`)
     }
     return admin;
 }
@@ -525,6 +530,7 @@ module.exports = {
 
     findUserByUsername: findUserByUsername, 
     findUserByEmail: findUserByEmail,
+    findUsersByEmail: findUsersByEmail,
     getClientByID: getClientByID,
     findAdmins: findAdmins,
     findAdminWithClinicName: findAdminWithClinicName,

@@ -21,3 +21,9 @@ angular.module('login').component('systemAdminLogin', {
     controller: 'systemAdminLoginController',
     controllerAs: 'systemAdminLoginCtrl'
 });
+
+angular.module('login').component('login', {
+    templateUrl: 'scripts/features/login/login.html',
+    controller: 'loginController',
+    controllerAs: 'loginCtrl'
+})

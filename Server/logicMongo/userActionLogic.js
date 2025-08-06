@@ -17,6 +17,87 @@ async function createSystemAdmin(email, username, password) {
     }
     return { success: true, message: "Create system admin account successfully" };
 }
+
+async function login(email, password, clinicName) {
+    if(clinicName === '') {
+        const users = await userDal.findUsersByEmail(email);
+        if (users.length === 1) {
+            const hashedPassword = crypto.createHash("sha256").update(password).digest("hex");
+            const user = await userDal.findUserByEmail(email, clinicName);
+            if (!user) return { success: false, message: "User not found." };
+            if (user.failedLoginAttemps > 5) return {success: false, message: "User is locked. Please contact support."};
+            if (user.password !== hashedPassword) {
+                const resUpdate = await userDal.updateUserFailedLoginAttempByObject(user, false);
+                if(!resUpdate.success) {
+                    return resUpdate;
+                }
+                else {
+                    return { success: false, message: resUpdate.message }
+                }
+            }
+            const resUpdate = await userDal.updateUserFailedLoginAttempByObject(user, true);
+
+            const payload = {
+                username: user.username,
+                id: user._id,
+                email: email,
+                accountStatus: user.accountStatus,
+                role: user.role
+            }
+
+            if(user.role === 'clinicAdmin') {
+                payload.clinicAdministeredID = user.clinicAdministeredID;
+            }
+
+            const token = await jwt.sign(payload);
+            return { success: true, message: "Login successfully", token: token};
+        }
+        else {
+            let clinicList = [];
+            for(let user of users) {
+                if(user.clinicAdministeredID) {
+                    let clinic = await clinicDal.findClinicByID(user.clinicAdministeredID);
+                    clinicList.push(clinic.clinicName);
+                }
+                else {
+                    throw new Error('The role of user is not sufficient to use this feature');
+                }
+            }
+            return { success: true, message: "Done stage one, going into stage 2", clinicList: clinicList};
+        }
+    }  else {
+        const hashedPassword = crypto.createHash("sha256").update(password).digest("hex");
+        const admin = await userDal.findAdminWithClinicName(email, clinicName);
+        if (!admin) return { success: false, message: "User not found." };
+        if(admin.role !== 'clinicAdmin') return { success: false, message: 'User not found.' };
+        if (admin.failedLoginAttemps > 5) return {success: false, message: "User is locked. Please contact support."};
+        if (admin.password !== hashedPassword) {
+            const resUpdate = await userDal.updateUserFailedLoginAttempByObject(admin, false);
+            if(!resUpdate.success) {
+                return resUpdate;
+            }
+            else {
+                return { success: false, message: resUpdate.message}
+            }
+        }
+        const resUpdate = await userDal.updateUserFailedLoginAttempByObject(admin, true);
+        // return token
+
+        const payload = {
+            username: admin.username,
+            id: admin._id,
+            email: email,
+            accountStatus: admin.accountStatus,
+            role: 'clinicAdmin',
+            clinicAdministeredID: admin.clinicAdministeredID,
+        }
+        const token = await jwt.sign(payload);
+        return { success: true, message: "Login successfully", token: token};
+    }
+    
+
+}
+
 async function clientLogin(email, password) {
     const hashedPassword = crypto.createHash("sha256").update(password).digest("hex");
     const user = await userDal.findUserByEmail(email);
@@ -347,6 +428,7 @@ module.exports = {
     adminLogin: adminLogin,
     systemAdminLogin: systemAdminLogin,
     signup: signup,
+    login: login,
     addClientLocation: addClientLocation,
     createSystemAdmin: createSystemAdmin,
 

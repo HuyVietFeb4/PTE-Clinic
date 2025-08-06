@@ -1,6 +1,7 @@
 const { Initializer, api } = require('actionhero');
 const userActionLogic = require('../logicMongo/userActionLogic');
 const jwt = require('../lib/util/jwt');
+const { findUserByUsername } = require('../dalMongo/userDal');
 
 
 module.exports = class userInitializer extends Initializer {
@@ -19,6 +20,10 @@ module.exports = class userInitializer extends Initializer {
         api.user.signup = async function (email, username, password, clinicName, role) { 
             return await userActionLogic.signup(email, username, password, clinicName, role);
         };
+
+        api.user.login = async function (email, password, clinicName) {
+            return await userActionLogic.login(email, password, clinicName)
+        }
         
         api.user.clientLogin = async function (email, password) { 
             return await userActionLogic.clientLogin(email, password);

@@ -35,17 +35,8 @@ angular
       .when('/:clinicName/signup', {
         template: '<signup></signup>'
       })
-      .when('/clientLogin', {
-        template: '<client-login></client-login>'
-      })
-      .when('/adminLogin', {
-        template: '<admin-login></admin-login>'
-      })
-      .when('/systemAdminLogin', {
-        template: '<system-admin-login></system-admin-login>'
-      })
-      .when('/adminLogin/chooseClinic', {
-        template: '<choose-clinic></choose-clinic>'
+      .when('/login', {
+        template: '<login></login>'
       })
       .when('/client/:page', {
         template: '<client></client>'
@@ -180,7 +171,7 @@ angular
 
 
 angular.module('clinicApp').run(function(sessionFactory, $location, $rootScope) {
-  const freeRoutes = ['/:clinicName/signup', '/clientLogin', '/adminLogin', '/systemAdminLogin', '/'];
+  const freeRoutes = ['/:clinicName/signup', '/login', '/'];
   const clientRoutes = ['/clientProfile', '/notActivated'];
 
   function validateAccess(allowedRoles, nextPath, user) {    
